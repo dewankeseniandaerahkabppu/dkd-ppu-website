@@ -56,7 +56,12 @@ $("#news-list").innerHTML=news.map((n,i)=>`
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll(".reveal,.reveal-card").forEach(x=>io.observe(x));
   const modal=$("#modal"); document.querySelectorAll(".gallery-card").forEach(x=>x.onclick=()=>{let g=gallery[+x.dataset.i];$("#modal-art").className="modal-art tone-"+(g.tone||"green");$("#modal-art").innerHTML=g.image?`<img src="${esc(g.image)}" alt="">`:`<span>${["✦","♫","❯","◈"][+x.dataset.i%4]}</span>`;$("#modal-title").textContent=g.title;$("#modal-caption").textContent=g.caption;modal.classList.add("show")});
-  document.querySelector(".modal-close").onclick=()=>modal.classList.remove("show");document.querySelector(".modal-backdrop").onclick=()=>modal.classList.remove("show");
+  const closeModal=()=>{
+  modal.classList.remove("show");
+  document.body.style.overflow="";
+};
+document.querySelector(".modal-close").onclick=closeModal;
+document.querySelector(".modal-backdrop").onclick=closeModal;
 }
 init().catch(e=>{document.body.insertAdjacentHTML("afterbegin",`<div style="padding:16px;background:#fee;color:#900;text-align:center">Konten belum dapat dimuat. Pastikan website diakses melalui Netlify/GitHub, bukan file lokal.</div>`);console.error(e)});
 window.addEventListener("scroll",()=>$("#to-top").classList.toggle("show",scrollY>500));$("#to-top").onclick=()=>scrollTo({top:0,behavior:"smooth"});
