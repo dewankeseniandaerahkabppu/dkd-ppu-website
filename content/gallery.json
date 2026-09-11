@@ -1,26 +1,26 @@
 {
   "gallery": [
     {
-      "title": "Panggung Tradisi",
-      "caption": "Ilustrasi pertunjukan seni tradisi",
+      "title": "Festival & Panggung Kreativitas",
+      "caption": "Menyelenggarakan festival, pagelaran, dan ruang pertunjukan untuk memperkenalkan karya seni tradisional maupun modern kepada masyarakat.",
       "image": "",
       "tone": "red"
     },
     {
-      "title": "Ruang Musik",
-      "caption": "Ilustrasi eksplorasi musik",
+      "title": "Seni Generasi Muda & Ekonomi Kreatif",
+      "caption": "Membuka ruang bagi generasi muda untuk berkarya dalam seni tari, musik, teater, sastra, film, fotografi, dan seni digital sekaligus mendukung pengembangan ekonomi kreatif daerah.",
       "image": "",
       "tone": "gold"
     },
     {
-      "title": "Gerak Tari",
-      "caption": "Ilustrasi gerak dan koreografi",
+      "title": "Pembinaan Seniman & Sanggar",
+      "caption": "Mendorong peningkatan kemampuan seniman, komunitas, dan sanggar melalui pelatihan, pendampingan, workshop, serta ruang berkarya.",
       "image": "",
       "tone": "green"
     },
     {
-      "title": "Seni Digital",
-      "caption": "Ilustrasi karya seni kontemporer",
+      "title": "Pelestarian Seni & Budaya PPU",
+      "caption": "Melestarikan dan mengembangkan seni, tradisi, serta budaya lokal PPU melalui dokumentasi, pertunjukan, dan kegiatan kebudayaan.",
       "image": "",
       "tone": "dark"
     }
