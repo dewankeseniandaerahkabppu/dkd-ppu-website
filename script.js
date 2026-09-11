@@ -1,4 +1,14 @@
 const navItems=[["Beranda","#beranda"],["Profil","#profil"],["Program","#program"],["Berita","#berita"],["Galeri","#galeri"],["Agenda","#agenda"],["Kontak","#kontak"]];
+const navItems=[
+  ["Beranda","#beranda"],
+  ["Profil","#profil"],
+  ["Program","#program"],
+  ["Berita","#berita"],
+  ["Galeri","#galeri"],
+  ["Agenda","#agenda"],
+  ["Kontak","#kontak"],
+  ["Pelaku Seni & Budaya","pelaku-seni-dan-budaya.html"]
+];
 const $=s=>document.querySelector(s);
 async function get(name){const r=await fetch(`content/${name}.json`,{cache:"no-store"});if(!r.ok)throw new Error(name);return r.json();}
 function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
