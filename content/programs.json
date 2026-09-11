@@ -1,26 +1,28 @@
-[
-  {
-    "title": "Festival & Pertunjukan Seni",
-    "text": "Panggung untuk pertunjukan, festival, dan kolaborasi seniman daerah.",
-    "tag": "PERTUNJUKAN",
-    "icon": "✦"
-  },
-  {
-    "title": "Workshop Seni Modern",
-    "text": "Kelas dan lokakarya yang mempertemukan teknik tradisi dengan pendekatan kreatif baru.",
-    "tag": "EDUKASI",
-    "icon": "◈"
-  },
-  {
-    "title": "Pembinaan Sanggar",
-    "text": "Pendampingan komunitas dan sanggar agar ekosistem seni tumbuh berkelanjutan.",
-    "tag": "KOMUNITAS",
-    "icon": "❯"
-  },
-  {
-    "title": "Dokumentasi & Publikasi",
-    "text": "Merekam, mengarsipkan, dan menyebarluaskan karya serta cerita seni PPU.",
-    "tag": "ARSIP",
-    "icon": "◉"
-  }
-]
+{
+  "programs": [
+    {
+      "title": "Festival & Pertunjukan Seni",
+      "text": "Panggung untuk pertunjukan, festival, dan kolaborasi seniman daerah.",
+      "tag": "PERTUNJUKAN",
+      "icon": "✦"
+    },
+    {
+      "title": "Workshop Seni Modern",
+      "text": "Kelas dan lokakarya yang mempertemukan teknik tradisi dengan pendekatan kreatif baru.",
+      "tag": "EDUKASI",
+      "icon": "◈"
+    },
+    {
+      "title": "Pembinaan Sanggar",
+      "text": "Pendampingan komunitas dan sanggar agar ekosistem seni tumbuh berkelanjutan.",
+      "tag": "KOMUNITAS",
+      "icon": "❯"
+    },
+    {
+      "title": "Dokumentasi & Publikasi",
+      "text": "Merekam, mengarsipkan, dan menyebarluaskan karya serta cerita seni PPU.",
+      "tag": "ARSIP",
+      "icon": "◉"
+    }
+  ]
+}
