@@ -1,26 +1,28 @@
-[
-  {
-    "title": "Panggung Tradisi",
-    "caption": "Ilustrasi pertunjukan seni tradisi",
-    "image": "",
-    "tone": "red"
-  },
-  {
-    "title": "Ruang Musik",
-    "caption": "Ilustrasi eksplorasi musik",
-    "image": "",
-    "tone": "gold"
-  },
-  {
-    "title": "Gerak Tari",
-    "caption": "Ilustrasi gerak dan koreografi",
-    "image": "",
-    "tone": "green"
-  },
-  {
-    "title": "Seni Digital",
-    "caption": "Ilustrasi karya seni kontemporer",
-    "image": "",
-    "tone": "dark"
-  }
-]
+{
+  "gallery": [
+    {
+      "title": "Panggung Tradisi",
+      "caption": "Ilustrasi pertunjukan seni tradisi",
+      "image": "",
+      "tone": "red"
+    },
+    {
+      "title": "Ruang Musik",
+      "caption": "Ilustrasi eksplorasi musik",
+      "image": "",
+      "tone": "gold"
+    },
+    {
+      "title": "Gerak Tari",
+      "caption": "Ilustrasi gerak dan koreografi",
+      "image": "",
+      "tone": "green"
+    },
+    {
+      "title": "Seni Digital",
+      "caption": "Ilustrasi karya seni kontemporer",
+      "image": "",
+      "tone": "dark"
+    }
+  ]
+}
