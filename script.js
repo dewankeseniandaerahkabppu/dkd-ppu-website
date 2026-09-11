@@ -30,7 +30,7 @@ const agenda=agendaRaw.agenda||agendaRaw;
 }
 
 $("#news-list").innerHTML=news.map((n,i)=>`
- <article class="news-card news-clickable reveal-card"
+<article class="news-card news-clickable reveal-card" data-news="${i}" tabindex="0"
     ${n.image
       ? `<img class="news-img" src="${esc(n.image)}" alt="${esc(n.title)}">`
       : `<div class="news-art tone-${i%3}"><span>${["✦","♫","◈"][i%3]}</span></div>`
