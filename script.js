@@ -55,11 +55,55 @@ $("#news-list").innerHTML=news.map((n,i)=>`
   document.querySelector(".menu-toggle").onclick=()=>$("#nav").classList.toggle("open");
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll(".reveal,.reveal-card").forEach(x=>io.observe(x));
-  const modal=$("#modal"); document.querySelectorAll(".gallery-card").forEach(x=>x.onclick=()=>{let g=gallery[+x.dataset.i];$("#modal-art").className="modal-art tone-"+(g.tone||"green");$("#modal-art").innerHTML=g.image?`<img src="${esc(g.image)}" alt="">`:`<span>${["✦","♫","❯","◈"][+x.dataset.i%4]}</span>`;$("#modal-title").textContent=g.title;$("#modal-caption").textContent=g.caption;modal.classList.add("show")});
-  const closeModal=()=>{
+  const modal=$("#modal");
+
+document.querySelectorAll(".gallery-card").forEach(x=>x.onclick=()=>{
+  let g=gallery[+x.dataset.i];
+  $("#modal-art").innerHTML=g.image
+    ? `<img src="${esc(g.image)}" alt="${esc(g.title)}">`
+    : `<span>✦</span>`;
+  $("#modal-meta").textContent=g.category||"GALERI";
+  $("#modal-title").textContent=g.title;
+  $("#modal-excerpt").textContent="";
+  $("#modal-content").innerHTML="";
+  modal.classList.add("show");
+  document.body.style.overflow="hidden";
+});
+
+document.querySelectorAll(".news-clickable").forEach(x=>{
+  const openNews=()=>{
+    const n=news[+x.dataset.news];
+
+    $("#modal-art").innerHTML=n.image
+      ? `<img src="${esc(n.image)}" alt="${esc(n.title)}">`
+      : `<span>✦</span>`;
+
+    $("#modal-meta").textContent=
+      `${new Date(n.date+"T00:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"})} · ${n.category}`;
+
+    $("#modal-title").textContent=n.title;
+    $("#modal-excerpt").textContent=n.excerpt||"";
+    $("#modal-content").innerHTML=markdownToHtml(n.body||"");
+
+    modal.classList.add("show");
+    document.body.style.overflow="hidden";
+  };
+
+  x.onclick=openNews;
+
+  x.onkeydown=e=>{
+    if(e.key==="Enter" || e.key===" "){
+      e.preventDefault();
+      openNews();
+    }
+  };
+});
+
+const closeModal=()=>{
   modal.classList.remove("show");
   document.body.style.overflow="";
 };
+
 document.querySelector(".modal-close").onclick=closeModal;
 document.querySelector(".modal-backdrop").onclick=closeModal;
 }
