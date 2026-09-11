@@ -1,23 +1,25 @@
-[
-  {
-    "title": "Contoh Berita Kegiatan DKD PPU",
-    "date": "2026-09-12",
-    "category": "KEGIATAN",
-    "excerpt": "Ganti judul dan isi berita ini dengan berita resmi terbaru DKD PPU.",
-    "image": ""
-  },
-  {
-    "title": "Ruang Kolaborasi Seniman Daerah",
-    "date": "2026-08-28",
-    "category": "SENI BUDAYA",
-    "excerpt": "Tuliskan ringkasan singkat kegiatan, capaian, atau informasi penting di sini.",
-    "image": ""
-  },
-  {
-    "title": "Pembinaan dan Penguatan Sanggar",
-    "date": "2026-08-10",
-    "category": "KOMUNITAS",
-    "excerpt": "Bagian ini dapat diisi dengan kabar dari sanggar, komunitas, atau pelaku seni.",
-    "image": ""
-  }
-]
+{
+  "news": [
+    {
+      "title": "Contoh Berita Kegiatan DKD PPU",
+      "date": "2026-09-12",
+      "category": "KEGIATAN",
+      "excerpt": "Ganti judul dan isi berita ini dengan berita resmi terbaru DKD PPU.",
+      "image": ""
+    },
+    {
+      "title": "Ruang Kolaborasi Seniman Daerah",
+      "date": "2026-08-28",
+      "category": "SENI BUDAYA",
+      "excerpt": "Tuliskan ringkasan singkat kegiatan, capaian, atau informasi penting di sini.",
+      "image": ""
+    },
+    {
+      "title": "Pembinaan dan Penguatan Sanggar",
+      "date": "2026-08-10",
+      "category": "KOMUNITAS",
+      "excerpt": "Bagian ini dapat diisi dengan kabar dari sanggar, komunitas, atau pelaku seni.",
+      "image": ""
+    }
+  ]
+}
