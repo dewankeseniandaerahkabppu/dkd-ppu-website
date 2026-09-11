@@ -1,0 +1,120 @@
+backend:
+  name: github
+  # Setelah repository GitHub dibuat, ganti baris di bawah:
+  repo: dewankeseniandaerahkabppu/dkd-ppu-website
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+locale: "id"
+
+collections:
+  - name: "site"
+    label: "Pengaturan Website"
+    files:
+      - label: "Beranda & Profil"
+        name: "site"
+        file: "content/site.json"
+        format: "json"
+        fields:
+          - { label: "Nama Singkat", name: "shortName", widget: "string" }
+          - { label: "Nama Lengkap", name: "name", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Teks Kecil Hero", name: "heroEyebrow", widget: "string" }
+          - { label: "Judul Hero", name: "heroTitle", widget: "string" }
+          - { label: "Deskripsi Hero", name: "heroText", widget: "text" }
+          - { label: "Judul Profil", name: "profileTitle", widget: "string" }
+          - { label: "Isi Profil", name: "profileText", widget: "markdown" }
+          - label: "Statistik"
+            name: "stats"
+            widget: "list"
+            fields:
+              - { label: "Angka", name: "number", widget: "string" }
+              - { label: "Keterangan", name: "label", widget: "string" }
+
+  - name: "programs"
+    label: "Program"
+    files:
+      - label: "Daftar Program"
+        name: "programs"
+        file: "content/programs.json"
+        format: "json"
+        fields:
+          - label: "Program"
+            name: "programs"
+            widget: "list"
+            fields:
+              - { label: "Nama Program", name: "title", widget: "string" }
+              - { label: "Deskripsi", name: "text", widget: "text" }
+              - { label: "Kategori", name: "tag", widget: "string" }
+              - { label: "Ikon", name: "icon", widget: "string", default: "✦" }
+
+  - name: "news"
+    label: "Berita"
+    files:
+      - label: "Daftar Berita"
+        name: "news"
+        file: "content/news.json"
+        format: "json"
+        fields:
+          - label: "Berita"
+            name: "news"
+            widget: "list"
+            fields:
+              - { label: "Judul", name: "title", widget: "string" }
+              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Kategori", name: "category", widget: "string" }
+              - { label: "Ringkasan", name: "excerpt", widget: "text" }
+              - { label: "Foto Berita", name: "image", widget: "image", required: false }
+
+  - name: "gallery"
+    label: "Galeri"
+    files:
+      - label: "Galeri Foto"
+        name: "gallery"
+        file: "content/gallery.json"
+        format: "json"
+        fields:
+          - label: "Galeri"
+            name: "gallery"
+            widget: "list"
+            fields:
+              - { label: "Judul", name: "title", widget: "string" }
+              - { label: "Keterangan", name: "caption", widget: "string" }
+              - { label: "Foto", name: "image", widget: "image", required: false }
+              - { label: "Gaya", name: "tone", widget: "select", options: ["red", "gold", "green", "dark"], default: "green" }
+
+  - name: "agenda"
+    label: "Agenda"
+    files:
+      - label: "Daftar Agenda"
+        name: "agenda"
+        file: "content/agenda.json"
+        format: "json"
+        fields:
+          - label: "Agenda"
+            name: "agenda"
+            widget: "list"
+            fields:
+              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Nama Kegiatan", name: "title", widget: "string" }
+              - { label: "Lokasi", name: "place", widget: "string" }
+
+  - name: "contact"
+    label: "Kontak & Media Sosial"
+    files:
+      - label: "Kontak"
+        name: "contact"
+        file: "content/contact.json"
+        format: "json"
+        fields:
+          - { label: "Judul Kontak", name: "title", widget: "string" }
+          - { label: "Pengantar", name: "intro", widget: "text" }
+          - { label: "Alamat", name: "address", widget: "text" }
+          - { label: "WhatsApp / Telepon", name: "phone", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Jam Layanan", name: "hours", widget: "string" }
+          - { label: "Instagram", name: "instagram", widget: "string" }
+          - { label: "Facebook", name: "facebook", widget: "string" }
+          - { label: "YouTube", name: "youtube", widget: "string" }

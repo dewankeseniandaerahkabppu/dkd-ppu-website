@@ -1,0 +1,24 @@
+{
+  "shortName": "DKD PPU",
+  "name": "Dewan Kesenian Daerah Penajam Paser Utara",
+  "tagline": "Dewan Kesenian Daerah",
+  "heroEyebrow": "PENAJAM PASER UTARA",
+  "heroTitle": "Seni PPU, Warisan yang Hidup.",
+  "heroText": "Merawat akar budaya, membuka ruang kreativitas, dan mempertemukan tradisi dengan ekspresi seni masa kini.",
+  "profileTitle": "Menjaga akar, menghidupkan karya.",
+  "profileText": "DKD PPU menjadi ruang bersama bagi pelaku seni dan masyarakat untuk bertemu, berkarya, belajar, dan memperkenalkan kekayaan seni budaya Penajam Paser Utara.",
+  "stats": [
+    {
+      "number": "08",
+      "label": "Ruang Ekspresi"
+    },
+    {
+      "number": "04",
+      "label": "Program Utama"
+    },
+    {
+      "number": "01",
+      "label": "Gerakan Bersama"
+    }
+  ]
+}

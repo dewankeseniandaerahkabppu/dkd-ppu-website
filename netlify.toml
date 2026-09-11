@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Redirect the CMS admin path to the CMS app entry.
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
