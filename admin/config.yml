@@ -3,6 +3,7 @@ backend:
   repo: dewankeseniandaerahkabppu/dkd-ppu-website
   branch: main
   site_domain: dkd-ppu-website.netlify.app
+  base_url: https://dkd-ppu-oauth.dewankeseniandaerah-kabppu.workers.dev
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
