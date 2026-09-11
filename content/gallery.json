@@ -2,25 +2,25 @@
   "gallery": [
     {
       "title": "Festival & Panggung Kreativitas",
-      "caption": "-",
+      "caption": "*",
       "image": "",
       "tone": "red"
     },
     {
       "title": "Seni Generasi Muda & Ekonomi Kreatif",
-      "caption": "-",
+      "caption": "**",
       "image": "",
       "tone": "gold"
     },
     {
       "title": "Pembinaan Seniman & Sanggar",
-      "caption": "-",
+      "caption": "***",
       "image": "",
       "tone": "green"
     },
     {
       "title": "Pelestarian Seni & Budaya PPU",
-      "caption": "-",
+      "caption": "****",
       "image": "",
       "tone": "dark"
     }
