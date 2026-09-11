@@ -19,6 +19,7 @@ collections:
         format: "json"
         fields:
           - { label: "Nama Singkat", name: "shortName", widget: "string" }
+          - { label: "Logo Website", name: "logo", widget: "image", required: false }
           - { label: "Nama Lengkap", name: "name", widget: "string" }
           - { label: "Tagline", name: "tagline", widget: "string" }
           - { label: "Teks Kecil Hero", name: "heroEyebrow", widget: "string" }
