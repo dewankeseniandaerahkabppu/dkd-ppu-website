@@ -15,3 +15,95 @@
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-14px) rotate(5deg)}}
 @media(max-width:900px){.nav{display:none;position:absolute;top:78px;left:0;right:0;background:var(--paper);padding:15px 20px;flex-direction:column}.nav.open{display:flex}.nav a{padding:9px 0}.menu-toggle{display:block}.hero-grid,.two-col,.contact-card{grid-template-columns:1fr}.hero-art{height:390px}.card-grid,.gallery-grid{grid-template-columns:repeat(2,1fr)}.news-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.container{width:calc(100% - 28px)}.section{padding:75px 0}.hero h1{font-size:46px}.hero-art{height:320px}.sun{width:210px;height:210px}.ring-1{width:280px;height:280px}.ring-2{width:340px;height:340px}.card-grid,.gallery-grid,.contact-details,.footer-grid{grid-template-columns:1fr}}
+/* =========================
+   BERITA LENGKAP
+========================= */
+
+.news-clickable{
+  cursor:pointer;
+  transition:.35s;
+}
+
+.news-clickable:hover{
+  transform:translateY(-7px);
+  box-shadow:var(--shadow);
+}
+
+.news-clickable:focus{
+  outline:3px solid rgba(201,154,61,.55);
+  outline-offset:4px;
+}
+
+.news-read{
+  display:inline-block;
+  margin-top:18px;
+  color:var(--red);
+  font-weight:700;
+  font-size:13px;
+}
+
+.news-modal{
+  width:min(780px,calc(100% - 30px));
+  max-height:90vh;
+  overflow-y:auto;
+  padding:28px;
+}
+
+.news-modal-art{
+  height:300px;
+  background:linear-gradient(135deg,var(--green),#bd8e37);
+}
+
+.news-modal-art span{
+  font-size:100px;
+}
+
+.modal-meta{
+  margin-top:18px;
+  color:var(--red);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.news-modal h2{
+  font:700 clamp(30px,4vw,48px)/1.12 "Playfair Display";
+  margin:10px 0 16px;
+}
+
+.modal-excerpt{
+  font-size:17px;
+  color:#687168;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+
+.modal-content{
+  margin-top:25px;
+  font-size:16px;
+  line-height:1.85;
+}
+
+.modal-content h2,
+.modal-content h3,
+.modal-content h4{
+  font-family:"Playfair Display";
+  margin-top:25px;
+}
+
+.modal-content a{
+  color:var(--red);
+  text-decoration:underline;
+}
+
+@media(max-width:560px){
+  .news-modal{
+    padding:20px;
+    max-height:88vh;
+  }
+
+  .news-modal-art{
+    height:210px;
+  }
+}
