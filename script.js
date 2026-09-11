@@ -3,7 +3,11 @@ const $=s=>document.querySelector(s);
 async function get(name){const r=await fetch(`content/${name}.json`,{cache:"no-store"});if(!r.ok)throw new Error(name);return r.json();}
 function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 async function init(){
-  const [site,programs,news,gallery,agenda,contact]=await Promise.all(["site","programs","news","gallery","agenda","contact"].map(get));
+  const [site,programsRaw,newsRaw,galleryRaw,agendaRaw,contact]=await Promise.all(["site","programs","news","gallery","agenda","contact"].map(get));
+const programs=programsRaw.programs||programsRaw;
+const news=newsRaw.news||newsRaw;
+const gallery=galleryRaw.gallery||galleryRaw;
+const agenda=agendaRaw.agenda||agendaRaw;
   document.title=site.shortName+" — "+site.name;
   $("#brand-name").textContent=site.shortName;$("#brand-tagline").textContent=site.tagline;
   $("#hero-eyebrow").textContent=site.heroEyebrow;$("#hero-title").textContent=site.heroTitle;$("#hero-text").textContent=site.heroText;
