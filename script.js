@@ -16,7 +16,36 @@ const agenda=agendaRaw.agenda||agendaRaw;
   $("#nav").innerHTML=navItems.map(x=>`<a href="${x[1]}">${x[0]}</a>`).join("");
   $("#footer-links").innerHTML=navItems.map(x=>`<a href="${x[1]}">${x[0]}</a>`).join("");
   $("#program-list").innerHTML=programs.map((p,i)=>`<article class="program-card reveal-card" style="--delay:${i*90}ms"><div class="card-top"><span class="number">0${i+1}</span><span class="tag">${esc(p.tag)}</span></div><div class="program-icon">${esc(p.icon||"✦")}</div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></article>`).join("");
-  $("#news-list").innerHTML=news.map((n,i)=>`<article class="news-card reveal-card" style="--delay:${i*90}ms">${n.image?`<img class="news-img" src="${esc(n.image)}" alt="">`:`<div class="news-art tone-${i%3}"><span>${["✦","♫","◈"][i%3]}</span></div>`}<div class="news-body"><div class="meta">${new Date(n.date+"T00:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()} · ${esc(n.category)}</div><h3>${esc(n.title)}</h3><p>${esc(n.excerpt)}</p></div></article>`).join("");
+  function markdownToHtml(text=""){
+  let html=esc(text);
+  html=html.replace(/^### (.*)$/gm,"<h4>$1</h4>");
+  html=html.replace(/^## (.*)$/gm,"<h3>$1</h3>");
+  html=html.replace(/^# (.*)$/gm,"<h2>$1</h2>");
+  html=html.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");
+  html=html.replace(/\*(.*?)\*/g,"<em>$1</em>");
+  html=html.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  html=html.replace(/\n\n+/g,"</p><p>");
+  html=html.replace(/\n/g,"<br>");
+  return "<p>"+html+"</p>";
+}
+
+$("#news-list").innerHTML=news.map((n,i)=>`
+  <article class="news-card reveal-card news-clickable" data-news="${i}" tabindex="0" role="button" style="--delay:${i*90}ms">
+    ${n.image
+      ? `<img class="news-img" src="${esc(n.image)}" alt="${esc(n.title)}">`
+      : `<div class="news-art tone-${i%3}"><span>${["✦","♫","◈"][i%3]}</span></div>`
+    }
+    <div class="news-body">
+      <div class="meta">
+        ${new Date(n.date+"T00:00:00").toLocaleDateString("id-ID",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()}
+        · ${esc(n.category)}
+      </div>
+      <h3>${esc(n.title)}</h3>
+      <p>${esc(n.excerpt)}</p>
+      <span class="news-read">Baca selengkapnya →</span>
+    </div>
+  </article>
+`).join("");
   $("#gallery-list").innerHTML=gallery.map((g,i)=>`<button class="gallery-card reveal-card tone-${esc(g.tone||"green")}" data-i="${i}" style="--delay:${i*90}ms">${g.image?`<img src="${esc(g.image)}" alt="">`:`<span class="gallery-symbol">${["✦","♫","❯","◈"][i%4]}</span>`}<strong>${esc(g.title)}</strong><small>${esc(g.caption)}</small></button>`).join("");
   $("#agenda-list").innerHTML=agenda.map((a,i)=>{let d=new Date(a.date+"T00:00:00");return `<article class="agenda-item reveal-card" style="--delay:${i*90}ms"><div class="agenda-date"><strong>${String(d.getDate()).padStart(2,"0")}</strong><span>${d.toLocaleDateString("id-ID",{month:"short"}).toUpperCase()}</span></div><div><h3>${esc(a.title)}</h3><p>${esc(a.place)}</p></div></article>`}).join("");
   $("#contact-title").textContent=contact.title;$("#contact-intro").textContent=contact.intro;
