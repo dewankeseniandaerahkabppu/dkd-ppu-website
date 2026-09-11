@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PELAKU SENI DAN BUDAYA — DKD PPU</title>
+  <meta name="description" content="Direktori dan pendataan pelaku seni dan budaya Kabupaten Penajam Paser Utara.">
+  <link rel="stylesheet" href="pelaku-seni-dan-budaya.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="eyebrow">DEWAN KESENIAN DAERAH PENAJAM PASER UTARA</div>
+    <h1>PELAKU SENI DAN BUDAYA</h1>
+    <p>Direktori dan pendataan pelaku seni dan budaya Kabupaten Penajam Paser Utara.</p>
+  </div>
+  <a class="back" href="index.html">← Kembali ke Website DKD PPU</a>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="badge">SISTEM DATA SENI &amp; BUDAYA</span>
+    <h2>Direktori Pelaku Seni dan Budaya</h2>
+    <p>Temukan data pelaku seni, sanggar, komunitas, band, dan pelaku budaya. Pendaftaran dapat dilakukan langsung melalui halaman ini.</p>
+    <div class="hero-actions">
+      <button onclick="showPanel('directory')">Buka Direktori</button>
+      <button class="secondary" onclick="showPanel('register')">Daftar sebagai Pelaku</button>
+    </div>
+  </section>
+
+  <section id="directory" class="panel">
+    <div class="section-head">
+      <div><span class="kicker">DIREKTORI</span><h2>Data Pelaku Seni dan Budaya</h2></div>
+      <select id="directoryCategory" onchange="loadDirectory()">
+        <option value="">Semua Kategori</option>
+        <option value="seniman">Seniman</option>
+        <option value="sanggar">Sanggar</option>
+        <option value="komunitas">Komunitas</option>
+        <option value="band">Band</option>
+        <option value="pelaku-budaya">Pelaku Budaya</option>
+      </select>
+    </div>
+    <div id="directoryGrid" class="grid"><div class="empty">Memuat data…</div></div>
+  </section>
+
+  <section id="register" class="panel hidden">
+    <div class="section-head">
+      <div><span class="kicker">PENDATAAN</span><h2>Form Pendaftaran</h2></div>
+    </div>
+    <form id="registrationForm" enctype="multipart/form-data">
+      <div class="field"><label>Kategori *</label>
+        <select name="category" id="category" required onchange="renderCategoryFields()">
+          <option value="">Pilih kategori</option>
+          <option value="seniman">Seniman</option>
+          <option value="sanggar">Sanggar</option>
+          <option value="komunitas">Komunitas</option>
+          <option value="band">Band</option>
+          <option value="pelaku-budaya">Pelaku Budaya</option>
+        </select>
+      </div>
+      <div id="categoryFields"></div>
+      <div class="common-grid">
+        <div class="field"><label>Kecamatan *</label><input name="kecamatan" required></div>
+        <div class="field"><label>Desa/Kelurahan *</label><input name="desa_kelurahan" required></div>
+        <div class="field"><label>Kontak/WhatsApp *</label><input name="whatsapp" required></div>
+        <div class="field"><label>Instagram/Facebook/YouTube</label><input name="social_media"></div>
+        <div class="field"><label>Foto</label><input type="file" name="photo" accept="image/*"></div>
+        <div class="field"><label>Deskripsi/Profil</label><textarea name="description" rows="4"></textarea></div>
+      </div>
+      <label class="consent"><input type="checkbox" required> Saya menyatakan data yang dikirim benar dan dapat digunakan untuk pendataan DKD PPU.</label>
+      <button type="submit">Kirim Data Pendaftaran</button>
+      <div id="formMessage" class="message"></div>
+    </form>
+  </section>
+</main>
+
+<footer>© DKD PPU — PELAKU SENI DAN BUDAYA</footer>
+<script src="pelaku-seni-dan-budaya.js"></script>
+</body>
+</html>

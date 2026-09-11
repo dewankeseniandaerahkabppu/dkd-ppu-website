@@ -1,0 +1,21 @@
+PENAMBAHAN KE WEBSITE UTAMA
+
+1. File baru:
+   pelaku-seni-dan-budaya.html
+   pelaku-seni-dan-budaya.css
+   pelaku-seni-dan-budaya.js
+
+2. Agar muncul di menu utama, buka index.html lalu cari array navItems di script.js:
+   const navItems=[...]
+
+   Tambahkan:
+   ["Pelaku Seni & Budaya","pelaku-seni-dan-budaya.html"]
+
+3. Alternatif paling aman untuk tahap uji:
+   buka langsung /pelaku-seni-dan-budaya.html terlebih dahulu.
+
+4. worker.js dan wrangler.toml.example adalah tahap API Cloudflare D1.
+   Jangan mengganti wrangler.toml produksi sebelum database D1 dibuat dan ID-nya diisi.
+
+5. R2 untuk foto/logo belum diaktifkan pada paket ini. Form sudah menyiapkan field upload,
+   tetapi penyimpanan file produksi perlu binding R2 dan endpoint upload terproteksi.
