@@ -66,6 +66,7 @@ collections:
               - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
               - { label: "Kategori", name: "category", widget: "string" }
               - { label: "Ringkasan", name: "excerpt", widget: "text" }
+              - { label: "Isi Berita", name: "body", widget: "markdown" }
               - { label: "Foto Berita", name: "image", widget: "image", required: false }
 
   - name: "gallery"
