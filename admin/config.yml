@@ -1,8 +1,8 @@
 backend:
   name: github
-  # Setelah repository GitHub dibuat, ganti baris di bawah:
   repo: dewankeseniandaerahkabppu/dkd-ppu-website
   branch: main
+  site_domain: dkd-ppu-website.netlify.app
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
