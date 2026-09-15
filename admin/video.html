@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Admin Video - DKD PPU</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 18px 24px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      opacity: .8;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: white;
+    }
+
+    .btn-upload {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+      margin-left: 8px;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+      margin-left: 8px;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      display: none;
+    }
+
+    .video-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 15px;
+    }
+
+    .video-item h3 {
+      margin: 0 0 6px;
+    }
+
+    .video-item video {
+      width: 100%;
+      max-height: 400px;
+      background: #000;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Admin Video DKD PPU</h1>
+  <p>Kelola video dokumentasi Dewan Kesenian Daerah Penajam Paser Utara</p>
+</header>
+
+<main>
+
+  <!-- LOGIN -->
+  <section id="loginBox" class="card">
+    <h2>Login Admin</h2>
+
+    <label>Password Admin</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Masukkan password admin"
+    >
+
+    <button class="btn-primary" onclick="login()">
+      Masuk
+    </button>
+
+    <div id="loginStatus" class="status"></div>
+  </section>
+
+
+  <!-- PANEL ADMIN -->
+  <section id="adminPanel" class="hidden">
+
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <h2>Tambah Video</h2>
+          <p class="muted">
+            Upload video MP4 melalui Cloudinary.
+          </p>
+        </div>
+
+        <button class="btn-secondary" onclick="logout()">
+          Keluar
+        </button>
+      </div>
+
+      <label>Judul Video</label>
+      <input
+        type="text"
+        id="title"
+        placeholder="Contoh: Pentas Seni DKD PPU"
+      >
+
+      <label>Kategori</label>
+      <select id="category">
+        <option value="Dokumentasi">Dokumentasi</option>
+        <option value="Kegiatan">Kegiatan</option>
+        <option value="Pertunjukan">Pertunjukan</option>
+        <option value="Budaya">Budaya</option>
+        <option value="Wawancara">Wawancara</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+
+      <label>Deskripsi</label>
+      <textarea
+        id="description"
+        placeholder="Deskripsi singkat video"
+      ></textarea>
+
+      <label>File Video</label>
+
+      <button
+        type="button"
+        class="btn-upload"
+        onclick="openUploader()"
+      >
+        📹 Upload Video MP4
+      </button>
+
+      <div id="uploadStatus" class="status"></div>
+
+      <input type="hidden" id="sourceUrl">
+      <input type="hidden" id="cloudinaryPublicId">
+
+      <br>
+
+      <button
+        type="button"
+        class="btn-primary"
+        onclick="saveVideo()"
+      >
+        💾 Simpan Video
+      </button>
+    </div>
+
+
+    <!-- DAFTAR VIDEO -->
+    <div class="card">
+      <h2>Daftar Video</h2>
+
+      <div id="videoList">
+        Memuat data video...
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- CLOUDINARY -->
+<script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
+
+<script>
+
+const API_BASE =
+  window.DKD_API_BASE ||
+  "https://dkd-ppu-media-api.dewankeseniandaerahkabppu.workers.dev";
+
+const CLOUDINARY_CLOUD_NAME = "s8rcnej6";
+const CLOUDINARY_UPLOAD_PRESET = "dkd_ppu_video";
+
+let authToken =
+  localStorage.getItem("dkd_ppu_admin_token") || "";
+
+let uploader = null;
+
+
+/* =========================
+   STATUS
+========================= */
+
+function showStatus(id, message) {
+  const el = document.getElementById(id);
+
+  el.textContent = message;
+  el.style.display = "block";
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function login() {
+
+  const password =
+    document.getElementById("password").value.trim();
+
+  if (!password) {
+    showStatus(
+      "loginStatus",
+      "Password wajib diisi."
+    );
+    return;
+  }
+
+  showStatus(
+    "loginStatus",
+    "Sedang login..."
+  );
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          password
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Login gagal"
+      );
+    }
+
+    authToken = data.token;
+
+    localStorage.setItem(
+      "dkd_ppu_admin_token",
+      authToken
+    );
+
+    document.getElementById(
+      "loginBox"
+    ).classList.add("hidden");
+
+    document.getElementById(
+      "adminPanel"
+    ).classList.remove("hidden");
+
+    loadVideos();
+
+  } catch (error) {
+
+    showStatus(
+      "loginStatus",
+      "Login gagal: " + error.message
+    );
+  }
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+  try {
+
+    await fetch(
+      API_BASE + "/api/logout",
+      {
+        method: "POST",
+        headers: {
+          "Authorization":
+            "Bearer " + authToken
+        }
+      }
+    );
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  authToken = "";
+
+  localStorage.removeItem(
+    "dkd_ppu_admin_token"
+  );
+
+  document.getElementById(
+    "adminPanel"
+  ).classList.add("hidden");
+
+  document.getElementById(
+    "loginBox"
+  ).classList.remove("hidden");
+}
+
+
+/* =========================
+   CLOUDINARY UPLOADER
+========================= */
+
+function openUploader() {
+
+  if (!uploader) {
+
+    uploader =
+      cloudinary.createUploadWidget(
+
+        {
+          cloudName:
+            CLOUDINARY_CLOUD_NAME,
+
+          uploadPreset:
+            CLOUDINARY_UPLOAD_PRESET,
+
+          resourceType: "video",
+
+          sources: ["local"],
+
+          clientAllowedFormats: ["mp4"],
+
+          singleUploadAutoClose: true,
+
+          showUploadMoreButton: false,
+
+          language: "id"
+        },
+
+        function(error, result) {
+
+          if (error) {
+
+            console.error(error);
+
+            showStatus(
+              "uploadStatus",
+              "Upload gagal."
+            );
+
+            return;
+          }
+
+          if (
+            result &&
+            result.event === "success"
+          ) {
+
+            const info =
+              result.info;
+
+            document.getElementById(
+              "sourceUrl"
+            ).value =
+              info.secure_url || "";
+
+            document.getElementById(
+              "cloudinaryPublicId"
+            ).value =
+              info.public_id || "";
+
+            showStatus(
+              "uploadStatus",
+              "✅ Video berhasil di-upload."
+            );
+          }
+
+        }
+      );
+  }
+
+  uploader.open();
+}
+
+
+/* =========================
+   SIMPAN VIDEO
+========================= */
+
+async function saveVideo() {
+
+  const title =
+    document.getElementById("title")
+      .value.trim();
+
+  const category =
+    document.getElementById("category")
+      .value;
+
+  const description =
+    document.getElementById("description")
+      .value.trim();
+
+  const sourceUrl =
+    document.getElementById("sourceUrl")
+      .value.trim();
+
+  if (!title) {
+
+    alert(
+      "Judul video wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!sourceUrl) {
+
+    alert(
+      "Silakan upload video MP4 terlebih dahulu."
+    );
+
+    return;
+  }
+
+  showStatus(
+    "uploadStatus",
+    "Menyimpan data video..."
+  );
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/videos",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+            "Bearer " + authToken
+        },
+
+        body: JSON.stringify({
+
+          title,
+
+          category,
+
+          description,
+
+          source_type:
+            "cloudinary",
+
+          source_url:
+            sourceUrl,
+
+          cloudinary_public_id:
+            document.getElementById(
+              "cloudinaryPublicId"
+            ).value,
+
+          published: 1
+
+        })
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Gagal menyimpan video"
+      );
+    }
+
+    alert(
+      "✅ Video berhasil disimpan."
+    );
+
+    document.getElementById(
+      "title"
+    ).value = "";
+
+    document.getElementById(
+      "description"
+    ).value = "";
+
+    document.getElementById(
+      "sourceUrl"
+    ).value = "";
+
+    document.getElementById(
+      "cloudinaryPublicId"
+    ).value = "";
+
+    document.getElementById(
+      "uploadStatus"
+    ).style.display = "none";
+
+    loadVideos();
+
+  } catch (error) {
+
+    showStatus(
+      "uploadStatus",
+      "❌ " + error.message
+    );
+  }
+}
+
+
+/* =========================
+   LOAD VIDEO
+========================= */
+
+async function loadVideos() {
+
+  const list =
+    document.getElementById(
+      "videoList"
+    );
+
+  list.innerHTML =
+    "Memuat data video...";
+
+  try {
+
+    const response = await fetch(
+      API_BASE +
+      "/api/videos?admin=1",
+      {
+        headers: {
+          "Authorization":
+            "Bearer " + authToken
+        }
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Gagal mengambil video"
+      );
+    }
+
+    const videos =
+      data.videos || [];
+
+    if (!videos.length) {
+
+      list.innerHTML =
+        '<p class="muted">Belum ada video.</p>';
+
+      return;
+    }
+
+    list.innerHTML =
+      videos.map(
+        video => `
+
+        <div class="video-item">
+
+          <h3>
+            ${escapeHtml(video.title)}
+          </h3>
+
+          <div class="muted">
+            Kategori:
+            ${escapeHtml(video.category)}
+          </div>
+
+          ${
+            video.description
+              ? `<p>
+                  ${escapeHtml(video.description)}
+                 </p>`
+              : ""
+          }
+
+          ${
+            video.source_type === "cloudinary"
+              ? `
+                <video
+                  controls
+                  preload="metadata"
+                  src="${escapeHtml(video.source_url)}"
+                ></video>
+              `
+              : ""
+          }
+
+          <button
+            class="btn-danger"
+            onclick="deleteVideo('${video.id}')"
+          >
+            🗑 Hapus
+          </button>
+
+        </div>
+
+      `
+      ).join("");
+
+  } catch (error) {
+
+    list.innerHTML =
+      `<p>❌ ${escapeHtml(error.message)}</p>`;
+  }
+}
+
+
+/* =========================
+   DELETE VIDEO
+========================= */
+
+async function deleteVideo(id) {
+
+  if (
+    !confirm(
+      "Yakin ingin menghapus data video ini?"
+    )
+  ) {
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      API_BASE +
+      "/api/videos/" +
+      encodeURIComponent(id),
+      {
+        method: "DELETE",
+
+        headers: {
+          "Authorization":
+            "Bearer " + authToken
+        }
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Gagal menghapus video"
+      );
+    }
+
+    alert(
+      "Data video berhasil dihapus."
+    );
+
+    loadVideos();
+
+  } catch (error) {
+
+    alert(
+      "Gagal menghapus: " +
+      error.message
+    );
+  }
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =========================
+   CEK LOGIN SAAT DIBUKA
+========================= */
+
+if (authToken) {
+
+  document.getElementById(
+    "loginBox"
+  ).classList.add("hidden");
+
+  document.getElementById(
+    "adminPanel"
+  ).classList.remove("hidden");
+
+  loadVideos();
+}
+
+</script>
+
+</body>
+</html>
