@@ -693,13 +693,84 @@ async function tarikPublikasi() {
        VERIFIKASI ULANG
     ========================= */
 
-    function verifikasiUlang() {
+    /* =========================
+   VERIFIKASI ULANG
+========================= */
 
-      alert(
-        "Fungsi VERIFIKASI ULANG akan kita aktifkan berikutnya."
+async function verifikasiUlang() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const id =
+    params.get("id");
+
+  if (!id) {
+
+    alert(
+      "Nomor pendataan tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+  if (!confirm(
+    "Apakah data ini akan dikembalikan ke tahap MENUNGGU VERIFIKASI?"
+  )) {
+
+    return;
+
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/pendataan/verifikasi-ulang",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            id_pendataan: id
+          })
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if (!response.ok || !result.ok) {
+
+      throw new Error(
+        result.error ||
+        "Verifikasi ulang gagal."
       );
 
     }
+
+    alert(
+      "Data berhasil dikembalikan ke tahap MENUNGGU VERIFIKASI."
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+
+    alert(
+      "Gagal melakukan verifikasi ulang:\n\n" +
+      error.message
+    );
+
+  }
+
+}
 
 
 
