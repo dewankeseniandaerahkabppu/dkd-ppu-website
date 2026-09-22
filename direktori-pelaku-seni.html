@@ -44,14 +44,14 @@
     }
 
     .container {
-      max-width: 950px;
-      margin: 40px auto;
+      max-width: 1100px;
+      margin: 35px auto;
       padding: 0 20px;
     }
 
     .intro {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
     .intro h2 {
@@ -66,82 +66,137 @@
       line-height: 1.6;
     }
 
-    .pilihan {
+    .kategori {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
+      gap: 20px;
+      margin-bottom: 25px;
     }
 
-    .pilihan a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card {
+    .kategori-button {
+      border: 2px solid #ddd;
       background: white;
-      border-radius: 15px;
-      padding: 40px 25px;
+      color: #8b0000;
+      border-radius: 12px;
+      padding: 22px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700;
       text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-      transition: transform .2s, box-shadow .2s;
-      border: 2px solid transparent;
+      margin: 0;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    .kategori-button:hover {
       border-color: #8b0000;
     }
 
-    .icon {
-      font-size: 50px;
+    .kategori-button.aktif {
+      background: #8b0000;
+      color: white;
+      border-color: #8b0000;
+    }
+
+    .filter-box {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+      margin-bottom: 25px;
+    }
+
+    .filter-title {
+      font-weight: 700;
+      color: #8b0000;
       margin-bottom: 15px;
     }
 
-    .card h3 {
-      margin: 0 0 10px;
-      font-size: 25px;
-      color: #8b0000;
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 12px;
     }
 
-    .card p {
-      margin: 0;
+    input,
+    select {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .info {
+      margin-bottom: 18px;
       color: #666;
-      line-height: 1.5;
+      font-size: 14px;
     }
 
-    .jenis {
-      margin-top: 35px;
+    .hasil {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .profil-card {
       background: white;
       border-radius: 12px;
-      padding: 25px;
+      padding: 20px;
       box-shadow: 0 5px 20px rgba(0,0,0,.06);
+      transition: transform .2s, box-shadow .2s;
     }
 
-    .jenis h3 {
-      margin-top: 0;
+    .profil-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,.10);
+    }
+
+    .profil-card h3 {
+      margin: 0 0 12px;
       color: #8b0000;
-      text-align: center;
+      font-size: 20px;
     }
 
-    .jenis-list {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .jenis-item {
-      background: #f1f1f1;
-      padding: 9px 15px;
-      border-radius: 20px;
+    .profil-row {
+      margin-bottom: 8px;
       font-size: 14px;
+    }
+
+    .profil-label {
+      font-weight: 700;
+    }
+
+    .profil-link {
+      display: inline-block;
+      margin-top: 12px;
+      background: #8b0000;
+      color: white;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .kosong,
+    .loading,
+    .error {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      color: #666;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #842029;
     }
 
     .back {
       display: block;
       width: fit-content;
-      margin: 30px auto 0;
+      margin: 35px auto 0;
       background: #555;
       color: white;
       text-decoration: none;
@@ -156,18 +211,30 @@
       padding: 35px 20px;
     }
 
+    @media (max-width: 800px) {
+
+      .hasil {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
     @media (max-width: 650px) {
 
-      .pilihan {
+      .kategori {
+        grid-template-columns: 1fr;
+      }
+
+      .hasil {
         grid-template-columns: 1fr;
       }
 
       .header h1 {
         font-size: 24px;
-      }
-
-      .card {
-        padding: 30px 20px;
       }
 
     }
@@ -204,93 +271,121 @@
 
       <p>
         Jelajahi data pelaku seni dan budaya
-        Kabupaten Penajam Paser Utara berdasarkan
-        kategori tradisional dan modern.
+        Kabupaten Penajam Paser Utara yang
+        telah diverifikasi dan dipublikasikan
+        oleh DKD PPU.
       </p>
 
     </section>
 
 
-    <section class="pilihan">
+    <!-- KATEGORI -->
+
+    <section class="kategori">
+
+      <button
+        type="button"
+        id="btnTradisional"
+        class="kategori-button"
+        onclick="pilihKategori('TRADISIONAL')"
+      >
+        🎭 TRADISIONAL
+      </button>
 
 
-      <a href="/direktori-pelaku-seni.html?kategori=TRADISIONAL">
-
-        <div class="card">
-
-          <div class="icon">
-            🎭
-          </div>
-
-          <h3>
-            TRADISIONAL
-          </h3>
-
-          <p>
-            Pelaku seni dan budaya yang
-            berkaitan dengan tradisi dan
-            warisan budaya daerah.
-          </p>
-
-        </div>
-
-      </a>
-
-
-      <a href="/direktori-pelaku-seni.html?kategori=MODERN">
-
-        <div class="card">
-
-          <div class="icon">
-            🎨
-          </div>
-
-          <h3>
-            MODERN
-          </h3>
-
-          <p>
-            Pelaku seni dan budaya dengan
-            bentuk ekspresi dan perkembangan
-            seni masa kini.
-          </p>
-
-        </div>
-
-      </a>
-
+      <button
+        type="button"
+        id="btnModern"
+        class="kategori-button"
+        onclick="pilihKategori('MODERN')"
+      >
+        🎨 MODERN
+      </button>
 
     </section>
 
 
-    <section class="jenis">
+    <!-- FILTER -->
 
-      <h3>
-        Direktori Berdasarkan Jenis Pelaku
-      </h3>
+    <section class="filter-box">
 
-      <div class="jenis-list">
+      <div class="filter-title">
+        Cari dan Filter Data
+      </div>
 
-        <span class="jenis-item">
-          Seniman
-        </span>
+      <div class="filter-grid">
 
-        <span class="jenis-item">
-          Sanggar
-        </span>
+        <input
+          type="search"
+          id="search"
+          placeholder="Cari nama pelaku seni..."
+          oninput="tampilkanData()"
+        >
 
-        <span class="jenis-item">
-          Komunitas
-        </span>
 
-        <span class="jenis-item">
-          Pelaku Budaya
-        </span>
+        <select
+          id="jenis"
+          onchange="tampilkanData()"
+        >
 
-        <span class="jenis-item">
-          Band
-        </span>
+          <option value="">
+            Semua Jenis Pelaku
+          </option>
 
+          <option value="Seniman">
+            Seniman
+          </option>
+
+          <option value="Sanggar">
+            Sanggar
+          </option>
+
+          <option value="Komunitas">
+            Komunitas
+          </option>
+
+          <option value="Pelaku Budaya">
+            Pelaku Budaya
+          </option>
+
+          <option value="Band">
+            Band
+          </option>
+
+        </select>
+
+
+        <select
+          id="bidang"
+          onchange="tampilkanData()"
+        >
+
+          <option value="">
+            Semua Bidang Seni
+          </option>
+
+        </select>
+
+      </div>
+
+    </section>
+
+
+    <div
+      id="info"
+      class="info"
+    >
+      Memuat data...
+    </div>
+
+
+    <section
+      id="hasil"
+      class="hasil"
+    >
+
+      <div class="loading">
+        Memuat direktori...
       </div>
 
     </section>
@@ -313,6 +408,379 @@
     Kabupaten Penajam Paser Utara
 
   </footer>
+
+
+
+  <script>
+
+
+    let semuaData = [];
+
+    let kategoriAktif = "";
+
+
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+
+    function pilihKategori(kategori) {
+
+      kategoriAktif = kategori;
+
+      document
+        .getElementById("btnTradisional")
+        .classList.toggle(
+          "aktif",
+          kategori === "TRADISIONAL"
+        );
+
+      document
+        .getElementById("btnModern")
+        .classList.toggle(
+          "aktif",
+          kategori === "MODERN"
+        );
+
+      tampilkanData();
+
+    }
+
+
+
+    function isiFilterBidang() {
+
+      const select =
+        document.getElementById("bidang");
+
+      const bidangSet =
+        new Set();
+
+      semuaData.forEach(function(item) {
+
+        if (item.bidang_seni) {
+
+          bidangSet.add(
+            item.bidang_seni
+          );
+
+        }
+
+      });
+
+      const bidangList =
+        Array.from(bidangSet).sort();
+
+      select.innerHTML = `
+        <option value="">
+          Semua Bidang Seni
+        </option>
+      `;
+
+      bidangList.forEach(function(bidang) {
+
+        select.innerHTML += `
+
+          <option value="${escapeHtml(bidang)}">
+            ${escapeHtml(bidang)}
+          </option>
+
+        `;
+
+      });
+
+    }
+
+
+
+    function tampilkanData() {
+
+      const hasil =
+        document.getElementById("hasil");
+
+      const info =
+        document.getElementById("info");
+
+      const search =
+        document
+          .getElementById("search")
+          .value
+          .trim()
+          .toLowerCase();
+
+      const jenis =
+        document
+          .getElementById("jenis")
+          .value;
+
+      const bidang =
+        document
+          .getElementById("bidang")
+          .value;
+
+
+      let data =
+        semuaData.filter(function(item) {
+
+
+          if (
+            kategoriAktif &&
+            String(item.kategori || "")
+              .toUpperCase() !==
+            kategoriAktif
+          ) {
+
+            return false;
+
+          }
+
+
+          if (
+            jenis &&
+            String(item.jenis_pelaku || "")
+              !== jenis
+          ) {
+
+            return false;
+
+          }
+
+
+          if (
+            bidang &&
+            String(item.bidang_seni || "")
+              !== bidang
+          ) {
+
+            return false;
+
+          }
+
+
+          if (search) {
+
+            const nama =
+              String(
+                item.nama_individu_group || ""
+              )
+              .toLowerCase();
+
+            if (!nama.includes(search)) {
+
+              return false;
+
+            }
+
+          }
+
+
+          return true;
+
+        });
+
+
+      info.textContent =
+        data.length +
+        " data ditemukan";
+
+
+      if (!data.length) {
+
+        hasil.innerHTML = `
+
+          <div class="kosong">
+
+            Belum ada data pelaku seni dan budaya
+            yang sesuai dengan pilihan.
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      hasil.innerHTML =
+        data.map(function(item) {
+
+          return `
+
+            <article class="profil-card">
+
+              <h3>
+                ${escapeHtml(
+                  item.nama_individu_group ||
+                  "Tanpa Nama"
+                )}
+              </h3>
+
+
+              <div class="profil-row">
+
+                <span class="profil-label">
+                  Jenis:
+                </span>
+
+                ${escapeHtml(
+                  item.jenis_pelaku || "-"
+                )}
+
+              </div>
+
+
+              <div class="profil-row">
+
+                <span class="profil-label">
+                  Bidang:
+                </span>
+
+                ${escapeHtml(
+                  item.bidang_seni || "-"
+                )}
+
+              </div>
+
+
+              <div class="profil-row">
+
+                <span class="profil-label">
+                  Kecamatan:
+                </span>
+
+                ${escapeHtml(
+                  item.kecamatan || "-"
+                )}
+
+              </div>
+
+
+              <a
+                class="profil-link"
+                href="/data-pelaku-seni.html?id=${encodeURIComponent(
+                  item.id_pendataan
+                )}"
+              >
+                Lihat Profil →
+              </a>
+
+            </article>
+
+          `;
+
+        }).join("");
+
+    }
+
+
+
+    async function loadData() {
+
+      const hasil =
+        document.getElementById("hasil");
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/public/pendataan"
+          );
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.ok
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Data direktori tidak dapat dimuat."
+          );
+
+        }
+
+
+        semuaData =
+          Array.isArray(result.data)
+            ? result.data
+            : [];
+
+
+        isiFilterBidang();
+
+        tampilkanData();
+
+
+      } catch (error) {
+
+        hasil.innerHTML = `
+
+          <div class="error">
+
+            Gagal memuat direktori.
+
+            <br><br>
+
+            ${escapeHtml(
+              error.message
+            )}
+
+          </div>
+
+        `;
+
+        document
+          .getElementById("info")
+          .textContent = "";
+
+      }
+
+    }
+
+
+
+    function bacaKategoriDariURL() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const kategori =
+        params.get("kategori");
+
+      if (
+        kategori === "TRADISIONAL" ||
+        kategori === "MODERN"
+      ) {
+
+        pilihKategori(kategori);
+
+      }
+
+    }
+
+
+
+    loadData();
+
+    bacaKategoriDariURL();
+
+
+  </script>
 
 
 </body>
