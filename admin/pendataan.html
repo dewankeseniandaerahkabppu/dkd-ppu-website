@@ -286,16 +286,26 @@
               </td>
 
               <td>
-                <span class="badge ${badgeClass}">
-                  ${escapeHtml(item.status || "-")}
-                </span>
-              </td>
+  <span class="badge ${badgeClass}">
+    ${escapeHtml(item.status || "-")}
+  </span>
+</td>
 
-              <td>
-                ${escapeHtml(item.created_at || "-")}
-              </td>
+<td>
+  ${escapeHtml(item.created_at || "-")}
+</td>
 
-            </tr>
+<td>
+  <button
+    type="button"
+    onclick="lihatDetail('${item.id_pendataan}')">
+    DETAIL
+  </button>
+</td>
+
+</tr>
+
+
           `;
 
         }).join("");
