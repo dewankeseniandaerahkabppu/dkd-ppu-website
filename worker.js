@@ -1,3 +1,87 @@
+// =========================
+// AUTHENTIKASI ADMIN
+// =========================
+
+async function createAdminSession(env) {
+  const data = {
+    exp: Date.now() + (8 * 60 * 60 * 1000)
+  };
+
+  const payload = btoa(JSON.stringify(data));
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(env.ADMIN_PASSWORD),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+        ["sign"]
+  );
+
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(payload)
+  );
+
+  const signatureBase64 = btoa(
+    String.fromCharCode(...new Uint8Array(signature))
+  );
+
+  return `${payload}.${signatureBase64}`;
+}
+
+async function verifyAdminSession(request, env) {
+  const cookie = request.headers.get("Cookie") || "";
+
+  const match = cookie.match(
+    /admin_session=([^;]+)/
+  );
+
+  if (!match) {
+    return false;
+  }
+
+  const token = match[1];
+  const parts = token.split(".");
+
+  if (parts.length !== 2) {
+    return false;
+  }
+
+  try {
+    const payload = JSON.parse(
+      atob(parts[0])
+    );
+
+    if (!payload.exp || Date.now() > payload.exp) {
+      return false;
+    }
+
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(env.ADMIN_PASSWORD),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+
+    const signature = Uint8Array.from(
+      atob(parts[1]),
+      c => c.charCodeAt(0)
+    );
+
+    return await crypto.subtle.verify(
+      "HMAC",
+      key,
+      signature,
+      new TextEncoder().encode(parts[0])
+    );
+
+  } catch {
+    return false;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
