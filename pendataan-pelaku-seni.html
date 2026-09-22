@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1"
+>
+
+<meta
+  name="description"
+  content="Pendataan Pelaku Seni dan Budaya Kabupaten Penajam Paser Utara"
+>
+
+<title>Pendataan Pelaku Seni dan Budaya - DKD PPU</title>
+
+<link
+  rel="icon"
+  href="assets/logo-dkd-ppu.png"
+>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+
+.header {
+  background: #8b0000;
+  color: white;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+.header img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 27px;
+}
+
+.header p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.container {
+  max-width: 900px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.judul {
+  margin-top: 0;
+  color: #8b0000;
+  font-size: 25px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+}
+
+.kategori-box {
+  background: #fff7f4;
+  border: 1px solid #ead3cd;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 25px;
+}
+
+.kategori-label {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.kategori-nama {
+  font-size: 22px;
+  font-weight: bold;
+  color: #8b0000;
+}
+
+.kategori-keterangan {
+  margin-top: 6px;
+  color: #555;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group label span {
+  color: #b00000;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  background: white;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #8b0000;
+  box-shadow: 0 0 0 2px rgba(139,0,0,0.08);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  color: #8b0000;
+  font-size: 18px;
+}
+
+.info {
+  background: #f8f8f8;
+  border-left: 4px solid #8b0000;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  color: #555;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.info strong {
+  color: #8b0000;
+}
+
+.btn-submit {
+  width: 100%;
+  border: none;
+  background: #8b0000;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background: #6f0000;
+}
+
+.btn-submit:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 11px 18px;
+  background: #555;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+}
+
+.back:hover {
+  background: #333;
+}
+
+.hasil {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 8px;
+  display: none;
+}
+
+.hasil.sukses {
+  display: block;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.hasil.gagal {
+  display: block;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.hasil-id {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.check-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.check-group input {
+  margin-top: 4px;
+}
+
+.check-group label {
+  font-weight: normal;
+  line-height: 1.5;
+  color: #444;
+}
+
+.footer {
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+  padding: 30px 20px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 650px) {
+
+  .card {
+    padding: 20px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+  <img
+    src="assets/logo-dkd-ppu.png"
+    alt="Logo DKD PPU"
+  >
+
+  <h1>
+    PENDATAAN PELAKU SENI DAN BUDAYA
+  </h1>
+
+  <p>
+    Dewan Kesenian Daerah Kabupaten Penajam Paser Utara
+  </p>
+
+</header>
+
+
+<main class="container">
+
+<div class="card">
+
+  <h2 class="judul">
+    Form Pendataan
+  </h2>
+
+
+  <div class="kategori-box">
+
+    <div class="kategori-label">
+      Kategori Seni
+    </div>
+
+    <div
+      class="kategori-nama"
+      id="kategoriNama">
+      Memuat...
+    </div>
+
+    <div
+      class="kategori-keterangan"
+      id="kategoriKeterangan">
+    </div>
+
+  </div>
+
+
+  <form id="formPendataan">
+
+
+    <!-- KATEGORI TERSEMBUNYI -->
+
+    <input
+      type="hidden"
+      id="kategori"
+      name="kategori"
+    >
+
+
+    <!-- =========================
+         IDENTITAS
+    ========================== -->
+
+    <h3 class="section-title">
+      A. Identitas Pelaku Seni
+    </h3>
+
+
+    <div class="form-group">
+
+      <label for="nama_individu_group">
+        Nama Individu atau Group
+        <span>*</span>
+      </label>
+
+      <input
+        type="text"
+        id="nama_individu_group"
+        name="nama_individu_group"
+        placeholder="Masukkan nama individu atau group"
+        required
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="jenis_pelaku">
+        Jenis Pelaku
+        <span>*</span>
+      </label>
+
+      <select
+        id="jenis_pelaku"
+        name="jenis_pelaku"
+        required
+      >
+
+        <option value="">
+          -- Pilih Jenis Pelaku --
+        </option>
+
+        <option value="Seniman">
+          Seniman
+        </option>
+
+        <option value="Sanggar">
+          Sanggar
+        </option>
+
+        <option value="Komunitas">
+          Komunitas
+        </option>
+
+        <option value="Pelaku Budaya">
+          Pelaku Budaya
+        </option>
+
+        <option value="Band">
+          Band
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- =========================
+         BIDANG TRADISIONAL
+    ========================== -->
+
+    <div
+      id="bidangTradisional"
+      class="form-group hidden"
+    >
+
+      <label for="bidang_seni_tradisional">
+        Bidang Seni Tradisional
+        <span>*</span>
+      </label>
+
+      <select
+        id="bidang_seni_tradisional"
+      >
+
+        <option value="">
+          -- Pilih Bidang Seni Tradisional --
+        </option>
+
+        <option value="Seni Tari Tradisional">
+          Seni Tari Tradisional
+        </option>
+
+        <option value="Seni Musik Tradisional">
+          Seni Musik Tradisional
+        </option>
+
+        <option value="Seni Teater Tradisional">
+          Seni Teater Tradisional
+        </option>
+
+        <option value="Seni Tradisi">
+          Seni Tradisi
+        </option>
+
+        <option value="Sastra Lisan">
+          Sastra Lisan
+        </option>
+
+        <option value="Seni Rupa Tradisional">
+          Seni Rupa Tradisional
+        </option>
+
+        <option value="Kriya Tradisional">
+          Kriya Tradisional
+        </option>
+
+        <option value="Kerajinan Tradisional">
+          Kerajinan Tradisional
+        </option>
+
+        <option value="Permainan Tradisional">
+          Permainan Tradisional
+        </option>
+
+        <option value="Upacara Adat">
+          Upacara Adat
+        </option>
+
+        <option value="Lainnya">
+          Lainnya
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- =========================
+         BIDANG MODERN
+    ========================== -->
+
+    <div
+      id="bidangModern"
+      class="form-group hidden"
+    >
+
+      <label for="bidang_seni_modern">
+        Bidang Seni Modern
+        <span>*</span>
+      </label>
+
+      <select
+        id="bidang_seni_modern"
+      >
+
+        <option value="">
+          -- Pilih Bidang Seni Modern --
+        </option>
+
+        <option value="Seni Musik">
+          Seni Musik
+        </option>
+
+        <option value="Band">
+          Band
+        </option>
+
+        <option value="Seni Tari">
+          Seni Tari
+        </option>
+
+        <option value="Seni Teater">
+          Seni Teater
+        </option>
+
+        <option value="Seni Rupa">
+          Seni Rupa
+        </option>
+
+        <option value="Seni Sastra">
+          Seni Sastra
+        </option>
+
+        <option value="Seni Film">
+          Seni Film
+        </option>
+
+        <option value="Seni Fotografi">
+          Seni Fotografi
+        </option>
+
+        <option value="Seni Digital">
+          Seni Digital / Multimedia
+        </option>
+
+        <option value="Seni Pertunjukan">
+          Seni Pertunjukan
+        </option>
+
+        <option value="Lainnya">
+          Lainnya
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- FIELD TERSEMBUNYI UNTUK API -->
+
+    <input
+      type="hidden"
+      id="bidang_seni"
+      name="bidang_seni"
+    >
+
+
+    <!-- =========================
+         PERSONIL BAND
+    ========================== -->
+
+    <div
+      id="personilBand"
+      class="form-group hidden"
+    >
+
+      <label for="nama_personil">
+        Nama Personil
+      </label>
+
+      <textarea
+        id="nama_personil"
+        name="nama_personil"
+        rows="4"
+        placeholder="Tuliskan nama-nama personil, satu nama setiap baris"
+      ></textarea>
+
+      <small style="color:#777;">
+        Contoh:<br>
+        Ahmad – Vocal<br>
+        Budi – Gitar<br>
+        Candra – Bass<br>
+        Dedi – Drum
+      </small>
+
+    </div>
+
+
+    <!-- =========================
+         WILAYAH
+    ========================== -->
+
+    <h3 class="section-title">
+      B. Wilayah dan Alamat
+    </h3>
+
+
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label for="kecamatan">
+          Kecamatan
+          <span>*</span>
+        </label>
+
+        <input
+          type="text"
+          id="kecamatan"
+          name="kecamatan"
+          placeholder="Nama kecamatan"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="desa_kelurahan">
+          Desa/Kelurahan
+          <span>*</span>
+        </label>
+
+        <input
+          type="text"
+          id="desa_kelurahan"
+          name="desa_kelurahan"
+          placeholder="Nama desa/kelurahan"
+          required
+        >
+
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="alamat">
+        Alamat
+        <span>*</span>
+      </label>
+
+      <textarea
+        id="alamat"
+        name="alamat"
+        rows="3"
+        placeholder="Alamat lengkap"
+        required
+      ></textarea>
+
+    </div>
+
+
+    <!-- =========================
+         KONTAK
+    ========================== -->
+
+    <h3 class="section-title">
+      C. Kontak
+    </h3>
+
+
+    <div class="form-group">
+
+      <label for="nomor_whatsapp">
+        Nomor WhatsApp
+        <span>*</span>
+      </label>
+
+      <input
+        type="tel"
+        id="nomor_whatsapp"
+        name="nomor_whatsapp"
+        placeholder="Contoh: 081234567890"
+        required
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Alamat email"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         DESKRIPSI
+    ========================== -->
+
+    <h3 class="section-title">
+      D. Profil Singkat
+    </h3>
+
+
+    <div class="form-group">
+
+      <label for="deskripsi_singkat">
+        Deskripsi Singkat
+      </label>
+
+      <textarea
+        id="deskripsi_singkat"
+        name="deskripsi_singkat"
+        rows="5"
+        placeholder="Tuliskan profil singkat individu, group, sanggar, komunitas, atau pelaku budaya"
+      ></textarea>
+
+    </div>
+
+
+    <!-- =========================
+         FOTO
+    ========================== -->
+
+    <h3 class="section-title">
+      E. Foto dan Dokumen
+    </h3>
+
+
+    <div class="info">
+
+      <strong>Catatan:</strong>
+
+      <br>
+
+      Fitur upload foto profil dan lampiran identitas
+      akan diaktifkan setelah penyimpanan file aman
+      tersedia. Data pendataan tetap dapat dikirim
+      terlebih dahulu.
+
+    </div>
+
+
+    <!-- =========================
+         PERNYATAAN
+    ========================== -->
+
+    <div class="check-group">
+
+      <input
+        type="checkbox"
+        id="persetujuan"
+        required
+      >
+
+      <label for="persetujuan">
+
+        Saya menyatakan bahwa data yang saya isi adalah
+        benar dan dapat dipertanggungjawabkan.
+        Saya memahami bahwa data akan melalui proses
+        verifikasi oleh DKD PPU sebelum dipublikasikan.
+
+      </label>
+
+    </div>
+
+
+    <br>
+
+
+    <button
+      type="submit"
+      class="btn-submit"
+      id="btnKirim"
+    >
+
+      KIRIM DATA PENDATAAN
+
+    </button>
+
+
+    <div
+      id="hasil"
+      class="hasil"
+    ></div>
+
+
+  </form>
+
+
+  <a
+    href="/"
+    class="back"
+  >
+    ← Kembali ke Website DKD PPU
+  </a>
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+  © 2026 DKD PPU — Dewan Kesenian Daerah
+  Kabupaten Penajam Paser Utara
+
+</footer>
+
+
+<script>
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const kategori =
+  (
+    params.get("kategori") || ""
+  ).toUpperCase();
+
+
+const kategoriInput =
+  document.getElementById("kategori");
+
+const kategoriNama =
+  document.getElementById("kategoriNama");
+
+const kategoriKeterangan =
+  document.getElementById("kategoriKeterangan");
+
+const bidangTradisional =
+  document.getElementById("bidangTradisional");
+
+const bidangModern =
+  document.getElementById("bidangModern");
+
+const bidangTradisionalInput =
+  document.getElementById("bidang_seni_tradisional");
+
+const bidangModernInput =
+  document.getElementById("bidang_seni_modern");
+
+const bidangSeni =
+  document.getElementById("bidang_seni");
+
+const jenisPelaku =
+  document.getElementById("jenis_pelaku");
+
+const personilBand =
+  document.getElementById("personilBand");
+
+
+/* =========================
+   SET KATEGORI
+========================= */
+
+if (kategori === "TRADISIONAL") {
+
+  kategoriInput.value =
+    "TRADISIONAL";
+
+  kategoriNama.textContent =
+    "🎭 TRADISIONAL";
+
+  kategoriKeterangan.textContent =
+    "Pendataan pelaku seni dan budaya tradisional Kabupaten Penajam Paser Utara.";
+
+  bidangTradisional.classList.remove(
+    "hidden"
+  );
+
+  bidangTradisionalInput.required =
+    true;
+
+}
+
+
+else if (kategori === "MODERN") {
+
+  kategoriInput.value =
+    "MODERN";
+
+  kategoriNama.textContent =
+    "🎵 MODERN";
+
+  kategoriKeterangan.textContent =
+    "Pendataan pelaku seni dan budaya modern Kabupaten Penajam Paser Utara.";
+
+  bidangModern.classList.remove(
+    "hidden"
+  );
+
+  bidangModernInput.required =
+    true;
+
+}
+
+
+else {
+
+  kategoriNama.textContent =
+    "Kategori belum dipilih";
+
+  kategoriKeterangan.textContent =
+    "Silakan kembali ke halaman pendataan dan pilih TRADISIONAL atau MODERN.";
+
+}
+
+
+/* =========================
+   PERSONIL BAND
+========================= */
+
+function cekBand() {
+
+  if (
+    jenisPelaku.value === "Band"
+  ) {
+
+    personilBand.classList.remove(
+      "hidden"
+    );
+
+  }
+
+  else {
+
+    personilBand.classList.add(
+      "hidden"
+    );
+
+    document.getElementById(
+      "nama_personil"
+    ).value = "";
+
+  }
+
+}
+
+
+jenisPelaku.addEventListener(
+  "change",
+  cekBand
+);
+
+
+/* =========================
+   FORM SUBMIT
+========================= */
+
+document
+  .getElementById("formPendataan")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      if (
+        kategori !== "TRADISIONAL" &&
+        kategori !== "MODERN"
+      ) {
+
+        alert(
+          "Kategori TRADISIONAL atau MODERN belum dipilih."
+        );
+
+        return;
+
+      }
+
+
+      /* Tentukan bidang seni */
+
+      if (
+        kategori === "TRADISIONAL"
+      ) {
+
+        bidangSeni.value =
+          bidangTradisionalInput.value;
+
+      }
+
+      else {
+
+        bidangSeni.value =
+          bidangModernInput.value;
+
+      }
+
+
+      const nama =
+        document
+          .getElementById(
+            "nama_individu_group"
+          )
+          .value
+          .trim();
+
+
+      if (!nama) {
+
+        alert(
+          "Nama Individu atau Group wajib diisi."
+        );
+
+        return;
+
+      }
+
+
+      if (!bidangSeni.value) {
+
+        alert(
+          "Bidang Seni wajib dipilih."
+        );
+
+        return;
+
+      }
+
+
+      const data = {
+
+        nama_individu_group:
+          nama,
+
+        kategori:
+          kategori,
+
+        jenis_pelaku:
+          jenisPelaku.value,
+
+        bidang_seni:
+          bidangSeni.value,
+
+        kecamatan:
+          document
+            .getElementById(
+              "kecamatan"
+            )
+            .value
+            .trim(),
+
+        desa_kelurahan:
+          document
+            .getElementById(
+              "desa_kelurahan"
+            )
+            .value
+            .trim(),
+
+        alamat:
+          document
+            .getElementById(
+              "alamat"
+            )
+            .value
+            .trim(),
+
+        nomor_whatsapp:
+          document
+            .getElementById(
+              "nomor_whatsapp"
+            )
+            .value
+            .trim(),
+
+        email:
+          document
+            .getElementById(
+              "email"
+            )
+            .value
+            .trim(),
+
+        deskripsi_singkat:
+          document
+            .getElementById(
+              "deskripsi_singkat"
+            )
+            .value
+            .trim(),
+
+        foto_profil:
+          null,
+
+        lampiran_identitas:
+          null,
+
+        nama_personil:
+          document
+            .getElementById(
+              "nama_personil"
+            )
+            .value
+            .trim()
+
+      };
+
+
+      const tombol =
+        document.getElementById(
+          "btnKirim"
+        );
+
+      const hasil =
+        document.getElementById(
+          "hasil"
+        );
+
+
+      tombol.disabled =
+        true;
+
+      tombol.textContent =
+        "MENGIRIM DATA...";
+
+      hasil.className =
+        "hasil";
+
+      hasil.style.display =
+        "none";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/pendataan",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(data)
+
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.ok
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Data gagal dikirim."
+          );
+
+        }
+
+
+        hasil.className =
+          "hasil sukses";
+
+        hasil.innerHTML =
+
+          "<strong>Data berhasil dikirim.</strong>" +
+
+          "<br><br>" +
+
+          "Data Anda telah diterima dan " +
+          "menunggu proses verifikasi oleh DKD PPU." +
+
+          "<div class='hasil-id'>" +
+
+          "Nomor Pendataan: " +
+
+          result.id_pendataan +
+
+          "</div>" +
+
+          "<br>" +
+
+          "Simpan nomor pendataan ini " +
+          "untuk keperluan informasi selanjutnya.";
+
+
+        document
+          .getElementById(
+            "formPendataan"
+          )
+          .reset();
+
+
+        kategoriInput.value =
+          kategori;
+
+
+        bidangSeni.value =
+          "";
+
+
+        if (
+          kategori === "TRADISIONAL"
+        ) {
+
+          bidangTradisionalInput.value =
+            "";
+
+        }
+
+        else {
+
+          bidangModernInput.value =
+            "";
+
+        }
+
+
+        personilBand.classList.add(
+          "hidden"
+        );
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+
+      }
+
+      catch (error) {
+
+        hasil.className =
+          "hasil gagal";
+
+        hasil.innerHTML =
+
+          "<strong>Data gagal dikirim.</strong>" +
+
+          "<br><br>" +
+
+          error.message;
+
+
+        hasil.style.display =
+          "block";
+
+      }
+
+
+      tombol.disabled =
+        false;
+
+      tombol.textContent =
+        "KIRIM DATA PENDATAAN";
+
+    }
+  );
+
+</script>
+
+
+</body>
+
+</html>
