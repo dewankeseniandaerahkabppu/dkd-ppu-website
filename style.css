@@ -701,3 +701,220 @@ section::after {
   }
 }
 
+/* =========================================================
+   PROFIL — IDENTITAS LEMBAGA & SENI DAERAH
+   ========================================================= */
+
+#profil {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 88% 25%,
+      rgba(201, 154, 61, 0.14),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #f7efdf 0%,
+      #f3e7d0 55%,
+      #eee0c6 100%
+    ) !important;
+
+  overflow: hidden;
+}
+
+/* Ornamen geometris */
+#profil::before {
+  content: "";
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  right: -120px;
+  top: 40px;
+
+  border: 1px solid rgba(201, 154, 61, 0.35);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 28px rgba(201, 154, 61, 0.05),
+    0 0 0 58px rgba(25, 124, 120, 0.04);
+
+  pointer-events: none;
+}
+
+/* Garis aksen bagian atas */
+#profil::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 170px;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c99a3d,
+      #197c78,
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+/* Konten Profil */
+#profil .two-col {
+  position: relative;
+  z-index: 2;
+  align-items: center;
+}
+
+/* Label TENTANG KAMI */
+#profil .section-heading .eyebrow {
+  color: #b17d25 !important;
+  letter-spacing: 0.22em;
+}
+
+/* Judul Profil */
+#profil .section-heading h2 {
+  color: #0b3028 !important;
+
+  font-size: clamp(40px, 5vw, 64px);
+
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* Garis dekorasi di bawah judul */
+#profil .section-heading h2::after {
+  content: "";
+  display: block;
+
+  width: 90px;
+  height: 4px;
+
+  margin-top: 24px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c99a3d,
+      #197c78
+    );
+}
+
+/* Teks profil */
+#profil .two-col > div:last-child {
+  position: relative;
+
+  padding: 34px 38px;
+
+  background:
+    rgba(255, 250, 241, 0.72);
+
+  border-left: 3px solid #c99a3d;
+
+  box-shadow:
+    0 18px 45px rgba(20, 34, 27, 0.08);
+
+  backdrop-filter: blur(5px);
+}
+
+/* Garis dekoratif kecil */
+#profil .two-col > div:last-child::before {
+  content: "DKD PPU";
+
+  position: absolute;
+  top: -13px;
+  right: 24px;
+
+  padding: 4px 12px;
+
+  background: #0b3028;
+  color: #f4d889;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+/* Paragraf Profil */
+#profil .two-col > div:last-child > p {
+  color: #405048;
+  font-size: 17px;
+  line-height: 1.85;
+  margin-top: 0;
+}
+
+/* STATISTIK */
+#profil .mini-stats {
+  margin-top: 35px;
+  gap: 0;
+
+  border-top: 1px solid rgba(201, 154, 61, 0.35);
+  border-bottom: 1px solid rgba(201, 154, 61, 0.35);
+}
+
+#profil .mini-stats div {
+  min-width: 145px;
+  padding: 18px 22px;
+
+  border-right: 1px solid rgba(201, 154, 61, 0.25);
+}
+
+#profil .mini-stats div:last-child {
+  border-right: 0;
+}
+
+#profil .mini-stats strong {
+  color: #9f302c !important;
+  font-size: 38px;
+}
+
+#profil .mini-stats span {
+  color: #687168;
+  letter-spacing: 0.12em;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+
+  #profil .two-col > div:last-child {
+    padding: 28px;
+  }
+
+  #profil::before {
+    right: -180px;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 560px) {
+
+  #profil .section-heading h2 {
+    font-size: 42px;
+  }
+
+  #profil .two-col > div:last-child {
+    padding: 24px 20px;
+  }
+
+  #profil .two-col > div:last-child > p {
+    font-size: 15px;
+  }
+
+  #profil .mini-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #profil .mini-stats div {
+    min-width: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(201, 154, 61, 0.25);
+  }
+
+  #profil .mini-stats div:nth-child(odd) {
+    border-right: 1px solid rgba(201, 154, 61, 0.25);
+  }
+}
