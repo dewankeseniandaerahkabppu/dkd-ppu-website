@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Data Pelaku Seni dan Budaya - DKD PPU</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .header {
+      background: #8b0000;
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .judul {
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #8b0000;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      border-bottom: 1px solid #eee;
+      padding: 13px 0;
+      gap: 15px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #444;
+    }
+
+    .value {
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .status {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 16px;
+      background: #8b0000;
+      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+    }
+
+    .back:hover {
+      opacity: 0.9;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      padding: 30px 20px;
+    }
+
+    @media (max-width: 650px) {
+      .row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <h1>DATA PELAKU SENI DAN BUDAYA</h1>
+    <p>Dewan Kesenian Daerah Kabupaten Penajam Paser Utara</p>
+  </header>
+
+  <main class="container">
+
+    <div class="card">
+
+      <h2 class="judul">Profil Pelaku Seni dan Budaya</h2>
+
+      <div id="loading" class="loading">
+        Memuat data...
+      </div>
+
+      <div id="dataContainer" style="display:none;">
+
+        <div class="row">
+          <div class="label">Nama Individu atau Group</div>
+          <div class="value" id="nama"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Kategori</div>
+          <div class="value" id="kategori"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Jenis Pelaku</div>
+          <div class="value" id="jenis"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Bidang Seni</div>
+          <div class="value" id="bidang"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Kecamatan</div>
+          <div class="value" id="kecamatan"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Desa/Kelurahan</div>
+          <div class="value" id="desa"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Deskripsi</div>
+          <div class="value" id="deskripsi"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Nama Personil</div>
+          <div class="value" id="personil"></div>
+        </div>
+
+        <div class="row">
+          <div class="label">Status</div>
+          <div class="value">
+            <span class="status">DIPUBLIKASIKAN</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="errorContainer" style="display:none;"></div>
+
+      <a href="/" class="back">← Kembali ke Website DKD PPU</a>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    © DKD PPU — Dewan Kesenian Daerah Kabupaten Penajam Paser Utara
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    async function loadData() {
+
+      if (!id) {
+        showError("Nomor pendataan tidak ditemukan.");
+        return;
+      }
+
+      try {
+
+        const response = await fetch(
+          "/api/public/pendataan?id=" +
+          encodeURIComponent(id)
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.error ||
+            "Data tidak dapat ditemukan."
+          );
+        }
+
+        const data = result.data;
+
+        document.getElementById("nama").textContent =
+          data.nama_individu_group || "-";
+
+        document.getElementById("kategori").textContent =
+          data.kategori || "-";
+
+        document.getElementById("jenis").textContent =
+          data.jenis_pelaku || "-";
+
+        document.getElementById("bidang").textContent =
+          data.bidang_seni || "-";
+
+        document.getElementById("kecamatan").textContent =
+          data.kecamatan || "-";
+
+        document.getElementById("desa").textContent =
+          data.desa_kelurahan || "-";
+
+        document.getElementById("deskripsi").textContent =
+          data.deskripsi_singkat || "-";
+
+        document.getElementById("personil").textContent =
+          data.nama_personil || "-";
+
+        document.getElementById("loading").style.display =
+          "none";
+
+        document.getElementById("dataContainer").style.display =
+          "block";
+
+      } catch (error) {
+
+        showError(
+          "Data tidak dapat ditampilkan.<br><br>" +
+          error.message
+        );
+
+      }
+    }
+
+    function showError(message) {
+
+      document.getElementById("loading").style.display =
+        "none";
+
+      const errorContainer =
+        document.getElementById("errorContainer");
+
+      errorContainer.innerHTML =
+        '<div class="error">' +
+        message +
+        '</div>';
+
+      errorContainer.style.display =
+        "block";
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>
