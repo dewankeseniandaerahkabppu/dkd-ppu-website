@@ -607,12 +607,30 @@ async function tolakData() {
     ========================= */
 
     function lihatWebsite() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
-      alert(
-        "Halaman publik akan kita hubungkan setelah modul publikasi selesai."
-      );
+  const id =
+    params.get("id");
 
-    }
+  if (!id) {
+    alert(
+      "Nomor pendataan tidak ditemukan."
+    );
+    return;
+  }
+
+  const url =
+    "/data-pelaku-seni.html?id=" +
+    encodeURIComponent(id);
+
+  window.open(
+    url,
+    "_blank"
+  );
+}
 
 
 
