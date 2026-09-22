@@ -1,6 +1,11 @@
 name = "dkd-ppu-website"
 compatibility_date = "2026-09-11"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "dkd-ppu-data"
+database_id = "28bfb3d2-5cd5-474c-815f-705d5baebbb7"
+
 [assets]
 directory = "."
 not_found_handling = "404-page"
