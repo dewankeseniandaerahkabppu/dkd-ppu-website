@@ -1,196 +1,609 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Dewan Kesenian Daerah Penajam Paser Utara">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="description"
+content="Dewan Kesenian Daerah Kabupaten Penajam Paser Utara">
+
 <title>DKD PPU</title>
+
 <link rel="icon" href="assets/logo-dkd-ppu.png">
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<header class="site-header"><div class="container nav-wrap">
-<a class="brand" href="#beranda"><img src="assets/logo-dkd-ppu.png"><span><strong id="brand-name">DKD PPU</strong><small id="brand-tagline"></small></span></a>
-<button class="menu-toggle">☰</button><nav class="nav" id="nav"></nav>
-</div></header>
+
+<!-- =========================
+     HEADER
+========================= -->
+<header class="site-header">
+  <div class="container nav-wrap">
+
+    <a class="brand" href="#beranda">
+      <img src="assets/logo-dkd-ppu.png" alt="Logo DKD PPU">
+      <span>
+        <strong id="brand-name">DKD PPU</strong>
+        <small id="brand-tagline"></small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button">☰</button>
+
+    <nav class="nav" id="nav"></nav>
+
+  </div>
+</header>
+
+
 <main>
-<section id="beranda" class="hero section"><div class="container hero-grid">
-<div class="hero-copy reveal"><span class="eyebrow" id="hero-eyebrow"></span><h1 id="hero-title"></h1><p id="hero-text"></p><div class="hero-actions"><a class="btn btn-primary" href="#program">Lihat Program</a><a class="btn btn-ghost" href="#kontak">Hubungi DKD PPU</a></div></div>
-<div class="hero-art reveal"><div class="sun"></div><div class="art-ring ring-1"></div><div class="art-ring ring-2"></div><div class="mask-art">✦</div><div class="leaf leaf-1">❯</div><div class="leaf leaf-2">❮</div><div class="art-caption">TRADISI × EKSPRESI BARU</div></div>
-</div></section>
-<section id="profil" class="section section-light"><div class="container two-col"><div class="section-heading reveal"><span class="eyebrow">Tentang Kami</span><h2 id="profile-title"></h2></div><div class="reveal"><p id="profile-text"></p><div class="mini-stats" id="stats"></div></div></div></section>
-<section id="program" class="section"><div class="container"><div class="section-heading center reveal"><span class="eyebrow">Program</span><h2>Satu Panggung untuk Banyak Ekspresi</h2><p>Kelola program langsung dari menu admin.</p></div><div class="card-grid" id="program-list"></div></div></section>
-<section id="berita" class="section section-light"><div class="container"><div class="section-heading reveal"><span class="eyebrow">Berita</span><h2>Kabar Terbaru DKD PPU</h2></div><div class="news-grid" id="news-list"></div></div></section>
-<section id="galeri" class="section"><div class="container"><div class="section-heading center reveal"><span class="eyebrow">Galeri</span><h2>Ruang Visual dan Karya</h2></div><div class="gallery-grid" id="gallery-list"></div></div></section>
-<section id="agenda" class="section section-light"><div class="container"><div class="section-heading reveal"><span class="eyebrow">Agenda</span><h2>Agenda Kegiatan</h2></div><div class="agenda-list" id="agenda-list"></div></div></section>
-<section id="kontak" class="section contact-section"><div class="container contact-card reveal"><div><span class="eyebrow">Kontak</span><h2 id="contact-title"></h2><p id="contact-intro"></p></div><div class="contact-details" id="contact-details"></div></div></section>
-<section id="pendataan" class="section section-light">
-  <div class="container">
-    <div class="section-heading center">
-      <span class="eyebrow">PENDATAAN</span>
-      <h2>PENDATAAN PELAKU SENI</h2>
-      <p>
-        Silakan pilih kategori seni yang sesuai untuk melanjutkan pendataan
-        pelaku seni dan budaya Kabupaten Penajam Paser Utara.
-      </p>
+
+<!-- =========================
+     BERANDA
+========================= -->
+<section id="beranda" class="hero section">
+
+  <div class="container hero-grid">
+
+    <div class="hero-copy reveal">
+
+      <span class="eyebrow" id="hero-eyebrow"></span>
+
+      <h1 id="hero-title"></h1>
+
+      <p id="hero-text"></p>
+
+      <div class="hero-actions">
+
+        <a class="btn btn-primary" href="#program">
+          Lihat Program
+        </a>
+
+        <a class="btn btn-ghost" href="#kontak">
+          Hubungi DKD PPU
+        </a>
+
+      </div>
+
     </div>
+
+
+    <div class="hero-art reveal">
+
+      <div class="sun"></div>
+
+      <div class="art-ring ring-1"></div>
+      <div class="art-ring ring-2"></div>
+
+      <div class="mask-art">✦</div>
+
+      <div class="leaf leaf-1">❯</div>
+      <div class="leaf leaf-2">❮</div>
+
+      <div class="art-caption">
+        TRADISI × EKSPRESI BARU
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     PROFIL
+========================= -->
+<section id="profil" class="section section-light">
+
+  <div class="container two-col">
+
+    <div class="section-heading reveal">
+
+      <span class="eyebrow">
+        Tentang Kami
+      </span>
+
+      <h2 id="profile-title"></h2>
+
+    </div>
+
+
+    <div class="reveal">
+
+      <p id="profile-text"></p>
+
+      <div class="mini-stats" id="stats"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     DIREKTORI
+========================= -->
+<section id="direktori" class="section">
+
+  <div class="container">
+
+    <div class="section-heading center reveal">
+
+      <span class="eyebrow">
+        DIREKTORI
+      </span>
+
+      <h2>
+        DIREKTORI PELAKU SENI DAN BUDAYA
+      </h2>
+
+      <p>
+        Jelajahi data pelaku seni dan budaya Kabupaten
+        Penajam Paser Utara yang telah diverifikasi dan
+        dipublikasikan oleh DKD PPU.
+      </p>
+
+    </div>
+
 
     <div class="pendataan-pilihan">
-      <button type="button" class="pendataan-card" onclick="pilihKategori('TRADISIONAL')">
-        <span class="pendataan-icon">🎭</span>
-        <strong>TRADISIONAL</strong>
-        <small>Seni dan budaya tradisional</small>
-      </button>
 
-      <button type="button" class="pendataan-card" onclick="pilihKategori('MODERN')">
-        <span class="pendataan-icon">🎵</span>
-        <strong>MODERN</strong>
-        <small>Seni dan budaya modern</small>
-      </button>
+      <a
+        href="direktori-pelaku-seni.html?kategori=TRADISIONAL"
+        class="pendataan-card">
+
+        <span class="pendataan-icon">
+          🎭
+        </span>
+
+        <strong>
+          TRADISIONAL
+        </strong>
+
+        <small>
+          Pelaku seni dan budaya tradisional
+        </small>
+
+      </a>
+
+
+      <a
+        href="direktori-pelaku-seni.html?kategori=MODERN"
+        class="pendataan-card">
+
+        <span class="pendataan-icon">
+          🎨
+        </span>
+
+        <strong>
+          MODERN
+        </strong>
+
+        <small>
+          Pelaku seni dan budaya modern
+        </small>
+
+      </a>
+
     </div>
 
-    <div id="form-pendataan" class="pendataan-form-wrap" style="display:none;">
-      <form id="formPelakuSeni">
 
-        <input type="hidden" id="kategori" name="kategori">
+    <div style="text-align:center;margin-top:30px;">
 
-        <h3>Form Pendataan Pelaku Seni</h3>
-        <p id="kategoriTerpilih"></p>
+      <a
+        href="direktori-pelaku-seni.html"
+        class="btn btn-primary">
 
-        <div class="form-group">
-          <label for="nama_individu_group">
-            Nama Individu atau Group <span>*</span>
-          </label>
-          <input
-            type="text"
-            id="nama_individu_group"
-            name="nama_individu_group"
-            required
-            placeholder="Masukkan nama individu atau group">
-        </div>
+        Lihat Semua Direktori
 
-        <div class="form-group">
-          <label for="jenis_pelaku">Jenis Pelaku</label>
-          <select id="jenis_pelaku" name="jenis_pelaku">
-            <option value="">-- Pilih Jenis Pelaku --</option>
-            <option value="Seniman">Seniman</option>
-            <option value="Sanggar">Sanggar</option>
-            <option value="Komunitas">Komunitas</option>
-            <option value="Pelaku Budaya">Pelaku Budaya</option>
-            <option value="Band">Band</option>
-          </select>
-        </div>
+      </a>
 
-        <div class="form-group">
-          <label for="bidang_seni">Bidang Seni</label>
-          <select id="bidang_seni" name="bidang_seni">
-            <option value="">-- Pilih Bidang Seni --</option>
-            <option value="Seni Musik">Seni Musik</option>
-            <option value="Seni Tari">Seni Tari</option>
-            <option value="Seni Teater">Seni Teater</option>
-            <option value="Seni Rupa">Seni Rupa</option>
-            <option value="Seni Sastra">Seni Sastra</option>
-            <option value="Seni Tradisi">Seni Tradisi</option>
-            <option value="Seni Film">Seni Film</option>
-            <option value="Seni Pertunjukan">Seni Pertunjukan</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="kecamatan">Kecamatan</label>
-            <input
-              type="text"
-              id="kecamatan"
-              name="kecamatan"
-              placeholder="Nama kecamatan">
-          </div>
-
-          <div class="form-group">
-            <label for="desa_kelurahan">Desa/Kelurahan</label>
-            <input
-              type="text"
-              id="desa_kelurahan"
-              name="desa_kelurahan"
-              placeholder="Nama desa/kelurahan">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="alamat">Alamat</label>
-          <textarea
-            id="alamat"
-            name="alamat"
-            rows="3"
-            placeholder="Alamat lengkap"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="nomor_whatsapp">Nomor WhatsApp</label>
-          <input
-            type="tel"
-            id="nomor_whatsapp"
-            name="nomor_whatsapp"
-            placeholder="Contoh: 081234567890">
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Alamat email">
-        </div>
-
-        <div class="form-group">
-          <label for="deskripsi_singkat">Deskripsi Singkat</label>
-          <textarea
-            id="deskripsi_singkat"
-            name="deskripsi_singkat"
-            rows="4"
-            placeholder="Tuliskan keterangan singkat tentang individu atau group"></textarea>
-        </div>
-
-        <div class="pendataan-info">
-          <strong>Catatan:</strong>
-          Fitur upload foto profil dan lampiran identitas akan diaktifkan
-          setelah penyimpanan file aman tersedia.
-        </div>
-
-        <button type="submit" class="btn-submit">
-          KIRIM DATA PENDATAAN
-        </button>
-
-        <div id="hasilPendataan"></div>
-
-      </form>
     </div>
+
   </div>
+
 </section>
+
+
+<!-- =========================
+     PROGRAM
+========================= -->
+<section id="program" class="section section-light">
+
+  <div class="container">
+
+    <div class="section-heading center reveal">
+
+      <span class="eyebrow">
+        Program
+      </span>
+
+      <h2>
+        Satu Panggung untuk Banyak Ekspresi
+      </h2>
+
+      <p>
+        Kelola program langsung dari menu admin.
+      </p>
+
+    </div>
+
+    <div
+      class="card-grid"
+      id="program-list">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     BERITA
+========================= -->
+<section id="berita" class="section">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <span class="eyebrow">
+        Berita
+      </span>
+
+      <h2>
+        Kabar Terbaru DKD PPU
+      </h2>
+
+    </div>
+
+    <div
+      class="news-grid"
+      id="news-list">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     GALERI
+========================= -->
+<section id="galeri" class="section section-light">
+
+  <div class="container">
+
+    <div class="section-heading center reveal">
+
+      <span class="eyebrow">
+        Galeri
+      </span>
+
+      <h2>
+        Ruang Visual dan Karya
+      </h2>
+
+    </div>
+
+    <div
+      class="gallery-grid"
+      id="gallery-list">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     AGENDA
+========================= -->
+<section id="agenda" class="section">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <span class="eyebrow">
+        Agenda
+      </span>
+
+      <h2>
+        Agenda Kegiatan
+      </h2>
+
+    </div>
+
+    <div
+      class="agenda-list"
+      id="agenda-list">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     PENDATAAN
+========================= -->
+<section id="pendataan" class="section section-light">
+
+  <div class="container">
+
+    <div class="section-heading center">
+
+      <span class="eyebrow">
+        PENDATAAN
+      </span>
+
+      <h2>
+        PENDATAAN PELAKU SENI
+      </h2>
+
+      <p>
+        Silakan pilih kategori seni yang sesuai untuk
+        melanjutkan pendataan pelaku seni dan budaya
+        Kabupaten Penajam Paser Utara.
+      </p>
+
+    </div>
+
+
+    <div class="pendataan-pilihan">
+
+      <!-- TRADISIONAL -->
+
+      <a
+        href="data-pelaku-seni.html?kategori=TRADISIONAL"
+        class="pendataan-card">
+
+        <span class="pendataan-icon">
+          🎭
+        </span>
+
+        <strong>
+          TRADISIONAL
+        </strong>
+
+        <small>
+          Seni dan budaya tradisional
+        </small>
+
+      </a>
+
+
+      <!-- MODERN -->
+
+      <a
+        href="data-pelaku-seni.html?kategori=MODERN"
+        class="pendataan-card">
+
+        <span class="pendataan-icon">
+          🎵
+        </span>
+
+        <strong>
+          MODERN
+        </strong>
+
+        <small>
+          Seni dan budaya modern
+        </small>
+
+      </a>
+
+    </div>
+
+
+    <!-- PENJELASAN -->
+
+    <div
+      class="pendataan-info"
+      style="margin-top:30px;">
+
+      <strong>
+        Tentang Pendataan
+      </strong>
+
+      <p>
+        Pendataan ini digunakan untuk menghimpun informasi
+        pelaku seni dan budaya di Kabupaten Penajam Paser Utara.
+        Data yang masuk akan melalui proses verifikasi oleh
+        Dewan Kesenian Daerah Kabupaten Penajam Paser Utara
+        sebelum dapat ditampilkan pada direktori publik.
+      </p>
+
+    </div>
+
+
+    <!-- LINK KE DIREKTORI -->
+
+    <div
+      style="
+        text-align:center;
+        margin-top:25px;
+      ">
+
+      <a
+        href="direktori-pelaku-seni.html"
+        class="btn btn-primary">
+
+        Lihat Data Pelaku Seni dan Budaya
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     KONTAK
+========================= -->
+<section id="kontak" class="section contact-section">
+
+  <div class="container contact-card reveal">
+
+    <div>
+
+      <span class="eyebrow">
+        Kontak
+      </span>
+
+      <h2 id="contact-title"></h2>
+
+      <p id="contact-intro"></p>
+
+    </div>
+
+    <div
+      class="contact-details"
+      id="contact-details">
+    </div>
+
+  </div>
+
+</section>
+
 </main>
-<footer class="site-footer"><div class="container footer-grid"><div><img class="footer-logo" src="assets/logo-dkd-ppu.png"><p id="footer-text">Ruang bersama untuk menjaga warisan, merawat kreativitas, dan memperluas apresiasi seni Penajam Paser Utara.</p></div><div><strong>Navigasi</strong><div class="footer-links" id="footer-links"></div></div><div><strong>Media Sosial</strong><div class="social-links" id="social-links"></div></div></div><div class="copyright">© 2026 DKD PPU. Semua hak cipta dilindungi.</div></footer>
-<div class="modal" id="modal">
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+    <div>
+
+      <img
+        class="footer-logo"
+        src="assets/logo-dkd-ppu.png"
+        alt="Logo DKD PPU">
+
+      <p id="footer-text">
+        Ruang bersama untuk menjaga warisan,
+        merawat kreativitas, dan memperluas apresiasi
+        seni Penajam Paser Utara.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Navigasi
+      </strong>
+
+      <div
+        class="footer-links"
+        id="footer-links">
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Media Sosial
+      </strong>
+
+      <div
+        class="social-links"
+        id="social-links">
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="copyright">
+    © 2026 DKD PPU. Semua hak cipta dilindungi.
+  </div>
+
+</footer>
+
+
+<!-- =========================
+     MODAL BERITA
+========================= -->
+<div
+  class="modal"
+  id="modal">
+
   <div class="modal-backdrop"></div>
 
   <article class="modal-box news-modal">
-    <button class="modal-close" aria-label="Tutup">×</button>
 
-    <div class="modal-art" id="modal-art"></div>
+    <button
+      class="modal-close"
+      aria-label="Tutup">
+      ×
+    </button>
 
-    <div class="modal-meta" id="modal-meta"></div>
+    <div
+      class="modal-art"
+      id="modal-art">
+    </div>
+
+    <div
+      class="modal-meta"
+      id="modal-meta">
+    </div>
 
     <h2 id="modal-title"></h2>
 
-    <p class="modal-excerpt" id="modal-excerpt"></p>
+    <p
+      class="modal-excerpt"
+      id="modal-excerpt">
+    </p>
 
-    <div class="modal-content" id="modal-content"></div>
+    <div
+      class="modal-content"
+      id="modal-content">
+    </div>
+
   </article>
+
 </div>
-<button class="to-top" id="to-top">↑</button>
-  <script>
-window.DKD_API_BASE="https://dkd-ppu-media-api.dewankeseniandaerah-kabppu.workers.dev";
+
+
+<!-- =========================
+     TOMBOL KE ATAS
+========================= -->
+<button
+  class="to-top"
+  id="to-top">
+  ↑
+</button>
+
+
+<!-- =========================
+     API MEDIA
+========================= -->
+<script>
+
+window.DKD_API_BASE =
+  "https://dkd-ppu-media-api.dewankeseniandaerah-kabppu.workers.dev";
+
 </script>
+
+
+<!-- =========================
+     SCRIPT WEBSITE
+========================= -->
 <script src="script.js"></script>
+
 </body>
 </html>
