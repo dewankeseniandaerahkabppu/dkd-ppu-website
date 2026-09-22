@@ -25,10 +25,6 @@
       color: #222;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     .header {
       background: #222;
       color: white;
@@ -45,27 +41,15 @@
       opacity: .8;
     }
 
-    /* =========================
-       CONTAINER
-    ========================= */
-
     .container {
       max-width: 900px;
       margin: 30px auto;
       padding: 0 20px;
     }
 
-    /* =========================
-       TOOLBAR
-    ========================= */
-
     .toolbar {
       margin-bottom: 20px;
     }
-
-    /* =========================
-       BUTTON UMUM
-    ========================= */
 
     button {
       border: 0;
@@ -82,22 +66,45 @@
       opacity: .9;
     }
 
-    button:active {
-      transform: translateY(1px);
-    }
-
-    /* =========================
-       BUTTON KEMBALI
-    ========================= */
-
     .btn-back {
       background: #ddd;
       color: #222;
     }
 
-    /* =========================
-       CARD
-    ========================= */
+    .btn-verifikasi {
+      background: #198754;
+      color: white;
+    }
+
+    .btn-tolak {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-publikasi {
+      background: #6f42c1;
+      color: white;
+    }
+
+    .btn-batal-verifikasi {
+      background: #fd7e14;
+      color: white;
+    }
+
+    .btn-lihat {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .btn-tarik {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-verifikasi-ulang {
+      background: #198754;
+      color: white;
+    }
 
     .card {
       background: white;
@@ -111,10 +118,6 @@
       margin-bottom: 20px;
       font-size: 22px;
     }
-
-    /* =========================
-       DETAIL
-    ========================= */
 
     .detail-row {
       display: grid;
@@ -130,10 +133,6 @@
     .detail-value {
       word-break: break-word;
     }
-
-    /* =========================
-       STATUS
-    ========================= */
 
     .badge {
       display: inline-block;
@@ -153,14 +152,15 @@
       color: #0f5132;
     }
 
+    .badge-dipublikasikan {
+      background: #cfe2ff;
+      color: #084298;
+    }
+
     .badge-ditolak {
       background: #f8d7da;
       color: #842029;
     }
-
-    /* =========================
-       ACTION
-    ========================= */
 
     .detail-actions {
       margin-top: 25px;
@@ -173,54 +173,11 @@
       margin-bottom: 12px;
     }
 
-    /* VERIFIKASI */
-
-    .btn-verifikasi {
-      background: #198754;
-      color: white;
-    }
-
-    /* TOLAK */
-
-    .btn-tolak {
-      background: #dc3545;
-      color: white;
-    }
-
-    /* EDIT */
-
-    .btn-edit {
-      background: #0d6efd;
-      color: white;
-    }
-
-    /* PUBLIKASI */
-
-    .btn-publikasi {
-      background: #6f42c1;
-      color: white;
-    }
-
-    /* BATAL VERIFIKASI */
-
-    .btn-batal-verifikasi {
-      background: #6c757d;
-      color: white;
-    }
-
-    /* =========================
-       LOADING
-    ========================= */
-
     .loading {
       background: white;
       padding: 25px;
       border-radius: 12px;
     }
-
-    /* =========================
-       ERROR
-    ========================= */
 
     .error {
       background: #f8d7da;
@@ -228,10 +185,6 @@
       padding: 25px;
       border-radius: 12px;
     }
-
-    /* =========================
-       MOBILE
-    ========================= */
 
     @media (max-width: 650px) {
 
@@ -267,10 +220,6 @@
 <body>
 
 
-  <!-- =========================
-       HEADER
-  ========================= -->
-
   <div class="header">
 
     <h1>
@@ -284,14 +233,8 @@
   </div>
 
 
-  <!-- =========================
-       CONTENT
-  ========================= -->
-
   <div class="container">
 
-
-    <!-- KEMBALI -->
 
     <div class="toolbar">
 
@@ -305,8 +248,6 @@
 
     </div>
 
-
-    <!-- HASIL -->
 
     <div id="hasil">
 
@@ -324,10 +265,6 @@
   <script>
 
 
-    /* =========================
-       ESCAPE HTML
-    ========================= */
-
     function escapeHtml(value) {
 
       return String(value ?? "")
@@ -342,7 +279,7 @@
 
 
     /* =========================
-       VERIFIKASI DATA
+       VERIFIKASI
     ========================= */
 
     async function verifikasiData() {
@@ -355,7 +292,6 @@
       const id =
         params.get("id");
 
-
       if (!id) {
 
         alert(
@@ -366,19 +302,13 @@
 
       }
 
-
-      const yakin =
-        confirm(
-          "Apakah data ini benar-benar akan diverifikasi?"
-        );
-
-
-      if (!yakin) {
+      if (!confirm(
+        "Apakah data ini benar-benar akan diverifikasi?"
+      )) {
 
         return;
 
       }
-
 
       try {
 
@@ -398,10 +328,8 @@
             }
           );
 
-
         const result =
           await response.json();
-
 
         if (!response.ok || !result.ok) {
 
@@ -412,14 +340,11 @@
 
         }
 
-
         alert(
           "Data berhasil diverifikasi."
         );
 
-
         window.location.reload();
-
 
       } catch (error) {
 
@@ -435,13 +360,13 @@
 
 
     /* =========================
-       TOLAK DATA
+       TOLAK
     ========================= */
 
-    async function tolakData() {
+    function tolakData() {
 
       alert(
-        "Fungsi TOLAK akan kita aktifkan pada langkah berikutnya."
+        "Fungsi TOLAK akan kita aktifkan berikutnya."
       );
 
     }
@@ -449,28 +374,81 @@
 
 
     /* =========================
-       EDIT DATA
+       PUBLIKASIKAN
     ========================= */
 
-    function editData() {
+    async function publikasikanData() {
 
-      alert(
-        "Fungsi EDIT akan kita aktifkan pada langkah berikutnya."
-      );
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
 
-    }
+      const id =
+        params.get("id");
 
+      if (!id) {
 
+        alert(
+          "Nomor pendataan tidak ditemukan."
+        );
 
-    /* =========================
-       PUBLIKASIKAN DATA
-    ========================= */
+        return;
 
-    function publikasikanData() {
+      }
 
-      alert(
-        "Fungsi PUBLIKASIKAN akan kita aktifkan pada langkah berikutnya."
-      );
+      if (!confirm(
+        "Apakah data ini akan dipublikasikan ke website?"
+      )) {
+
+        return;
+
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/pendataan/publikasikan",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json"
+              },
+
+              body: JSON.stringify({
+                id_pendataan: id
+              })
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (!response.ok || !result.ok) {
+
+          throw new Error(
+            result.error ||
+            "Publikasi gagal."
+          );
+
+        }
+
+        alert(
+          "Data berhasil dipublikasikan."
+        );
+
+        window.location.reload();
+
+      } catch (error) {
+
+        alert(
+          "Gagal mempublikasikan data:\n\n" +
+          error.message
+        );
+
+      }
 
     }
 
@@ -480,10 +458,119 @@
        BATALKAN VERIFIKASI
     ========================= */
 
-    function batalkanVerifikasi() {
+    async function batalkanVerifikasi() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const id =
+        params.get("id");
+
+      if (!id) {
+
+        alert(
+          "Nomor pendataan tidak ditemukan."
+        );
+
+        return;
+
+      }
+
+      if (!confirm(
+        "Apakah verifikasi data ini akan dibatalkan?"
+      )) {
+
+        return;
+
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/pendataan/batal-verifikasi",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json"
+              },
+
+              body: JSON.stringify({
+                id_pendataan: id
+              })
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (!response.ok || !result.ok) {
+
+          throw new Error(
+            result.error ||
+            "Pembatalan verifikasi gagal."
+          );
+
+        }
+
+        alert(
+          "Verifikasi berhasil dibatalkan."
+        );
+
+        window.location.reload();
+
+      } catch (error) {
+
+        alert(
+          "Gagal membatalkan verifikasi:\n\n" +
+          error.message
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================
+       LIHAT WEBSITE
+    ========================= */
+
+    function lihatWebsite() {
 
       alert(
-        "Fungsi BATALKAN VERIFIKASI akan kita aktifkan pada langkah berikutnya."
+        "Halaman publik akan kita hubungkan setelah modul publikasi selesai."
+      );
+
+    }
+
+
+
+    /* =========================
+       TARIK DARI PUBLIKASI
+    ========================= */
+
+    function tarikPublikasi() {
+
+      alert(
+        "Fungsi TARIK DARI PUBLIKASI akan kita aktifkan berikutnya."
+      );
+
+    }
+
+
+
+    /* =========================
+       VERIFIKASI ULANG
+    ========================= */
+
+    function verifikasiUlang() {
+
+      alert(
+        "Fungsi VERIFIKASI ULANG akan kita aktifkan berikutnya."
       );
 
     }
@@ -496,20 +583,16 @@
 
     async function loadDetail() {
 
-
       const hasil =
         document.getElementById("hasil");
-
 
       const params =
         new URLSearchParams(
           window.location.search
         );
 
-
       const id =
         params.get("id");
-
 
       if (!id) {
 
@@ -528,13 +611,7 @@
       }
 
 
-
       try {
-
-
-        /* =========================
-           AMBIL DATA
-        ========================= */
 
         const response =
           await fetch(
@@ -542,15 +619,10 @@
             encodeURIComponent(id)
           );
 
-
         const result =
           await response.json();
 
-
-        if (
-          !response.ok ||
-          !result.ok
-        ) {
+        if (!response.ok || !result.ok) {
 
           throw new Error(
             result.error ||
@@ -559,10 +631,8 @@
 
         }
 
-
         const item =
           result.data;
-
 
         if (!item) {
 
@@ -571,7 +641,6 @@
           );
 
         }
-
 
 
         /* =========================
@@ -592,6 +661,15 @@
 
         }
 
+        if (
+          item.status ===
+          "DIPUBLIKASIKAN"
+        ) {
+
+          statusClass =
+            "badge-dipublikasikan";
+
+        }
 
         if (
           item.status ===
@@ -612,6 +690,7 @@
         let actionButtons = "";
 
 
+
         /*
          * MENUNGGU VERIFIKASI
          */
@@ -629,7 +708,6 @@
                 Tindakan Admin
               </div>
 
-
               <button
                 type="button"
                 class="btn-verifikasi"
@@ -637,7 +715,6 @@
               >
                 ✓ VERIFIKASI
               </button>
-
 
               <button
                 type="button"
@@ -672,16 +749,6 @@
                 Tindakan Admin
               </div>
 
-
-              <button
-                type="button"
-                class="btn-edit"
-                onclick="editData()"
-              >
-                ✏️ EDIT
-              </button>
-
-
               <button
                 type="button"
                 class="btn-publikasi"
@@ -690,13 +757,53 @@
                 🌐 PUBLIKASIKAN
               </button>
 
-
               <button
                 type="button"
                 class="btn-batal-verifikasi"
                 onclick="batalkanVerifikasi()"
               >
                 ↩ BATALKAN VERIFIKASI
+              </button>
+
+            </div>
+
+          `;
+
+        }
+
+
+
+        /*
+         * DIPUBLIKASIKAN
+         */
+
+        else if (
+          item.status ===
+          "DIPUBLIKASIKAN"
+        ) {
+
+          actionButtons = `
+
+            <div class="detail-actions">
+
+              <div class="detail-actions-title">
+                Tindakan Admin
+              </div>
+
+              <button
+                type="button"
+                class="btn-lihat"
+                onclick="lihatWebsite()"
+              >
+                👁 LIHAT DI WEBSITE
+              </button>
+
+              <button
+                type="button"
+                class="btn-tarik"
+                onclick="tarikPublikasi()"
+              >
+                ↩ TARIK DARI PUBLIKASI
               </button>
 
             </div>
@@ -724,15 +831,13 @@
                 Tindakan Admin
               </div>
 
-
               <button
                 type="button"
-                class="btn-edit"
-                onclick="editData()"
+                class="btn-verifikasi-ulang"
+                onclick="verifikasiUlang()"
               >
-                ✏️ EDIT DATA
+                🔄 VERIFIKASI ULANG
               </button>
-
 
             </div>
 
@@ -750,15 +855,11 @@
 
           <div class="card">
 
-
             <h2>
-
               ${escapeHtml(
                 item.nama_individu_group
               )}
-
             </h2>
-
 
 
             <div class="detail-row">
@@ -768,15 +869,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.id_pendataan
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -786,15 +884,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.kategori || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -804,15 +899,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.jenis_pelaku || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -822,15 +914,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.bidang_seni || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -840,15 +929,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.kecamatan || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -858,15 +944,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.desa_kelurahan || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -876,15 +959,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.alamat || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -894,15 +974,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.nomor_whatsapp || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -912,15 +989,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.email || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -930,15 +1004,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.deskripsi_singkat || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -948,15 +1019,12 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.nama_personil || "-"
                 )}
-
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -970,17 +1038,14 @@
                 <span
                   class="badge ${statusClass}"
                 >
-
                   ${escapeHtml(
                     item.status || "-"
                   )}
-
                 </span>
 
               </div>
 
             </div>
-
 
 
             <div class="detail-row">
@@ -990,11 +1055,9 @@
               </div>
 
               <div class="detail-value">
-
                 ${escapeHtml(
                   item.created_at || "-"
                 )}
-
               </div>
 
             </div>
@@ -1009,7 +1072,6 @@
 
 
       } catch (error) {
-
 
         hasil.innerHTML = `
 
@@ -1035,10 +1097,6 @@
     }
 
 
-
-    /* =========================
-       JALANKAN
-    ========================= */
 
     loadDetail();
 
