@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login Admin - DKD PPU</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .login-box h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .login-box p {
+      margin: 0 0 25px;
+      text-align: center;
+      color: #666;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 7px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1f2937;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error {
+      display: none;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 14px;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <h1>ADMIN DKD PPU</h1>
+
+    <p>Panel Administrasi Data Pelaku Seni dan Budaya</p>
+
+    <div id="errorMessage" class="error"></div>
+
+    <form id="loginForm">
+
+      <label for="password">
+        Password Admin
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Masukkan password admin"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginButton">
+        MASUK
+      </button>
+
+      <div id="loading" class="loading">
+        Memeriksa password...
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("loginButton");
+    const errorMessage = document.getElementById("errorMessage");
+    const loading = document.getElementById("loading");
+
+    form.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      errorMessage.style.display = "none";
+      errorMessage.textContent = "";
+
+      loginButton.disabled = true;
+      loading.style.display = "block";
+
+      try {
+
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            password: passwordInput.value
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+
+          throw new Error(
+            result.error || "Password admin tidak benar."
+          );
+
+        }
+
+        window.location.href =
+          "/admin/pendataan.html";
+
+      } catch (error) {
+
+        errorMessage.textContent =
+          error.message || "Login gagal.";
+
+        errorMessage.style.display = "block";
+
+      } finally {
+
+        loginButton.disabled = false;
+        loading.style.display = "none";
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>
