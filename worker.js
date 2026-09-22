@@ -903,6 +903,109 @@ if (
 
   }
 }
+    // =========================
+// API PUBLIK DATA PELAKU SENI
+// =========================
+if (
+  url.pathname === "/api/public/pendataan" &&
+  request.method === "GET"
+) {
+
+  try {
+
+    const id =
+      url.searchParams.get("id");
+
+    let result;
+
+    if (id) {
+
+      result =
+        await env.DB
+          .prepare(`
+            SELECT
+              id_pendataan,
+              nama_individu_group,
+              kategori,
+              jenis_pelaku,
+              bidang_seni,
+              kecamatan,
+              desa_kelurahan,
+              deskripsi_singkat,
+              nama_personil
+            FROM pendataan_pelaku_seni
+            WHERE
+              id_pendataan = ?
+              AND status = 'DIPUBLIKASIKAN'
+              AND is_published = 1
+            LIMIT 1
+          `)
+          .bind(id)
+          .first();
+
+      if (!result) {
+
+        return Response.json(
+          {
+            ok: false,
+            error:
+              "Data publik tidak ditemukan."
+          },
+          { status: 404 }
+        );
+
+      }
+
+      return Response.json({
+        ok: true,
+        data: result
+      });
+
+    }
+
+
+    result =
+      await env.DB
+        .prepare(`
+          SELECT
+            id_pendataan,
+            nama_individu_group,
+            kategori,
+            jenis_pelaku,
+            bidang_seni,
+            kecamatan,
+            desa_kelurahan,
+            deskripsi_singkat,
+            nama_personil
+          FROM pendataan_pelaku_seni
+          WHERE
+            status = 'DIPUBLIKASIKAN'
+            AND is_published = 1
+          ORDER BY
+            nama_individu_group ASC
+        `)
+        .all();
+
+
+    return Response.json({
+      ok: true,
+      data: result.results || []
+    });
+
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error: error.message
+      },
+      { status: 500 }
+    );
+
+  }
+
+}
 // =========================
 // WEBSITE STATIS
 // =========================
