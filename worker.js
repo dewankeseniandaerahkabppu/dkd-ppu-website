@@ -382,21 +382,18 @@ if (
 ) {
   try {
 
-    // Cek token admin
-    const authHeader = request.headers.get("Authorization");
+   // Cek session login admin
+const isAdmin = await verifyAdminSession(request, env);
 
-    if (
-      !authHeader ||
-      authHeader !== `Bearer ${env.ADMIN_API_TOKEN}`
-    ) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
+if (!isAdmin) {
+  return Response.json(
+    {
+      ok: false,
+      error: "Tidak memiliki akses."
+    },
+    { status: 401 }
+  );
+}
 
     const data = await request.json();
 
