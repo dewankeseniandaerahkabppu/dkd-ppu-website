@@ -1,18 +1,33 @@
 <!doctype html>
 <html lang="id">
+
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
 
   <title>Detail Pendataan - Admin DKD PPU</title>
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f6f8;
       color: #222;
     }
+
+    /* =========================
+       HEADER
+    ========================= */
 
     .header {
       background: #222;
@@ -22,6 +37,7 @@
 
     .header h1 {
       margin: 0 0 5px;
+      font-size: 24px;
     }
 
     .header p {
@@ -29,15 +45,27 @@
       opacity: .8;
     }
 
+    /* =========================
+       CONTAINER
+    ========================= */
+
     .container {
       max-width: 900px;
       margin: 30px auto;
       padding: 0 20px;
     }
 
+    /* =========================
+       TOOLBAR
+    ========================= */
+
     .toolbar {
       margin-bottom: 20px;
     }
+
+    /* =========================
+       BUTTON UMUM
+    ========================= */
 
     button {
       border: 0;
@@ -45,11 +73,31 @@
       padding: 10px 16px;
       cursor: pointer;
       font-weight: 600;
+      font-size: 14px;
+      margin-right: 8px;
+      margin-bottom: 8px;
     }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    /* =========================
+       BUTTON KEMBALI
+    ========================= */
 
     .btn-back {
       background: #ddd;
+      color: #222;
     }
+
+    /* =========================
+       CARD
+    ========================= */
 
     .card {
       background: white;
@@ -60,7 +108,13 @@
 
     .card h2 {
       margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 22px;
     }
+
+    /* =========================
+       DETAIL
+    ========================= */
 
     .detail-row {
       display: grid;
@@ -77,298 +131,254 @@
       word-break: break-word;
     }
 
+    /* =========================
+       STATUS
+    ========================= */
+
     .badge {
       display: inline-block;
       padding: 6px 10px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .badge-menunggu {
       background: #fff3cd;
       color: #856404;
     }
 
-    .loading,
-    .error {
+    .badge-terverifikasi {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .badge-ditolak {
+      background: #f8d7da;
+      color: #842029;
+    }
+
+    /* =========================
+       ACTION
+    ========================= */
+
+    .detail-actions {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .detail-actions-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    /* VERIFIKASI */
+
+    .btn-verifikasi {
+      background: #198754;
+      color: white;
+    }
+
+    /* TOLAK */
+
+    .btn-tolak {
+      background: #dc3545;
+      color: white;
+    }
+
+    /* EDIT */
+
+    .btn-edit {
+      background: #0d6efd;
+      color: white;
+    }
+
+    /* PUBLIKASI */
+
+    .btn-publikasi {
+      background: #6f42c1;
+      color: white;
+    }
+
+    /* BATAL VERIFIKASI */
+
+    .btn-batal-verifikasi {
+      background: #6c757d;
+      color: white;
+    }
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading {
       background: white;
       padding: 25px;
       border-radius: 12px;
     }
 
+    /* =========================
+       ERROR
+    ========================= */
+
     .error {
-      color: #721c24;
       background: #f8d7da;
+      color: #721c24;
+      padding: 25px;
+      border-radius: 12px;
     }
 
+    /* =========================
+       MOBILE
+    ========================= */
+
     @media (max-width: 650px) {
+
       .detail-row {
         grid-template-columns: 1fr;
         gap: 5px;
       }
+
+      .card {
+        padding: 18px;
+      }
+
+      .header {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      button {
+        width: 100%;
+        margin-right: 0;
+      }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
   <div class="header">
-    <h1>Detail Pendataan Pelaku Seni</h1>
-    <p>Admin DKD Kabupaten Penajam Paser Utara</p>
+
+    <h1>
+      Detail Pendataan Pelaku Seni
+    </h1>
+
+    <p>
+      Admin DKD Kabupaten Penajam Paser Utara
+    </p>
+
   </div>
+
+
+  <!-- =========================
+       CONTENT
+  ========================= -->
 
   <div class="container">
 
+
+    <!-- KEMBALI -->
+
     <div class="toolbar">
+
       <button
         type="button"
         class="btn-back"
-        onclick="window.location.href='/admin/pendataan.html'">
+        onclick="window.location.href='/admin/pendataan.html'"
+      >
         ← Kembali ke Data Pendataan
       </button>
+
     </div>
 
+
+    <!-- HASIL -->
+
     <div id="hasil">
+
       <div class="loading">
         Memuat detail data...
       </div>
+
     </div>
+
 
   </div>
 
+
+
   <script>
 
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
     function escapeHtml(value) {
+
       return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
     }
 
-    async function loadDetail() {
 
-      const hasil =
-        document.getElementById("hasil");
+
+    /* =========================
+       VERIFIKASI DATA
+    ========================= */
+
+    async function verifikasiData() {
 
       const params =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+          window.location.search
+        );
 
       const id =
         params.get("id");
 
-      if (!id) {
-
-        hasil.innerHTML = `
-          <div class="error">
-            Nomor pendataan tidak ditemukan.
-          </div>
-        `;
-
-        return;
-      }
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/pendataan?id=" +
-            encodeURIComponent(id)
-          );
-
-        const result =
-          await response.json();
-
-        if (!response.ok || !result.ok) {
-          throw new Error(
-            result.error ||
-            "Data tidak dapat ditemukan."
-          );
-        }
-
-        const item = result.data;
-
-        if (!item) {
-          throw new Error(
-            "Data pendataan tidak ditemukan."
-          );
-        }
-
-        hasil.innerHTML = `
-
-          <div class="card">
-
-            <h2>
-              ${escapeHtml(item.nama_individu_group)}
-            </h2>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Nomor Pendataan
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.id_pendataan)}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Kategori
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.kategori)}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Jenis Pelaku
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.jenis_pelaku || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Bidang Seni
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.bidang_seni || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Kecamatan
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.kecamatan || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Desa/Kelurahan
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.desa_kelurahan || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Alamat
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.alamat || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Nomor WhatsApp
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.nomor_whatsapp || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Email
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.email || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Deskripsi Singkat
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.deskripsi_singkat || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Nama Personil
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.nama_personil || "-")}
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Status
-              </div>
-              <div class="detail-value">
-                <span class="badge">
-                  ${escapeHtml(item.status || "-")}
-                </span>
-              </div>
-            </div>
-
-            <div class="detail-row">
-              <div class="detail-label">
-                Tanggal Masuk
-              </div>
-              <div class="detail-value">
-                ${escapeHtml(item.created_at || "-")}
-              </div>
-            </div>
-
-         <div class="detail-actions">
-  <button
-    type="button"
-    class="btn-verifikasi"
-    onclick="verifikasiData()">
-    ✓ VERIFIKASI
-  </button>
-
-  <button
-    type="button"
-    class="btn-tolak"
-    onclick="tolakData()">
-    ✕ TOLAK
-  </button>
-</div>
-          
-        `;
-
-      } catch (error) {
-
-        hasil.innerHTML = `
-          <div class="error">
-            <strong>Gagal memuat data.</strong>
-            <br><br>
-            ${escapeHtml(error.message)}
-          </div>
-        `;
-
-      }
-    }
-
-        async function verifikasiData() {
-
-      const params =
-        new URLSearchParams(window.location.search);
-
-      const id =
-        params.get("id");
 
       if (!id) {
-        alert("Nomor pendataan tidak ditemukan.");
+
+        alert(
+          "Nomor pendataan tidak ditemukan."
+        );
+
         return;
+
       }
 
-      if (!confirm(
-        "Apakah data ini benar-benar akan diverifikasi?"
-      )) {
+
+      const yakin =
+        confirm(
+          "Apakah data ini benar-benar akan diverifikasi?"
+        );
+
+
+      if (!yakin) {
+
         return;
+
       }
+
 
       try {
 
@@ -377,39 +387,56 @@
             "/api/pendataan/verifikasi",
             {
               method: "POST",
+
               headers: {
                 "Content-Type": "application/json"
               },
+
               body: JSON.stringify({
                 id_pendataan: id
               })
             }
           );
 
+
         const result =
           await response.json();
 
+
         if (!response.ok || !result.ok) {
+
           throw new Error(
             result.error ||
             "Verifikasi gagal."
           );
+
         }
 
-        alert("Data berhasil diverifikasi.");
+
+        alert(
+          "Data berhasil diverifikasi."
+        );
+
 
         window.location.reload();
+
 
       } catch (error) {
 
         alert(
-          "Gagal memverifikasi data: " +
+          "Gagal memverifikasi data:\n\n" +
           error.message
         );
 
       }
+
     }
 
+
+
+    /* =========================
+       TOLAK DATA
+    ========================= */
 
     async function tolakData() {
 
@@ -420,9 +447,605 @@
     }
 
 
+
+    /* =========================
+       EDIT DATA
+    ========================= */
+
+    function editData() {
+
+      alert(
+        "Fungsi EDIT akan kita aktifkan pada langkah berikutnya."
+      );
+
+    }
+
+
+
+    /* =========================
+       PUBLIKASIKAN DATA
+    ========================= */
+
+    function publikasikanData() {
+
+      alert(
+        "Fungsi PUBLIKASIKAN akan kita aktifkan pada langkah berikutnya."
+      );
+
+    }
+
+
+
+    /* =========================
+       BATALKAN VERIFIKASI
+    ========================= */
+
+    function batalkanVerifikasi() {
+
+      alert(
+        "Fungsi BATALKAN VERIFIKASI akan kita aktifkan pada langkah berikutnya."
+      );
+
+    }
+
+
+
+    /* =========================
+       LOAD DETAIL
+    ========================= */
+
+    async function loadDetail() {
+
+
+      const hasil =
+        document.getElementById("hasil");
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const id =
+        params.get("id");
+
+
+      if (!id) {
+
+        hasil.innerHTML = `
+
+          <div class="error">
+
+            Nomor pendataan tidak ditemukan.
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+
+      try {
+
+
+        /* =========================
+           AMBIL DATA
+        ========================= */
+
+        const response =
+          await fetch(
+            "/api/pendataan?id=" +
+            encodeURIComponent(id)
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.ok
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Data tidak dapat ditemukan."
+          );
+
+        }
+
+
+        const item =
+          result.data;
+
+
+        if (!item) {
+
+          throw new Error(
+            "Data pendataan tidak ditemukan."
+          );
+
+        }
+
+
+
+        /* =========================
+           STATUS BADGE
+        ========================= */
+
+        let statusClass =
+          "badge-menunggu";
+
+
+        if (
+          item.status ===
+          "TERVERIFIKASI"
+        ) {
+
+          statusClass =
+            "badge-terverifikasi";
+
+        }
+
+
+        if (
+          item.status ===
+          "DITOLAK"
+        ) {
+
+          statusClass =
+            "badge-ditolak";
+
+        }
+
+
+
+        /* =========================
+           TOMBOL AKSI
+        ========================= */
+
+        let actionButtons = "";
+
+
+        /*
+         * MENUNGGU VERIFIKASI
+         */
+
+        if (
+          item.status ===
+          "MENUNGGU VERIFIKASI"
+        ) {
+
+          actionButtons = `
+
+            <div class="detail-actions">
+
+              <div class="detail-actions-title">
+                Tindakan Admin
+              </div>
+
+
+              <button
+                type="button"
+                class="btn-verifikasi"
+                onclick="verifikasiData()"
+              >
+                ✓ VERIFIKASI
+              </button>
+
+
+              <button
+                type="button"
+                class="btn-tolak"
+                onclick="tolakData()"
+              >
+                ✕ TOLAK
+              </button>
+
+            </div>
+
+          `;
+
+        }
+
+
+
+        /*
+         * TERVERIFIKASI
+         */
+
+        else if (
+          item.status ===
+          "TERVERIFIKASI"
+        ) {
+
+          actionButtons = `
+
+            <div class="detail-actions">
+
+              <div class="detail-actions-title">
+                Tindakan Admin
+              </div>
+
+
+              <button
+                type="button"
+                class="btn-edit"
+                onclick="editData()"
+              >
+                ✏️ EDIT
+              </button>
+
+
+              <button
+                type="button"
+                class="btn-publikasi"
+                onclick="publikasikanData()"
+              >
+                🌐 PUBLIKASIKAN
+              </button>
+
+
+              <button
+                type="button"
+                class="btn-batal-verifikasi"
+                onclick="batalkanVerifikasi()"
+              >
+                ↩ BATALKAN VERIFIKASI
+              </button>
+
+            </div>
+
+          `;
+
+        }
+
+
+
+        /*
+         * DITOLAK
+         */
+
+        else if (
+          item.status ===
+          "DITOLAK"
+        ) {
+
+          actionButtons = `
+
+            <div class="detail-actions">
+
+              <div class="detail-actions-title">
+                Tindakan Admin
+              </div>
+
+
+              <button
+                type="button"
+                class="btn-edit"
+                onclick="editData()"
+              >
+                ✏️ EDIT DATA
+              </button>
+
+
+            </div>
+
+          `;
+
+        }
+
+
+
+        /* =========================
+           TAMPILKAN DATA
+        ========================= */
+
+        hasil.innerHTML = `
+
+          <div class="card">
+
+
+            <h2>
+
+              ${escapeHtml(
+                item.nama_individu_group
+              )}
+
+            </h2>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Nomor Pendataan
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.id_pendataan
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Kategori
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.kategori || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Jenis Pelaku
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.jenis_pelaku || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Bidang Seni
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.bidang_seni || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Kecamatan
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.kecamatan || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Desa/Kelurahan
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.desa_kelurahan || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Alamat
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.alamat || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Nomor WhatsApp
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.nomor_whatsapp || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Email
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.email || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Deskripsi Singkat
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.deskripsi_singkat || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Nama Personil
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.nama_personil || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Status
+              </div>
+
+              <div class="detail-value">
+
+                <span
+                  class="badge ${statusClass}"
+                >
+
+                  ${escapeHtml(
+                    item.status || "-"
+                  )}
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="detail-row">
+
+              <div class="detail-label">
+                Tanggal Masuk
+              </div>
+
+              <div class="detail-value">
+
+                ${escapeHtml(
+                  item.created_at || "-"
+                )}
+
+              </div>
+
+            </div>
+
+
+            ${actionButtons}
+
+
+          </div>
+
+        `;
+
+
+      } catch (error) {
+
+
+        hasil.innerHTML = `
+
+          <div class="error">
+
+            <strong>
+              Gagal memuat data.
+            </strong>
+
+            <br>
+            <br>
+
+            ${escapeHtml(
+              error.message
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+
+    /* =========================
+       JALANKAN
+    ========================= */
+
     loadDetail();
+
 
   </script>
 
+
 </body>
+
 </html>
