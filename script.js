@@ -113,3 +113,152 @@ document.querySelector(".modal-backdrop").onclick=closeModal;
 }
 init().catch(e=>{document.body.insertAdjacentHTML("afterbegin",`<div style="padding:16px;background:#fee;color:#900;text-align:center">Konten belum dapat dimuat. Pastikan website diakses melalui Netlify/GitHub, bukan file lokal.</div>`);console.error(e)});
 window.addEventListener("scroll",()=>$("#to-top").classList.toggle("show",scrollY>500));$("#to-top").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+
+
+// ===============================
+// PENDATAAN PELAKU SENI
+// ===============================
+
+window.pilihKategori = function(kategori) {
+  const formWrap = document.getElementById("form-pendataan");
+  const kategoriInput = document.getElementById("kategori");
+  const kategoriTerpilih = document.getElementById("kategoriTerpilih");
+
+  kategoriInput.value = kategori;
+
+  kategoriTerpilih.textContent =
+    "Kategori yang dipilih: " + kategori;
+
+  formWrap.style.display = "block";
+
+  formWrap.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+};
+
+
+const formPelakuSeni =
+  document.getElementById("formPelakuSeni");
+
+if (formPelakuSeni) {
+
+  formPelakuSeni.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const hasil =
+      document.getElementById("hasilPendataan");
+
+    const tombol =
+      formPelakuSeni.querySelector(".btn-submit");
+
+    tombol.disabled = true;
+    tombol.textContent = "MENGIRIM DATA...";
+
+    hasil.innerHTML =
+      "<p>Data sedang dikirim, mohon tunggu...</p>";
+
+    const data = {
+      nama_individu_group:
+        document.getElementById("nama_individu_group").value.trim(),
+
+      kategori:
+        document.getElementById("kategori").value,
+
+      jenis_pelaku:
+        document.getElementById("jenis_pelaku").value,
+
+      bidang_seni:
+        document.getElementById("bidang_seni").value,
+
+      kecamatan:
+        document.getElementById("kecamatan").value.trim(),
+
+      desa_kelurahan:
+        document.getElementById("desa_kelurahan").value.trim(),
+
+      alamat:
+        document.getElementById("alamat").value.trim(),
+
+      nomor_whatsapp:
+        document.getElementById("nomor_whatsapp").value.trim(),
+
+      email:
+        document.getElementById("email").value.trim(),
+
+      deskripsi_singkat:
+        document.getElementById("deskripsi_singkat").value.trim(),
+
+      foto_profil: null,
+
+      lampiran_identitas: null,
+
+      nama_personil: null
+    };
+
+    try {
+
+      const response = await fetch(
+        "/api/pendataan",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify(data)
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(
+          result.error || "Data gagal dikirim."
+        );
+      }
+
+      hasil.innerHTML = `
+        <div class="pendataan-success">
+          <strong>Data berhasil dikirim.</strong>
+          <p>
+            Nomor Pendataan:
+            <strong>${result.id_pendataan}</strong>
+          </p>
+          <p>
+            Status:
+            <strong>${result.status}</strong>
+          </p>
+          <p>
+            Data Anda akan melalui proses verifikasi
+            oleh Admin DKD PPU.
+          </p>
+        </div>
+      `;
+
+      formPelakuSeni.reset();
+
+      document.getElementById("kategori").value =
+        data.kategori;
+
+    } catch (error) {
+
+      hasil.innerHTML = `
+        <div class="pendataan-error">
+          <strong>Data belum berhasil dikirim.</strong>
+          <p>${error.message}</p>
+        </div>
+      `;
+
+    } finally {
+
+      tombol.disabled = false;
+      tombol.textContent = "KIRIM DATA PENDATAAN";
+
+    }
+
+  });
+
+}
