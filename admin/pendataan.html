@@ -1,1 +1,336 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
+  <title>Pendataan Pelaku Seni - Admin DKD PPU</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .header {
+      background: #222;
+      color: white;
+      padding: 20px 25px;
+    }
+
+    .header h1 {
+      margin: 0 0 5px;
+      font-size: 24px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: .8;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-refresh {
+      background: #222;
+      color: white;
+    }
+
+    .btn-back {
+      background: #ddd;
+      color: #222;
+    }
+
+    .status {
+      margin-bottom: 15px;
+      padding: 12px 15px;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f1f3;
+      font-size: 13px;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge-menunggu {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-terverifikasi {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-publikasi {
+      background: #cce5ff;
+      color: #004085;
+    }
+
+    .empty {
+      padding: 40px;
+      text-align: center;
+      color: #777;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Pendataan Pelaku Seni</h1>
+    <p>Admin DKD Kabupaten Penajam Paser Utara</p>
+  </div>
+
+  <div class="container">
+
+    <div class="toolbar">
+      <button
+        type="button"
+        class="btn-back"
+        onclick="window.location.href='/admin/'">
+        ← Kembali ke Admin
+      </button>
+
+      <button
+        type="button"
+        class="btn-refresh"
+        onclick="loadData()">
+        ↻ Muat Ulang Data
+      </button>
+    </div>
+
+    <div id="status" class="status">
+      Memuat data pendataan...
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Nomor Pendataan</th>
+            <th>Nama Individu / Group</th>
+            <th>Kategori</th>
+            <th>Jenis Pelaku</th>
+            <th>Bidang Seni</th>
+            <th>Kecamatan</th>
+            <th>Desa/Kelurahan</th>
+            <th>Status</th>
+            <th>Tanggal Masuk</th>
+          </tr>
+        </thead>
+
+        <tbody id="dataPendataan">
+          <tr>
+            <td colspan="10" class="empty">
+              Memuat data...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    async function loadData() {
+
+      const status = document.getElementById("status");
+      const tbody = document.getElementById("dataPendataan");
+
+      status.className = "status";
+      status.textContent = "Memuat data pendataan...";
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="empty">
+            Memuat data...
+          </td>
+        </tr>
+      `;
+
+      try {
+
+        const response = await fetch("/api/pendataan");
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.error || "Gagal mengambil data."
+          );
+        }
+
+        const data = result.data || [];
+
+        if (data.length === 0) {
+
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="10" class="empty">
+                Belum ada data pendataan.
+              </td>
+            </tr>
+          `;
+
+          status.textContent =
+            "Belum ada data pendataan.";
+
+          return;
+        }
+
+        tbody.innerHTML = data.map((item, index) => {
+
+          let badgeClass = "badge-menunggu";
+
+          if (item.status === "TERVERIFIKASI") {
+            badgeClass = "badge-terverifikasi";
+          }
+
+          if (item.status === "DIPUBLIKASIKAN") {
+            badgeClass = "badge-publikasi";
+          }
+
+          return `
+            <tr>
+
+              <td>${index + 1}</td>
+
+              <td>
+                <strong>${escapeHtml(item.id_pendataan)}</strong>
+              </td>
+
+              <td>
+                ${escapeHtml(item.nama_individu_group)}
+              </td>
+
+              <td>
+                ${escapeHtml(item.kategori || "-")}
+              </td>
+
+              <td>
+                ${escapeHtml(item.jenis_pelaku || "-")}
+              </td>
+
+              <td>
+                ${escapeHtml(item.bidang_seni || "-")}
+              </td>
+
+              <td>
+                ${escapeHtml(item.kecamatan || "-")}
+              </td>
+
+              <td>
+                ${escapeHtml(item.desa_kelurahan || "-")}
+              </td>
+
+              <td>
+                <span class="badge ${badgeClass}">
+                  ${escapeHtml(item.status || "-")}
+                </span>
+              </td>
+
+              <td>
+                ${escapeHtml(item.created_at || "-")}
+              </td>
+
+            </tr>
+          `;
+
+        }).join("");
+
+        status.textContent =
+          "Total data: " + data.length;
+
+      } catch (error) {
+
+        status.className = "status error";
+
+        status.textContent =
+          "Gagal mengambil data: " + error.message;
+
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="empty">
+              Data tidak dapat dimuat.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>
