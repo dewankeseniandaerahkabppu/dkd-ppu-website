@@ -124,7 +124,45 @@ export default {
         );
       }
     }
+// =========================
+// AMBIL DATA PENDATAAN
+// =========================
+if (url.pathname === "/api/pendataan" && request.method === "GET") {
+  try {
+    const result = await env.DB
+      .prepare(`
+        SELECT
+          id,
+          id_pendataan,
+          nama_individu_group,
+          kategori,
+          jenis_pelaku,
+          bidang_seni,
+          kecamatan,
+          desa_kelurahan,
+          status,
+          is_published,
+          created_at
+        FROM pendataan_pelaku_seni
+        ORDER BY id DESC
+      `)
+      .all();
 
+    return Response.json({
+      ok: true,
+      data: result.results
+    });
+
+  } catch (error) {
+    return Response.json(
+      {
+        ok: false,
+        error: error.message
+      },
+      { status: 500 }
+    );
+  }
+}
     // =========================
     // WEBSITE STATIS
     // =========================
