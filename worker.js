@@ -624,7 +624,89 @@ if (
   }
 }
 
+// =========================
+// TARIK DARI PUBLIKASI
+// =========================
+if (
+  url.pathname === "/api/pendataan/tarik-publikasi" &&
+  request.method === "POST"
+) {
+  try {
 
+    const isAdmin = await verifyAdminSession(request, env);
+
+    if (!isAdmin) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Tidak memiliki akses."
+        },
+        { status: 401 }
+      );
+    }
+
+    const data = await request.json();
+
+    if (!data.id_pendataan) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Nomor pendataan wajib diisi."
+        },
+        { status: 400 }
+      );
+    }
+
+    const now = new Date().toISOString();
+
+    const result = await env.DB
+      .prepare(`
+        UPDATE pendataan_pelaku_seni
+        SET
+          status = 'TERVERIFIKASI',
+          is_published = 0,
+          updated_at = ?
+        WHERE
+          id_pendataan = ?
+          AND status = 'DIPUBLIKASIKAN'
+      `)
+      .bind(
+        now,
+        data.id_pendataan
+      )
+      .run();
+
+    if (result.meta.changes === 0) {
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Data tidak ditemukan atau belum berstatus DIPUBLIKASIKAN."
+        },
+        { status: 400 }
+      );
+    }
+
+    return Response.json({
+      ok: true,
+      message:
+        "Data berhasil ditarik dari publikasi.",
+      id_pendataan: data.id_pendataan,
+      status: "TERVERIFIKASI"
+    });
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error: error.message
+      },
+      { status: 500 }
+    );
+
+  }
+}
 // =========================
 // WEBSITE STATIS
 // =========================
