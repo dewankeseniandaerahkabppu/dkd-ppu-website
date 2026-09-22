@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Detail Pendataan - Admin DKD PPU</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    .header {
+      background: #222;
+      color: white;
+      padding: 20px 25px;
+    }
+
+    .header h1 {
+      margin: 0 0 5px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: .8;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .toolbar {
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-back {
+      background: #ddd;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      border-bottom: 1px solid #eee;
+      padding: 13px 0;
+    }
+
+    .detail-label {
+      font-weight: 700;
+    }
+
+    .detail-value {
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .loading,
+    .error {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+    }
+
+    .error {
+      color: #721c24;
+      background: #f8d7da;
+    }
+
+    @media (max-width: 650px) {
+      .detail-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Detail Pendataan Pelaku Seni</h1>
+    <p>Admin DKD Kabupaten Penajam Paser Utara</p>
+  </div>
+
+  <div class="container">
+
+    <div class="toolbar">
+      <button
+        type="button"
+        class="btn-back"
+        onclick="window.location.href='/admin/pendataan.html'">
+        ← Kembali ke Data Pendataan
+      </button>
+    </div>
+
+    <div id="hasil">
+      <div class="loading">
+        Memuat detail data...
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    async function loadDetail() {
+
+      const hasil =
+        document.getElementById("hasil");
+
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const id =
+        params.get("id");
+
+      if (!id) {
+
+        hasil.innerHTML = `
+          <div class="error">
+            Nomor pendataan tidak ditemukan.
+          </div>
+        `;
+
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/pendataan?id=" +
+            encodeURIComponent(id)
+          );
+
+        const result =
+          await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.error ||
+            "Data tidak dapat ditemukan."
+          );
+        }
+
+        const item = result.data;
+
+        if (!item) {
+          throw new Error(
+            "Data pendataan tidak ditemukan."
+          );
+        }
+
+        hasil.innerHTML = `
+
+          <div class="card">
+
+            <h2>
+              ${escapeHtml(item.nama_individu_group)}
+            </h2>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Nomor Pendataan
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.id_pendataan)}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Kategori
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.kategori)}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Jenis Pelaku
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.jenis_pelaku || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Bidang Seni
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.bidang_seni || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Kecamatan
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.kecamatan || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Desa/Kelurahan
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.desa_kelurahan || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Alamat
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.alamat || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Nomor WhatsApp
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.nomor_whatsapp || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Email
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.email || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Deskripsi Singkat
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.deskripsi_singkat || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Nama Personil
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.nama_personil || "-")}
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Status
+              </div>
+              <div class="detail-value">
+                <span class="badge">
+                  ${escapeHtml(item.status || "-")}
+                </span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                Tanggal Masuk
+              </div>
+              <div class="detail-value">
+                ${escapeHtml(item.created_at || "-")}
+              </div>
+            </div>
+
+          </div>
+        `;
+
+      } catch (error) {
+
+        hasil.innerHTML = `
+          <div class="error">
+            <strong>Gagal memuat data.</strong>
+            <br><br>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+
+      }
+    }
+
+    loadDetail();
+
+  </script>
+
+</body>
+</html>
