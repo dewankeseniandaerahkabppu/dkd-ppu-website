@@ -359,17 +359,84 @@
 
 
 
-    /* =========================
-       TOLAK
-    ========================= */
+   /* =========================
+   TOLAK
+========================= */
 
-    function tolakData() {
+async function tolakData() {
 
-      alert(
-        "Fungsi TOLAK akan kita aktifkan berikutnya."
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const id =
+    params.get("id");
+
+  if (!id) {
+
+    alert(
+      "Nomor pendataan tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+  if (!confirm(
+    "Apakah data ini benar-benar akan ditolak?"
+  )) {
+
+    return;
+
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/pendataan/tolak",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            id_pendataan: id
+          })
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if (!response.ok || !result.ok) {
+
+      throw new Error(
+        result.error ||
+        "Penolakan data gagal."
       );
 
     }
+
+    alert(
+      "Data berhasil ditolak."
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+
+    alert(
+      "Gagal menolak data:\n\n" +
+      error.message
+    );
+
+  }
+
+}
 
 
 
