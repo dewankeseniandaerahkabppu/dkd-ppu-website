@@ -188,59 +188,6 @@ if (url.pathname === "/api/pendataan" && request.method === "GET") {
     // =========================
     // SEMUA DATA
     // =========================
- const id = url.searchParams.get("id");
-
-if (id) {
-
-  const result = await env.DB
-    .prepare(`
-      SELECT
-        id,
-        id_pendataan,
-        nama_individu_group,
-        kategori,
-        jenis_pelaku,
-        bidang_seni,
-        kecamatan,
-        desa_kelurahan,
-        alamat,
-        nomor_whatsapp,
-        email,
-        deskripsi_singkat,
-        foto_profil,
-        lampiran_identitas,
-        nama_personil,
-        status,
-        catatan_admin,
-        is_published,
-        created_at,
-        updated_at,
-        verified_at,
-        published_at
-      FROM pendataan_pelaku_seni
-      WHERE id_pendataan = ?
-      LIMIT 1
-    `)
-    .bind(id)
-    .first();
-
-  if (!result) {
-    return Response.json(
-      {
-        ok: false,
-        error: "Data pendataan tidak ditemukan."
-      },
-      { status: 404 }
-    );
-  }
-
-  return Response.json({
-    ok: true,
-    data: result
-  });
-
-}
-
 const result = await env.DB
   .prepare(`
     SELECT
@@ -275,6 +222,7 @@ return Response.json({
     { status: 500 }
   );
 
+  }
 }
     // =========================
     // WEBSITE STATIS
