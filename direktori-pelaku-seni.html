@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Direktori Pelaku Seni dan Budaya - DKD PPU</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .header {
+      background: #8b0000;
+      color: white;
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .header p {
+      margin: 10px 0 0;
+      font-size: 15px;
+      opacity: .9;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .intro h2 {
+      margin: 0 0 10px;
+      color: #8b0000;
+      font-size: 25px;
+    }
+
+    .intro p {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .pilihan {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .pilihan a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 40px 25px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      transition: transform .2s, box-shadow .2s;
+      border: 2px solid transparent;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,.12);
+      border-color: #8b0000;
+    }
+
+    .icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 25px;
+      color: #8b0000;
+    }
+
+    .card p {
+      margin: 0;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .jenis {
+      margin-top: 35px;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .jenis h3 {
+      margin-top: 0;
+      color: #8b0000;
+      text-align: center;
+    }
+
+    .jenis-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .jenis-item {
+      background: #f1f1f1;
+      padding: 9px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .back {
+      display: block;
+      width: fit-content;
+      margin: 30px auto 0;
+      background: #555;
+      color: white;
+      text-decoration: none;
+      padding: 11px 18px;
+      border-radius: 7px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      padding: 35px 20px;
+    }
+
+    @media (max-width: 650px) {
+
+      .pilihan {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .card {
+        padding: 30px 20px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <header class="header">
+
+    <h1>
+      DATA PELAKU SENI DAN BUDAYA
+    </h1>
+
+    <p>
+      Dewan Kesenian Daerah Kabupaten Penajam Paser Utara
+    </p>
+
+  </header>
+
+
+  <main class="container">
+
+
+    <section class="intro">
+
+      <h2>
+        Direktori Pelaku Seni dan Budaya
+      </h2>
+
+      <p>
+        Jelajahi data pelaku seni dan budaya
+        Kabupaten Penajam Paser Utara berdasarkan
+        kategori tradisional dan modern.
+      </p>
+
+    </section>
+
+
+    <section class="pilihan">
+
+
+      <a href="/direktori-pelaku-seni.html?kategori=TRADISIONAL">
+
+        <div class="card">
+
+          <div class="icon">
+            🎭
+          </div>
+
+          <h3>
+            TRADISIONAL
+          </h3>
+
+          <p>
+            Pelaku seni dan budaya yang
+            berkaitan dengan tradisi dan
+            warisan budaya daerah.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a href="/direktori-pelaku-seni.html?kategori=MODERN">
+
+        <div class="card">
+
+          <div class="icon">
+            🎨
+          </div>
+
+          <h3>
+            MODERN
+          </h3>
+
+          <p>
+            Pelaku seni dan budaya dengan
+            bentuk ekspresi dan perkembangan
+            seni masa kini.
+          </p>
+
+        </div>
+
+      </a>
+
+
+    </section>
+
+
+    <section class="jenis">
+
+      <h3>
+        Direktori Berdasarkan Jenis Pelaku
+      </h3>
+
+      <div class="jenis-list">
+
+        <span class="jenis-item">
+          Seniman
+        </span>
+
+        <span class="jenis-item">
+          Sanggar
+        </span>
+
+        <span class="jenis-item">
+          Komunitas
+        </span>
+
+        <span class="jenis-item">
+          Pelaku Budaya
+        </span>
+
+        <span class="jenis-item">
+          Band
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <a
+      href="/"
+      class="back"
+    >
+      ← Kembali ke Website DKD PPU
+    </a>
+
+
+  </main>
+
+
+  <footer class="footer">
+
+    © DKD PPU — Dewan Kesenian Daerah
+    Kabupaten Penajam Paser Utara
+
+  </footer>
+
+
+</body>
+
+</html>
