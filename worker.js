@@ -224,7 +224,90 @@ if (url.pathname === "/api/pendataan" && request.method === "GET") {
 
   }
 }
+// =========================
+// VERIFIKASI DATA PENDATAAN
+// =========================
+if (
+  url.pathname === "/api/pendataan/verifikasi" &&
+  request.method === "POST"
+) {
+  try {
 
+    // Cek token admin
+    const authHeader = request.headers.get("Authorization");
+
+    if (
+      !authHeader ||
+      authHeader !== `Bearer ${env.ADMIN_API_TOKEN}`
+    ) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Tidak memiliki akses."
+        },
+        { status: 401 }
+      );
+    }
+
+    const data = await request.json();
+
+    if (!data.id_pendataan) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Nomor pendataan wajib diisi."
+        },
+        { status: 400 }
+      );
+    }
+
+    const now = new Date().toISOString();
+
+    const result = await env.DB
+      .prepare(`
+        UPDATE pendataan_pelaku_seni
+        SET
+          status = 'TERVERIFIKASI',
+          verified_at = ?,
+          updated_at = ?
+        WHERE id_pendataan = ?
+      `)
+      .bind(
+        now,
+        now,
+        data.id_pendataan
+      )
+      .run();
+
+    if (result.meta.changes === 0) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Data pendataan tidak ditemukan."
+        },
+        { status: 404 }
+      );
+    }
+
+    return Response.json({
+      ok: true,
+      message: "Data berhasil diverifikasi.",
+      id_pendataan: data.id_pendataan,
+      status: "TERVERIFIKASI"
+    });
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error: error.message
+      },
+      { status: 500 }
+    );
+
+  }
+}
 // =========================
 // WEBSITE STATIS
 // =========================
