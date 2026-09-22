@@ -382,20 +382,22 @@ if (
 ) {
   try {
 
-   // Cek session login admin
-const isAdmin = await verifyAdminSession(request, env);
+    // Cek session login admin
+    const isAdmin =
+      await verifyAdminSession(request, env);
 
-if (!isAdmin) {
-  return Response.json(
-    {
-      ok: false,
-      error: "Tidak memiliki akses."
-    },
-    { status: 401 }
-  );
-}
+    if (!isAdmin) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Tidak memiliki akses."
+        },
+        { status: 401 }
+      );
+    }
 
-    const data = await request.json();
+    const data =
+      await request.json();
 
     if (!data.id_pendataan) {
       return Response.json(
@@ -407,39 +409,139 @@ if (!isAdmin) {
       );
     }
 
-    const now = new Date().toISOString();
+    const now =
+      new Date().toISOString();
 
-    const result = await env.DB
-      .prepare(`
-        UPDATE pendataan_pelaku_seni
-        SET
-          status = 'TERVERIFIKASI',
-          verified_at = ?,
-          updated_at = ?
-        WHERE id_pendataan = ?
-      `)
-      .bind(
-        now,
-        now,
-        data.id_pendataan
-      )
-      .run();
+    const result =
+      await env.DB
+        .prepare(`
+          UPDATE pendataan_pelaku_seni
+          SET
+            status = 'TERVERIFIKASI',
+            verified_at = ?,
+            updated_at = ?
+          WHERE
+            id_pendataan = ?
+            AND status = 'MENUNGGU VERIFIKASI'
+        `)
+        .bind(
+          now,
+          now,
+          data.id_pendataan
+        )
+        .run();
 
     if (result.meta.changes === 0) {
       return Response.json(
         {
           ok: false,
-          error: "Data pendataan tidak ditemukan."
+          error:
+            "Data tidak ditemukan atau belum berstatus MENUNGGU VERIFIKASI."
         },
-        { status: 404 }
+        { status: 400 }
       );
     }
 
     return Response.json({
       ok: true,
-      message: "Data berhasil diverifikasi.",
-      id_pendataan: data.id_pendataan,
-      status: "TERVERIFIKASI"
+      message:
+        "Data berhasil diverifikasi.",
+      id_pendataan:
+        data.id_pendataan,
+      status:
+        "TERVERIFIKASI"
+    });
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error: error.message
+      },
+      { status: 500 }
+    );
+
+  }
+}
+
+
+// =========================
+// TOLAK PENDATAAN
+// =========================
+if (
+  url.pathname === "/api/pendataan/tolak" &&
+  request.method === "POST"
+) {
+  try {
+
+    // Cek session login admin
+    const isAdmin =
+      await verifyAdminSession(request, env);
+
+    if (!isAdmin) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Tidak memiliki akses."
+        },
+        { status: 401 }
+      );
+    }
+
+    const data =
+      await request.json();
+
+    if (!data.id_pendataan) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Nomor pendataan wajib diisi."
+        },
+        { status: 400 }
+      );
+    }
+
+    const now =
+      new Date().toISOString();
+
+    const result =
+      await env.DB
+        .prepare(`
+          UPDATE pendataan_pelaku_seni
+          SET
+            status = 'DITOLAK',
+            is_published = 0,
+            updated_at = ?
+          WHERE
+            id_pendataan = ?
+            AND status = 'MENUNGGU VERIFIKASI'
+        `)
+        .bind(
+          now,
+          data.id_pendataan
+        )
+        .run();
+
+    if (result.meta.changes === 0) {
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Data tidak ditemukan atau statusnya bukan MENUNGGU VERIFIKASI."
+        },
+        { status: 400 }
+      );
+    }
+
+    return Response.json({
+      ok: true,
+      message:
+        "Data berhasil ditolak.",
+      id_pendataan:
+        data.id_pendataan,
+      status:
+        "DITOLAK"
     });
 
   } catch (error) {
