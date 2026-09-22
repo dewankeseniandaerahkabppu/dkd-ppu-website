@@ -320,7 +320,22 @@
               </div>
             </div>
 
-          </div>
+         <div class="detail-actions">
+  <button
+    type="button"
+    class="btn-verifikasi"
+    onclick="verifikasiData()">
+    ✓ VERIFIKASI
+  </button>
+
+  <button
+    type="button"
+    class="btn-tolak"
+    onclick="tolakData()">
+    ✕ TOLAK
+  </button>
+</div>
+          
         `;
 
       } catch (error) {
@@ -335,6 +350,75 @@
 
       }
     }
+
+        async function verifikasiData() {
+
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const id =
+        params.get("id");
+
+      if (!id) {
+        alert("Nomor pendataan tidak ditemukan.");
+        return;
+      }
+
+      if (!confirm(
+        "Apakah data ini benar-benar akan diverifikasi?"
+      )) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/pendataan/verifikasi",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                id_pendataan: id
+              })
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.error ||
+            "Verifikasi gagal."
+          );
+        }
+
+        alert("Data berhasil diverifikasi.");
+
+        window.location.reload();
+
+      } catch (error) {
+
+        alert(
+          "Gagal memverifikasi data: " +
+          error.message
+        );
+
+      }
+    }
+
+
+    async function tolakData() {
+
+      alert(
+        "Fungsi TOLAK akan kita aktifkan pada langkah berikutnya."
+      );
+
+    }
+
 
     loadDetail();
 
