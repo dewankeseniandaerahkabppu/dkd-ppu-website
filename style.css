@@ -559,3 +559,145 @@ section::after {
     text-align: center;
   }
 }
+
+
+
+/* =========================================================
+   IDENTITAS PASER — NAVBAR & SIGNATURE HERO
+   ========================================================= */
+
+/* NAVBAR — lebih terang dan elegan */
+.site-header .brand strong {
+  color: #f7e6b0 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.site-header .brand small {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.site-header .nav a {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.site-header .nav a:hover {
+  color: #e7bd62 !important;
+  transform: translateY(-1px);
+}
+
+/* Tombol menu mobile */
+.site-header .menu-toggle {
+  color: #f7e6b0 !important;
+}
+
+/* =========================================================
+   SIGNATURE IDENTITAS PENAJAM PASER UTARA
+   ========================================================= */
+
+.hero .art-caption {
+  position: absolute;
+  bottom: 28px;
+  right: 5%;
+  z-index: 5;
+
+  color: #f4d889 !important;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size: clamp(15px, 1.45vw, 21px);
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.65),
+    0 0 18px rgba(231, 189, 98, 0.18);
+
+  padding: 13px 28px 12px;
+
+  border-top: 1px solid rgba(231, 189, 98, 0.72);
+  border-bottom: 1px solid rgba(231, 189, 98, 0.72);
+
+  background: rgba(5, 28, 23, 0.34);
+
+  backdrop-filter: blur(4px);
+}
+
+/* Tulisan PENAJAM PASER UTARA */
+.hero .art-caption::after {
+  content: "PENAJAM PASER UTARA";
+
+  display: block;
+
+  margin-top: 5px;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size: clamp(13px, 1.15vw, 17px);
+  font-weight: 700;
+
+  letter-spacing: 0.28em;
+
+  color: #fff1bd;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+/* Ornamen kecil kiri-kanan signature */
+.hero .art-caption::before {
+  content: "✦";
+
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #e7bd62;
+  font-size: 17px;
+}
+
+.hero .art-caption {
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Tampilan HP */
+@media (max-width: 700px) {
+
+  .hero .art-caption {
+    right: 50%;
+    transform: translateX(50%);
+
+    bottom: 22px;
+
+    width: max-content;
+    max-width: 88%;
+
+    padding: 10px 18px;
+
+    font-size: 12px;
+    letter-spacing: 0.13em;
+  }
+
+  .hero .art-caption::after {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+}
+
