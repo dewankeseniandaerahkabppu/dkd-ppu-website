@@ -86,6 +86,71 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+
+
+    // =========================
+// LOGIN ADMIN
+// =========================
+if (
+  url.pathname === "/api/admin/login" &&
+  request.method === "POST"
+) {
+  try {
+    const data = await request.json();
+
+    if (!data.password) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Password wajib diisi."
+        },
+        { status: 400 }
+      );
+    }
+
+    if (data.password !== env.ADMIN_PASSWORD) {
+      return Response.json(
+        {
+          ok: false,
+          error: "Password admin salah."
+        },
+        { status: 401 }
+      );
+    }
+
+    const session = await createAdminSession(env);
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        message: "Login berhasil."
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Set-Cookie":
+            `admin_session=${session}; ` +
+            "HttpOnly; " +
+            "Secure; " +
+            "SameSite=Strict; " +
+            "Path=/; " +
+            "Max-Age=28800"
+        }
+      }
+    );
+
+  } catch (error) {
+    return Response.json(
+      {
+        ok: false,
+        error: "Permintaan login tidak valid."
+      },
+      { status: 400 }
+    );
+  }
+}
+
     // =========================
     // TEST KONEKSI DATABASE
     // =========================
