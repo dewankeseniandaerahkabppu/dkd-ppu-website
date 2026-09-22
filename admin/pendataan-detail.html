@@ -549,18 +549,77 @@
 
 
 
-    /* =========================
-       TARIK DARI PUBLIKASI
-    ========================= */
+   /* =========================
+   TARIK DARI PUBLIKASI
+========================= */
 
-    function tarikPublikasi() {
+async function tarikPublikasi() {
 
-      alert(
-        "Fungsi TARIK DARI PUBLIKASI akan kita aktifkan berikutnya."
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const id =
+    params.get("id");
+
+  if (!id) {
+    alert(
+      "Nomor pendataan tidak ditemukan."
+    );
+    return;
+  }
+
+  if (!confirm(
+    "Apakah data ini akan ditarik dari publikasi?"
+  )) {
+    return;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/pendataan/tarik-publikasi",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            id_pendataan: id
+          })
+        }
       );
 
+    const result =
+      await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(
+        result.error ||
+        "Gagal menarik data dari publikasi."
+      );
     }
 
+    alert(
+      "Data berhasil ditarik dari publikasi."
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+
+    alert(
+      "Gagal menarik data dari publikasi:\n\n" +
+      error.message
+    );
+
+  }
+
+}
 
 
     /* =========================
