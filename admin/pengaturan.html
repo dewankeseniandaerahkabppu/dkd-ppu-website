@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pengaturan Admin - DKD PPU</title>
+
+  <style>
+    :root {
+      --hijau: #0b3028;
+      --hijau-gelap: #061814;
+      --hijau-muda: #174b3b;
+      --emas: #c99a3d;
+      --emas-terang: #e7bd62;
+      --krem: #f5ead5;
+      --putih: #fffdf8;
+      --teal: #197c78;
+      --merah: #9f302c;
+      --abu: #6d746f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(
+          180deg,
+          var(--krem) 0%,
+          #faf5ea 55%,
+          #eee1ca 100%
+        );
+      color: #17211d;
+    }
+
+    .header {
+      background:
+        linear-gradient(
+          135deg,
+          var(--hijau-gelap),
+          var(--hijau) 60%,
+          var(--hijau-muda)
+        );
+      border-bottom: 2px solid var(--emas);
+      color: white;
+      padding: 22px 28px;
+      box-shadow: 0 8px 25px rgba(6, 24, 20, 0.18);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .header p {
+      margin: 7px 0 0;
+      color: #e7d9b8;
+      font-size: 14px;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 30px auto 50px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--hijau);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: var(--teal);
+    }
+
+    .card {
+      max-width: 720px;
+      background: rgba(255, 253, 248, 0.96);
+      border: 1px solid rgba(201, 154, 61, 0.35);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(6, 24, 20, 0.08);
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      color: var(--hijau);
+      font-size: 21px;
+    }
+
+    .description {
+      margin: 0 0 24px;
+      color: var(--abu);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--hijau);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #cfc8b9;
+      border-radius: 9px;
+      background: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--emas);
+      box-shadow: 0 0 0 3px rgba(201, 154, 61, 0.15);
+    }
+
+    .hint {
+      margin-top: 9px;
+      color: var(--abu);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      margin-top: 22px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .save {
+      background: var(--teal);
+      color: white;
+    }
+
+    .save:hover {
+      background: #146863;
+    }
+
+    .back-admin {
+      background: var(--hijau);
+      color: white;
+    }
+
+    .back-admin:hover {
+      background: var(--hijau-muda);
+    }
+
+    .status {
+      display: none;
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .status.success {
+      display: block;
+      background: #e7f3ed;
+      border: 1px solid #b8d8c7;
+      color: #185b3c;
+    }
+
+    .status.error {
+      display: block;
+      background: #f8e8e7;
+      border: 1px solid #e2b9b6;
+      color: #8a2723;
+    }
+
+    .current {
+      margin-top: 22px;
+      padding: 14px;
+      background: #f4efe4;
+      border-radius: 9px;
+      font-size: 14px;
+      color: #4d554f;
+    }
+
+    .current strong {
+      color: var(--hijau);
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        padding: 20px 18px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .container {
+        width: min(100% - 22px, 1100px);
+        margin-top: 22px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .input-group {
+        display: block;
+      }
+
+      .buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <h1>Pengaturan Admin DKD PPU</h1>
+      <p>Pengaturan nomor WhatsApp Admin untuk notifikasi pendataan</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <a href="/admin/pendataan.html" class="back">
+      ← Kembali ke Pendataan
+    </a>
+
+    <section class="card">
+
+      <h2>WhatsApp Admin</h2>
+
+      <p class="description">
+        Nomor ini digunakan sebagai tujuan notifikasi WhatsApp ketika ada
+        pendataan pelaku seni dan budaya baru yang masuk melalui website DKD PPU.
+      </p>
+
+      <label for="whatsapp">
+        Nomor WhatsApp Admin
+      </label>
+
+      <div class="input-group">
+        <input
+          type="text"
+          id="whatsapp"
+          placeholder="Contoh: 081234567890"
+          autocomplete="tel"
+        >
+      </div>
+
+      <div class="hint">
+        Masukkan nomor WhatsApp yang aktif. Bisa menggunakan format
+        <strong>08xxxxxxxxxx</strong> atau <strong>62xxxxxxxxxx</strong>.
+      </div>
+
+      <div class="buttons">
+        <button class="save" id="saveButton" onclick="simpanWhatsApp()">
+          SIMPAN NOMOR WHATSAPP
+        </button>
+
+        <button
+          class="back-admin"
+          onclick="window.location.href='/admin/pendataan.html'"
+        >
+          KEMBALI KE ADMIN
+        </button>
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <div class="current">
+        Nomor tersimpan:
+        <strong id="currentNumber">Memuat...</strong>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    async function loadWhatsApp() {
+      const status = document.getElementById("status");
+      const input = document.getElementById("whatsapp");
+      const current = document.getElementById("currentNumber");
+
+      try {
+        const response = await fetch("/api/admin/whatsapp", {
+          credentials: "include"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(
+            data.error || "Tidak dapat mengambil pengaturan WhatsApp."
+          );
+        }
+
+        input.value = data.whatsapp_admin || "";
+
+        current.textContent =
+          data.whatsapp_admin || "Belum diatur";
+
+      } catch (error) {
+        current.textContent = "Gagal memuat";
+
+        status.className = "status error";
+        status.textContent = error.message;
+      }
+    }
+
+    async function simpanWhatsApp() {
+      const input = document.getElementById("whatsapp");
+      const button = document.getElementById("saveButton");
+      const status = document.getElementById("status");
+      const current = document.getElementById("currentNumber");
+
+      const whatsapp = input.value.trim();
+
+      if (!whatsapp) {
+        status.className = "status error";
+        status.textContent =
+          "Nomor WhatsApp belum diisi.";
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "MENYIMPAN...";
+
+      try {
+        const response = await fetch("/api/admin/whatsapp", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            whatsapp_admin: whatsapp
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(
+            data.error || "Gagal menyimpan nomor WhatsApp."
+          );
+        }
+
+        input.value = data.whatsapp_admin || whatsapp;
+        current.textContent =
+          data.whatsapp_admin || whatsapp;
+
+        status.className = "status success";
+        status.textContent =
+          "Nomor WhatsApp Admin berhasil disimpan.";
+
+      } catch (error) {
+        status.className = "status error";
+        status.textContent = error.message;
+
+      } finally {
+        button.disabled = false;
+        button.textContent = "SIMPAN NOMOR WHATSAPP";
+      }
+    }
+
+    loadWhatsApp();
+  </script>
+
+</body>
+</html>
