@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Data Pelaku Seni - Admin DKD PPU</title>
+
+<style>
+
+body{
+ margin:0;
+ font-family:Arial;
+ background:#f5ead5;
+ color:#0b3028;
+}
+
+.header{
+ background:#0b3028;
+ color:#e7bd62;
+ padding:25px;
+ font-size:28px;
+ font-weight:bold;
+}
+
+.container{
+ padding:30px;
+}
+
+.card{
+ background:white;
+ border-radius:15px;
+ padding:25px;
+ box-shadow:0 5px 20px #0002;
+}
+
+button{
+ background:#0b3028;
+ color:white;
+ border:none;
+ padding:12px 20px;
+ border-radius:8px;
+ cursor:pointer;
+ margin-right:10px;
+}
+
+button:hover{
+ background:#174b3b;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ margin-top:20px;
+}
+
+th{
+ background:#0b3028;
+ color:#e7bd62;
+}
+
+td,th{
+ padding:12px;
+ border:1px solid #ddd;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+DATA PELAKU SENI
+<br>
+<small>Admin Dewan Kesenian Daerah PPU</small>
+</div>
+
+
+<div class="container">
+
+<div class="card">
+
+<button onclick="downloadPDF()">
+Download PDF
+</button>
+
+
+<button onclick="downloadCSV()">
+Download Excel / CSV
+</button>
+
+
+
+<table id="tabel">
+
+<thead>
+
+<tr>
+
+<th>No</th>
+<th>Nama Individu / Group</th>
+<th>Kategori</th>
+<th>Jenis Pelaku</th>
+<th>Bidang Seni</th>
+<th>Kecamatan</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+<tr>
+
+<td>1</td>
+<td>Contoh Data</td>
+<td>TRADISIONAL</td>
+<td>Seniman</td>
+<td>Tari</td>
+<td>Penajam</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+function downloadCSV(){
+
+let csv="No,Nama,Kategori,Jenis,Bidang,Kecamatan\n";
+
+csv+="1,Contoh Data,TRADISIONAL,Seniman,Tari,Penajam";
+
+
+let blob=new Blob([csv],{
+type:"text/csv"
+});
+
+
+let url=URL.createObjectURL(blob);
+
+
+let a=document.createElement("a");
+
+a.href=url;
+
+a.download="data-pelaku-seni.csv";
+
+a.click();
+
+
+}
+
+
+function downloadPDF(){
+
+alert("Fitur PDF akan diaktifkan pada tahap berikutnya");
+
+}
+
+
+</script>
+
+
+</body>
+</html>
