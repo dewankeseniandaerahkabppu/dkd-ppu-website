@@ -1272,3 +1272,204 @@ section::after {
     padding: 24px 20px 26px;
   }
 }
+
+/* =========================================================
+   GALERI — RUANG SENI VISUAL DKD PPU
+   ========================================================= */
+
+.gallery-grid {
+  gap: 20px !important;
+  margin-top: 48px !important;
+}
+
+.gallery-card {
+  position: relative;
+  min-height: 300px !important;
+  padding: 30px !important;
+  border: 1px solid rgba(201, 154, 61, 0.32) !important;
+  border-radius: 24px !important;
+  overflow: hidden;
+
+  box-shadow:
+    0 15px 35px rgba(6, 24, 20, 0.12) !important;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* Lapisan geometris artistik */
+.gallery-card::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -65px;
+  top: -65px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 28px rgba(255, 255, 255, 0.035),
+    0 0 0 56px rgba(255, 255, 255, 0.025);
+
+  pointer-events: none;
+}
+
+/* Garis artistik bagian bawah */
+.gallery-card::after {
+  content: "";
+  position: absolute;
+  left: 30px;
+  bottom: 22px;
+
+  width: 55px;
+  height: 2px;
+
+  background: rgba(255, 255, 255, 0.7);
+
+  transition:
+    width 0.35s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-9px) scale(1.015);
+
+  border-color: rgba(231, 189, 98, 0.7) !important;
+
+  box-shadow:
+    0 24px 50px rgba(6, 24, 20, 0.20) !important;
+}
+
+.gallery-card:hover::after {
+  width: 105px;
+}
+
+/* Ikon */
+.gallery-symbol {
+  position: relative;
+  z-index: 2;
+
+  font-size: 76px !important;
+
+  text-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.35s ease;
+}
+
+.gallery-card:hover .gallery-symbol {
+  transform:
+    translateY(-5px)
+    rotate(-3deg);
+}
+
+/* Judul kartu */
+.gallery-card strong {
+  position: relative;
+  z-index: 2;
+
+  max-width: 250px;
+
+  font:
+    700 25px/1.15 "Playfair Display",
+    Georgia,
+    serif !important;
+
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Deskripsi kecil */
+.gallery-card small {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 7px;
+
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Nuansa masing-masing kategori */
+.gallery-card.tone-red {
+  background:
+    linear-gradient(
+      145deg,
+      #6e2c24,
+      #a6532e 58%,
+      #bd7b35
+    ) !important;
+}
+
+.gallery-card.tone-gold {
+  background:
+    linear-gradient(
+      145deg,
+      #8a6729,
+      #c99a3d 55%,
+      #e0bd68
+    ) !important;
+}
+
+.gallery-card.tone-green {
+  background:
+    linear-gradient(
+      145deg,
+      #0e3528,
+      #205a42 55%,
+      #4d805c
+    ) !important;
+}
+
+.gallery-card.tone-dark {
+  background:
+    linear-gradient(
+      145deg,
+      #111916,
+      #3b3028 55%,
+      #704734
+    ) !important;
+}
+
+/* Judul Galeri */
+#galeri .section-heading h2 {
+  letter-spacing: -0.02em;
+}
+
+/* Tampilan tablet */
+@media (max-width: 900px) {
+  .gallery-grid {
+    gap: 16px;
+  }
+
+  .gallery-card {
+    min-height: 280px !important;
+  }
+}
+
+/* Tampilan HP */
+@media (max-width: 560px) {
+  .gallery-grid {
+    gap: 15px;
+    margin-top: 35px !important;
+  }
+
+  .gallery-card {
+    min-height: 260px !important;
+    padding: 25px !important;
+    border-radius: 20px !important;
+  }
+
+  .gallery-symbol {
+    font-size: 64px !important;
+  }
+
+  .gallery-card strong {
+    font-size: 22px !important;
+  }
+}
