@@ -14,7 +14,7 @@ async function createAdminSession(env) {
     new TextEncoder().encode(env.ADMIN_PASSWORD),
     { name: "HMAC", hash: "SHA-256" },
     false,
-        ["sign"]
+    ["sign"]
   );
 
   const signature = await crypto.subtle.sign(
@@ -86,76 +86,92 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-
-
     // =========================
-// LOGIN ADMIN
-// =========================
-if (
-  url.pathname === "/api/admin/login" &&
-  request.method === "POST"
-) {
-  try {
-    const data = await request.json();
+    // LOGIN ADMIN
+    // =========================
+    if (
+      url.pathname === "/api/admin/login" &&
+      request.method === "POST"
+    ) {
+      try {
+        const data = await request.json();
 
-    if (!data.password) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Password wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    if (data.password !== env.ADMIN_PASSWORD) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Password admin salah."
-        },
-        { status: 401 }
-      );
-    }
-
-    const session = await createAdminSession(env);
-
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        message: "Login berhasil."
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie":
-            `admin_session=${session}; ` +
-            "HttpOnly; " +
-            "Secure; " +
-            "SameSite=Strict; " +
-            "Path=/; " +
-            "Max-Age=28800"
+        if (!data.password) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Password wajib diisi."
+            },
+            { status: 400 }
+          );
         }
-      }
-    );
 
-  } catch (error) {
-    return Response.json(
-      {
-        ok: false,
-        error: "Permintaan login tidak valid."
-      },
-      { status: 400 }
-    );
-  }
-}
+        if (data.password !== env.ADMIN_PASSWORD) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Password admin salah."
+            },
+            { status: 401 }
+          );
+        }
+
+        const session = await createAdminSession(env);
+
+        return new Response(
+          JSON.stringify({
+            ok: true,
+            message: "Login berhasil."
+          }),
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json",
+              "Set-Cookie":
+                `admin_session=${session}; ` +
+                "HttpOnly; " +
+                "Secure; " +
+                "SameSite=Strict; " +
+                "Path=/; " +
+                "Max-Age=28800"
+            }
+          }
+        );
+
+      } catch (error) {
+        return Response.json(
+          {
+            ok: false,
+            error: "Permintaan login tidak valid."
+          },
+          { status: 400 }
+        );
+      }
+    }
 
     // =========================
     // TEST KONEKSI DATABASE
+    // KHUSUS ADMIN
     // =========================
-    if (url.pathname === "/api/db-test" && request.method === "GET") {
+    if (
+      url.pathname === "/api/db-test" &&
+      request.method === "GET"
+    ) {
       try {
+
+        const isAdmin =
+          await verifyAdminSession(request, env);
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
         const result = await env.DB
           .prepare("SELECT 1 AS ok")
           .first();
@@ -165,6 +181,7 @@ if (
           database: "dkd-ppu-data",
           result
         });
+
       } catch (error) {
         return Response.json(
           {
@@ -178,17 +195,26 @@ if (
 
     // =========================
     // SIMPAN DATA PENDATAAN
+    // PUBLIC
     // =========================
-    if (url.pathname === "/api/pendataan" && request.method === "POST") {
+    if (
+      url.pathname === "/api/pendataan" &&
+      request.method === "POST"
+    ) {
       try {
-        const data = await request.json();
 
-        // Validasi data wajib
+        const data =
+          await request.json();
+
+        // =========================
+        // VALIDASI DATA WAJIB
+        // =========================
         if (!data.nama_individu_group) {
           return Response.json(
             {
               ok: false,
-              error: "Nama Individu atau Group wajib diisi."
+              error:
+                "Nama Individu atau Group wajib diisi."
             },
             { status: 400 }
           );
@@ -198,22 +224,31 @@ if (
           return Response.json(
             {
               ok: false,
-              error: "Kategori Tradisional atau Modern wajib dipilih."
+              error:
+                "Kategori Tradisional atau Modern wajib dipilih."
             },
             { status: 400 }
           );
         }
 
-        // Membuat ID Pendataan
-        const tahun = new Date().getFullYear();
-        const kode = crypto.randomUUID()
-          .replace(/-/g, "")
-          .substring(0, 8)
-          .toUpperCase();
+        // =========================
+        // MEMBUAT ID PENDATAAN
+        // =========================
+        const tahun =
+          new Date().getFullYear();
 
-        const idPendataan = `DKD-${tahun}-${kode}`;
+        const kode =
+          crypto.randomUUID()
+            .replace(/-/g, "")
+            .substring(0, 8)
+            .toUpperCase();
 
-        // Simpan ke D1
+        const idPendataan =
+          `DKD-${tahun}-${kode}`;
+
+        // =========================
+        // SIMPAN KE D1
+        // =========================
         await env.DB
           .prepare(`
             INSERT INTO pendataan_pelaku_seni (
@@ -258,12 +293,16 @@ if (
 
         return Response.json({
           ok: true,
-          message: "Data pendataan berhasil diterima.",
-          id_pendataan: idPendataan,
-          status: "MENUNGGU VERIFIKASI"
+          message:
+            "Data pendataan berhasil diterima.",
+          id_pendataan:
+            idPendataan,
+          status:
+            "MENUNGGU VERIFIKASI"
         });
 
       } catch (error) {
+
         return Response.json(
           {
             ok: false,
@@ -271,746 +310,818 @@ if (
           },
           { status: 500 }
         );
+
       }
     }
-// =========================
-// AMBIL DATA PENDATAAN
-// =========================
-if (url.pathname === "/api/pendataan" && request.method === "GET") {
-  try {
-
-    const id = url.searchParams.get("id");
 
     // =========================
-    // DETAIL SATU DATA
+    // AMBIL DATA PENDATAAN
+    // KHUSUS ADMIN
     // =========================
-    if (id) {
-
-      const result = await env.DB
-        .prepare(`
-          SELECT
-            id,
-            id_pendataan,
-            nama_individu_group,
-            kategori,
-            jenis_pelaku,
-            bidang_seni,
-            kecamatan,
-            desa_kelurahan,
-            alamat,
-            nomor_whatsapp,
-            email,
-            deskripsi_singkat,
-            foto_profil,
-            lampiran_identitas,
-            nama_personil,
-            status,
-            catatan_admin,
-            is_published,
-            created_at,
-            updated_at,
-            verified_at,
-            published_at
-          FROM pendataan_pelaku_seni
-          WHERE id_pendataan = ?
-          LIMIT 1
-        `)
-        .bind(id)
-        .first();
-
-      if (!result) {
-        return Response.json(
-          {
-            ok: false,
-            error: "Data pendataan tidak ditemukan."
-          },
-          { status: 404 }
-        );
-      }
-
-      return Response.json({
-        ok: true,
-        data: result
-      });
-    }
-
-    // =========================
-    // SEMUA DATA
-    // =========================
-    const result = await env.DB
-      .prepare(`
-        SELECT
-          id,
-          id_pendataan,
-          nama_individu_group,
-          kategori,
-          jenis_pelaku,
-          bidang_seni,
-          kecamatan,
-          desa_kelurahan,
-          status,
-          is_published,
-          created_at
-        FROM pendataan_pelaku_seni
-        ORDER BY id DESC
-      `)
-      .all();
-
-    return Response.json({
-      ok: true,
-      data: result.results
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-// =========================
-// VERIFIKASI DATA PENDATAAN
-// =========================
-if (
-  url.pathname === "/api/pendataan/verifikasi" &&
-  request.method === "POST"
-) {
-  try {
-
-    // Cek session login admin
-    const isAdmin =
-      await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data =
-      await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now =
-      new Date().toISOString();
-
-    const result =
-      await env.DB
-        .prepare(`
-          UPDATE pendataan_pelaku_seni
-          SET
-            status = 'TERVERIFIKASI',
-            verified_at = ?,
-            updated_at = ?
-          WHERE
-            id_pendataan = ?
-            AND status = 'MENUNGGU VERIFIKASI'
-        `)
-        .bind(
-          now,
-          now,
-          data.id_pendataan
-        )
-        .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau belum berstatus MENUNGGU VERIFIKASI."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message:
-        "Data berhasil diverifikasi.",
-      id_pendataan:
-        data.id_pendataan,
-      status:
-        "TERVERIFIKASI"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-
-
-// =========================
-// TOLAK PENDATAAN
-// =========================
-if (
-  url.pathname === "/api/pendataan/tolak" &&
-  request.method === "POST"
-) {
-  try {
-
-    // Cek session login admin
-    const isAdmin =
-      await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data =
-      await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now =
-      new Date().toISOString();
-
-    const result =
-      await env.DB
-        .prepare(`
-          UPDATE pendataan_pelaku_seni
-          SET
-            status = 'DITOLAK',
-            is_published = 0,
-            updated_at = ?
-          WHERE
-            id_pendataan = ?
-            AND status = 'MENUNGGU VERIFIKASI'
-        `)
-        .bind(
-          now,
-          data.id_pendataan
-        )
-        .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau statusnya bukan MENUNGGU VERIFIKASI."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message:
-        "Data berhasil ditolak.",
-      id_pendataan:
-        data.id_pendataan,
-      status:
-        "DITOLAK"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-    // =========================
-// PUBLIKASIKAN DATA
-// =========================
-if (
-  url.pathname === "/api/pendataan/publikasikan" &&
-  request.method === "POST"
-) {
-  try {
-
-    const isAdmin = await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data = await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now = new Date().toISOString();
-
-    const result = await env.DB
-      .prepare(`
-        UPDATE pendataan_pelaku_seni
-        SET
-          status = 'DIPUBLIKASIKAN',
-          is_published = 1,
-          published_at = ?,
-          updated_at = ?
-        WHERE
-          id_pendataan = ?
-          AND status = 'TERVERIFIKASI'
-      `)
-      .bind(
-        now,
-        now,
-        data.id_pendataan
-      )
-      .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau belum berstatus TERVERIFIKASI."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message: "Data berhasil dipublikasikan.",
-      id_pendataan: data.id_pendataan,
-      status: "DIPUBLIKASIKAN"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-
-
-// =========================
-// BATALKAN VERIFIKASI
-// =========================
-if (
-  url.pathname === "/api/pendataan/batal-verifikasi" &&
-  request.method === "POST"
-) {
-  try {
-
-    const isAdmin = await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data = await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now = new Date().toISOString();
-
-    const result = await env.DB
-      .prepare(`
-        UPDATE pendataan_pelaku_seni
-        SET
-          status = 'MENUNGGU VERIFIKASI',
-          is_published = 0,
-          updated_at = ?
-        WHERE
-          id_pendataan = ?
-          AND status = 'TERVERIFIKASI'
-      `)
-      .bind(
-        now,
-        data.id_pendataan
-      )
-      .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau statusnya bukan TERVERIFIKASI."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message:
-        "Verifikasi berhasil dibatalkan.",
-      id_pendataan: data.id_pendataan,
-      status: "MENUNGGU VERIFIKASI"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-
-// =========================
-// TARIK DARI PUBLIKASI
-// =========================
-if (
-  url.pathname === "/api/pendataan/tarik-publikasi" &&
-  request.method === "POST"
-) {
-  try {
-
-    const isAdmin = await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data = await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now = new Date().toISOString();
-
-    const result = await env.DB
-      .prepare(`
-        UPDATE pendataan_pelaku_seni
-        SET
-          status = 'TERVERIFIKASI',
-          is_published = 0,
-          updated_at = ?
-        WHERE
-          id_pendataan = ?
-          AND status = 'DIPUBLIKASIKAN'
-      `)
-      .bind(
-        now,
-        data.id_pendataan
-      )
-      .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau belum berstatus DIPUBLIKASIKAN."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message:
-        "Data berhasil ditarik dari publikasi.",
-      id_pendataan: data.id_pendataan,
-      status: "TERVERIFIKASI"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-
-
-
-
-    // =========================
-// VERIFIKASI ULANG PENDATAAN
-// =========================
-if (
-  url.pathname === "/api/pendataan/verifikasi-ulang" &&
-  request.method === "POST"
-) {
-  try {
-
-    // Cek session login admin
-    const isAdmin =
-      await verifyAdminSession(request, env);
-
-    if (!isAdmin) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Tidak memiliki akses."
-        },
-        { status: 401 }
-      );
-    }
-
-    const data =
-      await request.json();
-
-    if (!data.id_pendataan) {
-      return Response.json(
-        {
-          ok: false,
-          error: "Nomor pendataan wajib diisi."
-        },
-        { status: 400 }
-      );
-    }
-
-    const now =
-      new Date().toISOString();
-
-    const result =
-      await env.DB
-        .prepare(`
-          UPDATE pendataan_pelaku_seni
-          SET
-            status = 'MENUNGGU VERIFIKASI',
-            is_published = 0,
-            updated_at = ?
-          WHERE
-            id_pendataan = ?
-            AND status = 'DITOLAK'
-        `)
-        .bind(
-          now,
-          data.id_pendataan
-        )
-        .run();
-
-    if (result.meta.changes === 0) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            "Data tidak ditemukan atau statusnya bukan DITOLAK."
-        },
-        { status: 400 }
-      );
-    }
-
-    return Response.json({
-      ok: true,
-      message:
-        "Data berhasil dikembalikan ke tahap verifikasi.",
-      id_pendataan:
-        data.id_pendataan,
-      status:
-        "MENUNGGU VERIFIKASI"
-    });
-
-  } catch (error) {
-
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
-
-  }
-}
-    // =========================
-// API PUBLIK DATA PELAKU SENI
-// =========================
-if (
-  url.pathname === "/api/public/pendataan" &&
-  request.method === "GET"
-) {
-
-  try {
-
-    const id =
-      url.searchParams.get("id");
-
-    let result;
-
-    if (id) {
-
-      result =
-        await env.DB
-          .prepare(`
-            SELECT
-              id_pendataan,
-              nama_individu_group,
-              kategori,
-              jenis_pelaku,
-              bidang_seni,
-              kecamatan,
-              desa_kelurahan,
-              deskripsi_singkat,
-              nama_personil
-            FROM pendataan_pelaku_seni
-            WHERE
-              id_pendataan = ?
-              AND status = 'DIPUBLIKASIKAN'
-              AND is_published = 1
-            LIMIT 1
-          `)
-          .bind(id)
-          .first();
-
-      if (!result) {
+    if (
+      url.pathname === "/api/pendataan" &&
+      request.method === "GET"
+    ) {
+      try {
+
+        // =========================
+        // CEK SESSION ADMIN
+        // =========================
+        const isAdmin =
+          await verifyAdminSession(request, env);
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const id =
+          url.searchParams.get("id");
+
+        // =========================
+        // DETAIL SATU DATA
+        // =========================
+        if (id) {
+
+          const result =
+            await env.DB
+              .prepare(`
+                SELECT
+                  id,
+                  id_pendataan,
+                  nama_individu_group,
+                  kategori,
+                  jenis_pelaku,
+                  bidang_seni,
+                  kecamatan,
+                  desa_kelurahan,
+                  alamat,
+                  nomor_whatsapp,
+                  email,
+                  deskripsi_singkat,
+                  foto_profil,
+                  lampiran_identitas,
+                  nama_personil,
+                  status,
+                  catatan_admin,
+                  is_published,
+                  created_at,
+                  updated_at,
+                  verified_at,
+                  published_at
+                FROM pendataan_pelaku_seni
+                WHERE id_pendataan = ?
+                LIMIT 1
+              `)
+              .bind(id)
+              .first();
+
+          if (!result) {
+            return Response.json(
+              {
+                ok: false,
+                error:
+                  "Data pendataan tidak ditemukan."
+              },
+              { status: 404 }
+            );
+          }
+
+          return Response.json({
+            ok: true,
+            data: result
+          });
+        }
+
+        // =========================
+        // SEMUA DATA
+        // =========================
+        const result =
+          await env.DB
+            .prepare(`
+              SELECT
+                id,
+                id_pendataan,
+                nama_individu_group,
+                kategori,
+                jenis_pelaku,
+                bidang_seni,
+                kecamatan,
+                desa_kelurahan,
+                status,
+                is_published,
+                created_at
+              FROM pendataan_pelaku_seni
+              ORDER BY id DESC
+            `)
+            .all();
+
+        return Response.json({
+          ok: true,
+          data: result.results
+        });
+
+      } catch (error) {
 
         return Response.json(
           {
             ok: false,
-            error:
-              "Data publik tidak ditemukan."
+            error: error.message
           },
-          { status: 404 }
+          { status: 500 }
         );
 
       }
-
-      return Response.json({
-        ok: true,
-        data: result
-      });
-
     }
 
+    // =========================
+    // VERIFIKASI DATA PENDATAAN
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/verifikasi" &&
+      request.method === "POST"
+    ) {
+      try {
 
-    result =
-      await env.DB
-        .prepare(`
-          SELECT
-            id_pendataan,
-            nama_individu_group,
-            kategori,
-            jenis_pelaku,
-            bidang_seni,
-            kecamatan,
-            desa_kelurahan,
-            deskripsi_singkat,
-            nama_personil
-          FROM pendataan_pelaku_seni
-          WHERE
-            status = 'DIPUBLIKASIKAN'
-            AND is_published = 1
-          ORDER BY
-            nama_individu_group ASC
-        `)
-        .all();
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
 
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
 
-    return Response.json({
-      ok: true,
-      data: result.results || []
-    });
+        const data =
+          await request.json();
 
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
 
-  } catch (error) {
+        const now =
+          new Date().toISOString();
 
-    return Response.json(
-      {
-        ok: false,
-        error: error.message
-      },
-      { status: 500 }
-    );
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'TERVERIFIKASI',
+                verified_at = ?,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'MENUNGGU VERIFIKASI'
+            `)
+            .bind(
+              now,
+              now,
+              data.id_pendataan
+            )
+            .run();
 
-  }
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau belum berstatus MENUNGGU VERIFIKASI."
+            },
+            { status: 400 }
+          );
+        }
 
-}
-// =========================
-// WEBSITE STATIS
-// =========================
-return env.ASSETS.fetch(request);
+        return Response.json({
+          ok: true,
+          message:
+            "Data berhasil diverifikasi.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "TERVERIFIKASI"
+        });
 
-    
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // TOLAK PENDATAAN
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/tolak" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        const now =
+          new Date().toISOString();
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'DITOLAK',
+                is_published = 0,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'MENUNGGU VERIFIKASI'
+            `)
+            .bind(
+              now,
+              data.id_pendataan
+            )
+            .run();
+
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau statusnya bukan MENUNGGU VERIFIKASI."
+            },
+            { status: 400 }
+          );
+        }
+
+        return Response.json({
+          ok: true,
+          message:
+            "Data berhasil ditolak.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "DITOLAK"
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // PUBLIKASIKAN DATA
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/publikasikan" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        const now =
+          new Date().toISOString();
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'DIPUBLIKASIKAN',
+                is_published = 1,
+                published_at = ?,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'TERVERIFIKASI'
+            `)
+            .bind(
+              now,
+              now,
+              data.id_pendataan
+            )
+            .run();
+
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau belum berstatus TERVERIFIKASI."
+            },
+            { status: 400 }
+          );
+        }
+
+        return Response.json({
+          ok: true,
+          message:
+            "Data berhasil dipublikasikan.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "DIPUBLIKASIKAN"
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // BATALKAN VERIFIKASI
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/batal-verifikasi" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        const now =
+          new Date().toISOString();
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'MENUNGGU VERIFIKASI',
+                is_published = 0,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'TERVERIFIKASI'
+            `)
+            .bind(
+              now,
+              data.id_pendataan
+            )
+            .run();
+
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau statusnya bukan TERVERIFIKASI."
+            },
+            { status: 400 }
+          );
+        }
+
+        return Response.json({
+          ok: true,
+          message:
+            "Verifikasi berhasil dibatalkan.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "MENUNGGU VERIFIKASI"
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // TARIK DARI PUBLIKASI
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/tarik-publikasi" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        const now =
+          new Date().toISOString();
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'TERVERIFIKASI',
+                is_published = 0,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'DIPUBLIKASIKAN'
+            `)
+            .bind(
+              now,
+              data.id_pendataan
+            )
+            .run();
+
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau belum berstatus DIPUBLIKASIKAN."
+            },
+            { status: 400 }
+          );
+        }
+
+        return Response.json({
+          ok: true,
+          message:
+            "Data berhasil ditarik dari publikasi.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "TERVERIFIKASI"
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // VERIFIKASI ULANG PENDATAAN
+    // =========================
+    if (
+      url.pathname === "/api/pendataan/verifikasi-ulang" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(
+            request,
+            env
+          );
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        if (!data.id_pendataan) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor pendataan wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        const now =
+          new Date().toISOString();
+
+        const result =
+          await env.DB
+            .prepare(`
+              UPDATE pendataan_pelaku_seni
+              SET
+                status = 'MENUNGGU VERIFIKASI',
+                is_published = 0,
+                updated_at = ?
+              WHERE
+                id_pendataan = ?
+                AND status = 'DITOLAK'
+            `)
+            .bind(
+              now,
+              data.id_pendataan
+            )
+            .run();
+
+        if (result.meta.changes === 0) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Data tidak ditemukan atau statusnya bukan DITOLAK."
+            },
+            { status: 400 }
+          );
+        }
+
+        return Response.json({
+          ok: true,
+          message:
+            "Data berhasil dikembalikan ke tahap verifikasi.",
+          id_pendataan:
+            data.id_pendataan,
+          status:
+            "MENUNGGU VERIFIKASI"
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // API PUBLIK DATA PELAKU SENI
+    // =========================
+    if (
+      url.pathname === "/api/public/pendataan" &&
+      request.method === "GET"
+    ) {
+
+      try {
+
+        const id =
+          url.searchParams.get("id");
+
+        let result;
+
+        // =========================
+        // DETAIL DATA PUBLIK
+        // =========================
+        if (id) {
+
+          result =
+            await env.DB
+              .prepare(`
+                SELECT
+                  id_pendataan,
+                  nama_individu_group,
+                  kategori,
+                  jenis_pelaku,
+                  bidang_seni,
+                  kecamatan,
+                  desa_kelurahan,
+                  deskripsi_singkat,
+                  nama_personil
+                FROM pendataan_pelaku_seni
+                WHERE
+                  id_pendataan = ?
+                  AND status = 'DIPUBLIKASIKAN'
+                  AND is_published = 1
+                LIMIT 1
+              `)
+              .bind(id)
+              .first();
+
+          if (!result) {
+
+            return Response.json(
+              {
+                ok: false,
+                error:
+                  "Data publik tidak ditemukan."
+              },
+              { status: 404 }
+            );
+
+          }
+
+          return Response.json({
+            ok: true,
+            data: result
+          });
+
+        }
+
+        // =========================
+        // SEMUA DATA PUBLIK
+        // =========================
+        result =
+          await env.DB
+            .prepare(`
+              SELECT
+                id_pendataan,
+                nama_individu_group,
+                kategori,
+                jenis_pelaku,
+                bidang_seni,
+                kecamatan,
+                desa_kelurahan,
+                deskripsi_singkat,
+                nama_personil
+              FROM pendataan_pelaku_seni
+              WHERE
+                status = 'DIPUBLIKASIKAN'
+                AND is_published = 1
+              ORDER BY
+                nama_individu_group ASC
+            `)
+            .all();
+
+        return Response.json({
+          ok: true,
+          data:
+            result.results || []
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
+    // WEBSITE STATIS
+    // =========================
+    return env.ASSETS.fetch(request);
   }
 };
