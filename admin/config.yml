@@ -10,111 +10,228 @@ public_folder: "/assets/uploads"
 
 locale: "id"
 
+
 collections:
+
+# =========================
+# PENGATURAN WEBSITE
+# =========================
 
   - name: "site"
     label: "Pengaturan Website"
     files:
+
       - label: "Beranda & Profil"
         name: "site"
         file: "content/site.json"
         format: "json"
-        fields:
-          - { label: "Nama Singkat", name: "shortName", widget: "string" }
-          - { label: "Logo Website", name: "logo", widget: "image", required: false }
-          - { label: "Nama Lengkap", name: "name", widget: "string" }
-          - { label: "Tagline", name: "tagline", widget: "string" }
-          - { label: "Judul Hero", name: "heroTitle", widget: "string" }
-          - { label: "Deskripsi Hero", name: "heroText", widget: "text" }
-          - { label: "Profil DKD", name: "profileText", widget: "markdown" }
 
+        fields:
+
+          - label: "Nama Singkat"
+            name: "shortName"
+            widget: "string"
+
+          - label: "Logo Website"
+            name: "logo"
+            widget: "image"
+            required: false
+
+          - label: "Nama Lengkap"
+            name: "name"
+            widget: "string"
+
+          - label: "Tagline"
+            name: "tagline"
+            widget: "string"
+
+          - label: "Judul Hero"
+            name: "heroTitle"
+            widget: "string"
+
+          - label: "Deskripsi Hero"
+            name: "heroText"
+            widget: "text"
+
+          - label: "Profil DKD"
+            name: "profileText"
+            widget: "markdown"
+
+
+
+# =========================
+# PROGRAM
+# =========================
 
   - name: "program"
     label: "Program"
     files:
+
       - label: "Daftar Program"
         name: "program"
         file: "content/programs.json"
         format: "json"
+
         fields:
+
           - label: "Program"
             name: "programs"
             widget: "list"
-            fields:
-              - { label: "Nama Program", name: "title", widget: "string" }
-              - { label: "Deskripsi", name: "text", widget: "text" }
 
+            fields:
+
+              - label: "Nama Program"
+                name: "title"
+                widget: "string"
+
+              - label: "Deskripsi"
+                name: "text"
+                widget: "text"
+
+
+
+# =========================
+# BERITA
+# =========================
 
   - name: "news"
     label: "Berita"
     files:
+
       - label: "Daftar Berita"
         name: "news"
         file: "content/news.json"
         format: "json"
+
         fields:
+
           - label: "Berita"
             name: "news"
             widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime" }
-              - { label: "Kategori", name: "category", widget: "string" }
-              - { label: "Isi", name: "body", widget: "markdown" }
 
+            fields:
+
+              - label: "Judul"
+                name: "title"
+                widget: "string"
+
+              - label: "Tanggal"
+                name: "date"
+                widget: "datetime"
+
+              - label: "Kategori"
+                name: "category"
+                widget: "string"
+
+              - label: "Isi"
+                name: "body"
+                widget: "markdown"
+
+
+
+# =========================
+# GALERI
+# =========================
 
   - name: "gallery"
     label: "Galeri"
     files:
+
       - label: "Galeri Foto"
         name: "gallery"
         file: "content/gallery.json"
         format: "json"
+
         fields:
+
           - label: "Foto"
             name: "gallery"
             widget: "list"
-            fields:
-              - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Foto", name: "image", widget: "image" }
 
+            fields:
+
+              - label: "Judul"
+                name: "title"
+                widget: "string"
+
+              - label: "Foto"
+                name: "image"
+                widget: "image"
+
+
+
+# =========================
+# AGENDA
+# =========================
 
   - name: "agenda"
     label: "Agenda"
     files:
+
       - label: "Agenda Kegiatan"
         name: "agenda"
         file: "content/agenda.json"
         format: "json"
+
         fields:
+
           - label: "Agenda"
             name: "agenda"
             widget: "list"
-            fields:
-              - { label: "Tanggal", name: "date", widget: "datetime" }
-              - { label: "Nama Kegiatan", name: "title", widget: "string" }
-              - { label: "Lokasi", name: "place", widget: "string" }
 
+            fields:
+
+              - label: "Tanggal"
+                name: "date"
+                widget: "datetime"
+
+              - label: "Nama Kegiatan"
+                name: "title"
+                widget: "string"
+
+              - label: "Lokasi"
+                name: "place"
+                widget: "string"
+
+
+
+# =========================
+# KONTAK
+# =========================
 
   - name: "contact"
     label: "Kontak & Media Sosial"
+
     files:
+
       - label: "Kontak"
         name: "contact"
         file: "content/contact.json"
         format: "json"
+
         fields:
-          - { label: "Alamat", name: "address", widget: "text" }
-          - { label: "WhatsApp", name: "phone", widget: "string" }
-          - { label: "Email", name: "email", widget: "string" }
+
+          - label: "Alamat"
+            name: "address"
+            widget: "text"
+
+          - label: "WhatsApp"
+            name: "phone"
+            widget: "string"
+
+          - label: "Email"
+            name: "email"
+            widget: "string"
 
 
-  # ==========================
-  # PENDATAAN PELAKU SENI
-  # ==========================
+
+# =========================
+# PENDATAAN PELAKU SENI DAN BUDAYA
+# =========================
 
   - name: "pendataan"
     label: "Pendataan Pelaku Seni"
+
     files:
 
       - label: "Data Pelaku Seni"
@@ -122,62 +239,61 @@ collections:
         file: "content/pendataan.json"
         format: "json"
 
+
         fields:
 
-          - label: "Data Pelaku Seni"
+
+          - label: "Data"
             name: "data"
             widget: "list"
 
+
             fields:
 
-              - { label: "Nomor Pendataan", name: "id", widget: "string" }
 
-              - { 
-                  label: "Nama Individu / Group",
-                  name: "nama",
-                  widget: "string"
-                }
+              - label: "Nomor Pendataan"
+                name: "id"
+                widget: "string"
 
-              - {
-                  label: "Kategori",
-                  name: "kategori",
-                  widget: "select",
-                  options:
-                    - TRADISIONAL
-                    - MODERN
-                }
 
-              - {
-                  label: "Jenis Pelaku",
-                  name: "jenis",
-                  widget: "string"
-                }
+              - label: "Nama Individu / Group"
+                name: "nama"
+                widget: "string"
 
-              - {
-                  label: "Bidang Seni",
-                  name: "bidang",
-                  widget: "string"
-                }
 
-              - {
-                  label: "Kecamatan",
-                  name: "kecamatan",
-                  widget: "string"
-                }
+              - label: "Kategori"
+                name: "kategori"
+                widget: "select"
+                options:
+                  - "TRADISIONAL"
+                  - "MODERN"
 
-              - {
-                  label: "Desa/Kelurahan",
-                  name: "desa",
-                  widget: "string"
-                }
 
-              - {
-                  label: "Status",
-                  name: "status",
-                  widget: "select",
-                  options:
-                    - MENUNGGU VERIFIKASI
-                    - TERVERIFIKASI
-                    - DITOLAK
-                    - DIPUBLIKASIKAN
-                }
+              - label: "Jenis Pelaku"
+                name: "jenis"
+                widget: "string"
+
+
+              - label: "Bidang Seni"
+                name: "bidang"
+                widget: "string"
+
+
+              - label: "Kecamatan"
+                name: "kecamatan"
+                widget: "string"
+
+
+              - label: "Desa/Kelurahan"
+                name: "desa"
+                widget: "string"
+
+
+              - label: "Status"
+                name: "status"
+                widget: "select"
+                options:
+                  - "MENUNGGU VERIFIKASI"
+                  - "TERVERIFIKASI"
+                  - "DITOLAK"
+                  - "DIPUBLIKASIKAN"
