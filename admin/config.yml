@@ -5,6 +5,7 @@ backend:
   site_domain: dkd-ppu-website.netlify.app
   base_url: https://dkd-ppu-oauth.dewankeseniandaerah-kabppu.workers.dev
 
+
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
@@ -13,12 +14,14 @@ locale: "id"
 
 collections:
 
+
 # =========================
 # PENGATURAN WEBSITE
 # =========================
 
   - name: "site"
     label: "Pengaturan Website"
+
     files:
 
       - label: "Beranda & Profil"
@@ -65,6 +68,7 @@ collections:
 
   - name: "program"
     label: "Program"
+
     files:
 
       - label: "Daftar Program"
@@ -96,6 +100,7 @@ collections:
 
   - name: "news"
     label: "Berita"
+
     files:
 
       - label: "Daftar Berita"
@@ -135,6 +140,7 @@ collections:
 
   - name: "gallery"
     label: "Galeri"
+
     files:
 
       - label: "Galeri Foto"
@@ -144,7 +150,7 @@ collections:
 
         fields:
 
-          - label: "Foto"
+          - label: "Galeri"
             name: "gallery"
             widget: "list"
 
@@ -166,6 +172,7 @@ collections:
 
   - name: "agenda"
     label: "Agenda"
+
     files:
 
       - label: "Agenda Kegiatan"
@@ -222,78 +229,3 @@ collections:
           - label: "Email"
             name: "email"
             widget: "string"
-
-
-
-# =========================
-# PENDATAAN PELAKU SENI DAN BUDAYA
-# =========================
-
-  - name: "pendataan"
-    label: "Pendataan Pelaku Seni"
-
-    files:
-
-      - label: "Data Pelaku Seni"
-        name: "pendataan"
-        file: "content/pendataan.json"
-        format: "json"
-
-
-        fields:
-
-
-          - label: "Data"
-            name: "data"
-            widget: "list"
-
-
-            fields:
-
-
-              - label: "Nomor Pendataan"
-                name: "id"
-                widget: "string"
-
-
-              - label: "Nama Individu / Group"
-                name: "nama"
-                widget: "string"
-
-
-              - label: "Kategori"
-                name: "kategori"
-                widget: "select"
-                options:
-                  - "TRADISIONAL"
-                  - "MODERN"
-
-
-              - label: "Jenis Pelaku"
-                name: "jenis"
-                widget: "string"
-
-
-              - label: "Bidang Seni"
-                name: "bidang"
-                widget: "string"
-
-
-              - label: "Kecamatan"
-                name: "kecamatan"
-                widget: "string"
-
-
-              - label: "Desa/Kelurahan"
-                name: "desa"
-                widget: "string"
-
-
-              - label: "Status"
-                name: "status"
-                widget: "select"
-                options:
-                  - "MENUNGGU VERIFIKASI"
-                  - "TERVERIFIKASI"
-                  - "DITOLAK"
-                  - "DIPUBLIKASIKAN"
