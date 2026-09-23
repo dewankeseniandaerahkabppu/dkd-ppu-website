@@ -1745,3 +1745,259 @@ section::after {
     font-size: 13px !important;
   }
 }
+
+/* =========================================================
+   KONTAK — RUANG BERSAMA DKD PPU
+   ========================================================= */
+
+.contact-section {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(201, 154, 61, 0.18),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #061814 0%,
+      #0b3028 55%,
+      #123d32 100%
+    ) !important;
+
+  color: #fff !important;
+}
+
+/* Ornamen lingkaran artistik */
+.contact-section::before {
+  content: "";
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  right: -190px;
+  top: -150px;
+
+  border: 1px solid rgba(231, 189, 98, 0.22);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 35px rgba(231, 189, 98, 0.035),
+    0 0 0 70px rgba(231, 189, 98, 0.025),
+    0 0 0 105px rgba(231, 189, 98, 0.018);
+
+  pointer-events: none;
+}
+
+/* Ornamen garis */
+.contact-section::after {
+  content: "";
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  left: -150px;
+  bottom: -150px;
+
+  border: 1px solid rgba(25, 124, 120, 0.35);
+  transform: rotate(45deg);
+
+  pointer-events: none;
+}
+
+/* Kartu kontak */
+.contact-card {
+  position: relative;
+  z-index: 2;
+
+  padding: 55px !important;
+
+  border: 1px solid rgba(231, 189, 98, 0.22);
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(8px);
+}
+
+/* Label KONTAK */
+.contact-section .eyebrow {
+  color: #e7bd62 !important;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Judul */
+.contact-section h2 {
+  color: #fff !important;
+
+  font:
+    700 clamp(34px, 4vw, 54px)/1.05
+    "Playfair Display",
+    Georgia,
+    serif !important;
+
+  letter-spacing: -0.025em;
+
+  margin-top: 14px;
+}
+
+/* Garis bawah judul */
+.contact-section h2::after {
+  content: "";
+
+  display: block;
+
+  width: 70px;
+  height: 3px;
+
+  margin-top: 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #e7bd62,
+      #197c78
+    );
+}
+
+/* Paragraf */
+.contact-section #contact-intro {
+  max-width: 560px;
+
+  margin-top: 22px;
+
+  color: rgba(255,255,255,0.78) !important;
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* Detail kontak */
+.contact-details {
+  position: relative;
+  z-index: 3;
+
+  gap: 0 !important;
+
+  background:
+    rgba(3, 18, 15, 0.28);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 20px;
+
+  padding: 10px 22px;
+}
+
+/* Setiap item kontak */
+.contact-details div {
+  border-top:
+    1px solid rgba(255,255,255,0.12) !important;
+
+  padding:
+    18px 0 !important;
+}
+
+.contact-details div:first-child {
+  border-top: 0 !important;
+}
+
+/* Label kecil */
+.contact-details small {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #e7bd62 !important;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+/* Isi kontak */
+.contact-details a,
+.contact-details span,
+.contact-details strong,
+.contact-details p {
+  color: rgba(255,255,255,0.92) !important;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* Link kontak */
+.contact-details a {
+  text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    padding-left 0.25s ease;
+}
+
+.contact-details a:hover {
+  color: #e7bd62 !important;
+
+  padding-left: 4px;
+}
+
+/* Tampilan tablet */
+@media (max-width: 900px) {
+  .contact-card {
+    padding: 40px !important;
+  }
+
+  .contact-section::before {
+    width: 330px;
+    height: 330px;
+  }
+}
+
+/* Tampilan HP */
+@media (max-width: 560px) {
+  .contact-card {
+    padding: 28px 22px !important;
+
+    border-radius: 22px;
+  }
+
+  .contact-section h2 {
+    font-size: 36px !important;
+  }
+
+  .contact-section #contact-intro {
+    font-size: 14px;
+  }
+
+  .contact-details {
+    padding: 8px 18px;
+  }
+
+  .contact-details div {
+    padding: 15px 0 !important;
+  }
+}
