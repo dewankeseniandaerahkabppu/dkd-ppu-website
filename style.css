@@ -2270,3 +2270,36 @@ section::after {
     height: 36px;
   }
 }
+
+/* Perbaikan tombol Media Sosial */
+.site-footer .social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.site-footer .social-links a {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0;
+
+  padding: 9px 15px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(231,189,98,0.35);
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: #f7e6b0 !important;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  text-decoration: none;
+}
