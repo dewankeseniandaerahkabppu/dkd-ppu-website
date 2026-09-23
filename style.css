@@ -2382,3 +2382,12 @@ section::after {
   overflow-wrap: normal;
   word-break: normal;
 }
+
+/* Email tampil satu baris */
+.contact-details div:nth-child(3) a {
+  display: block;
+  font-size: 10.5px !important;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: visible;
+}
