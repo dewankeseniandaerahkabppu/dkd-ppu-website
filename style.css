@@ -2401,3 +2401,31 @@ section::after {
   overflow: visible !important;
   word-break: normal !important;
 }
+
+
+/* Perbaikan menu mobile */
+@media (max-width: 700px) {
+  .site-header .nav {
+    background: rgba(6, 24, 20, 0.98) !important;
+    border: 1px solid rgba(231, 189, 98, 0.35);
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    padding: 14px 18px !important;
+  }
+
+  .site-header .nav a {
+    display: block;
+    color: #ffffff !important;
+    padding: 11px 8px !important;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .site-header .nav a:last-child {
+    border-bottom: 0;
+  }
+
+  .site-header .nav a:hover {
+    color: #e7bd62 !important;
+  }
+}
