@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "id": "001",
+      "nama": "Contoh Sanggar Seni",
+      "kategori": "TRADISIONAL",
+      "jenis": "Sanggar",
+      "bidang": "Tari",
+      "kecamatan": "Penajam",
+      "desa": "Nenang",
+      "status": "TERVERIFIKASI"
+    }
+  ]
+}
