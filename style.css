@@ -918,3 +918,212 @@ section::after {
     border-right: 1px solid rgba(201, 154, 61, 0.25);
   }
 }
+
+/* =========================================================
+   PROGRAM — KATALOG KEGIATAN SENI DKD PPU
+   ========================================================= */
+
+#program {
+  position: relative;
+  background:
+    linear-gradient(
+      135deg,
+      #f8f0e2 0%,
+      #f3e7d2 55%,
+      #eee0c7 100%
+    ) !important;
+  overflow: hidden;
+}
+
+/* Ornamen lingkaran dekoratif */
+#program::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  right: -210px;
+  top: 70px;
+
+  border: 1px solid rgba(201, 154, 61, 0.28);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 30px rgba(201, 154, 61, 0.045),
+    0 0 0 65px rgba(25, 124, 120, 0.035);
+
+  pointer-events: none;
+}
+
+/* Judul Program */
+#program .section-heading {
+  position: relative;
+  z-index: 2;
+}
+
+#program .section-heading h2 {
+  color: #0b3028 !important;
+}
+
+#program .section-heading p {
+  color: #687168;
+}
+
+/* KATALOG PROGRAM */
+#program .card-grid {
+  position: relative;
+  z-index: 2;
+  gap: 20px;
+}
+
+/* Kartu */
+#program .program-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 350px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 252, 246, 0.98),
+      rgba(245, 234, 210, 0.96)
+    ) !important;
+
+  border: 1px solid rgba(201, 154, 61, 0.35) !important;
+  border-radius: 22px !important;
+
+  box-shadow:
+    0 12px 32px rgba(20, 34, 27, 0.09) !important;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Garis aksen atas */
+#program .program-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c99a3d,
+      #197c78
+    );
+}
+
+/* Ornamen sudut */
+#program .program-card::after {
+  content: "";
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  right: -42px;
+  bottom: -42px;
+
+  border: 1px solid rgba(201, 154, 61, 0.28);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 12px rgba(201, 154, 61, 0.035);
+}
+
+/* Hover */
+#program .program-card:hover {
+  transform: translateY(-9px);
+
+  border-color: rgba(201, 154, 61, 0.75) !important;
+
+  box-shadow:
+    0 22px 45px rgba(20, 34, 27, 0.15) !important;
+}
+
+/* Nomor Program */
+#program .number {
+  color: #9f302c !important;
+  font-family: "Playfair Display", serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Kategori kecil */
+#program .tag {
+  color: #687168 !important;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+/* Ikon */
+#program .program-icon {
+  color: #c99a3d !important;
+  text-shadow:
+    0 5px 18px rgba(201, 154, 61, 0.18);
+}
+
+/* Judul kartu */
+#program .program-card h3 {
+  color: #14221b !important;
+  font-size: 24px;
+}
+
+/* Deskripsi */
+#program .program-card p {
+  color: #687168 !important;
+}
+
+/* Kartu ke-2 — aksen teal */
+#program .program-card:nth-child(2) {
+  border-top-color: #197c78 !important;
+}
+
+#program .program-card:nth-child(2) .program-icon {
+  color: #197c78 !important;
+}
+
+/* Kartu ke-3 — aksen merah */
+#program .program-card:nth-child(3) {
+  border-top-color: #9f302c !important;
+}
+
+#program .program-card:nth-child(3) .program-icon {
+  color: #9f302c !important;
+}
+
+/* Kartu ke-4 — aksen emas */
+#program .program-card:nth-child(4) {
+  border-top-color: #c99a3d !important;
+}
+
+/* Tampilan tablet */
+@media (max-width: 900px) {
+  #program .program-card {
+    min-height: 320px;
+  }
+}
+
+/* Tampilan HP */
+@media (max-width: 560px) {
+  #program .program-card {
+    min-height: 300px;
+    padding: 22px;
+  }
+
+  #program .program-card h3 {
+    font-size: 21px;
+  }
+
+  #program::before {
+    right: -260px;
+    opacity: 0.65;
+  }
+}
