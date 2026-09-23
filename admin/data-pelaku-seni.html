@@ -178,6 +178,17 @@
       white-space: nowrap;
     }
 
+    .id-link {
+      color: #197c78;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .id-link:hover {
+      color: #0b3028;
+      text-decoration: underline;
+    }
+
     .name {
       font-weight: bold;
       color: #18332d;
@@ -309,7 +320,6 @@
 
   </div>
 
-
   <div class="info">
 
     <strong>Sumber Data:</strong>
@@ -320,7 +330,6 @@
     </div>
 
   </div>
-
 
   <div class="table-box">
 
@@ -362,7 +371,6 @@
 
 </main>
 
-
 <script>
 
 async function loadData() {
@@ -381,7 +389,6 @@ async function loadData() {
     statusMessage.textContent =
       "Memuat data dari database D1...";
 
-
     const response = await fetch("/api/pendataan", {
       method: "GET",
       credentials: "include",
@@ -389,7 +396,6 @@ async function loadData() {
         "Accept": "application/json"
       }
     });
-
 
     if (response.status === 401) {
 
@@ -410,17 +416,14 @@ async function loadData() {
       return;
     }
 
-
     if (!response.ok) {
       throw new Error(
         "HTTP " + response.status
       );
     }
 
-
     const result =
       await response.json();
-
 
     const data =
       Array.isArray(result)
@@ -430,7 +433,6 @@ async function loadData() {
               ? result.data
               : []
           );
-
 
     /* =========================
        HITUNG STATISTIK
@@ -467,7 +469,6 @@ async function loadData() {
           "DITOLAK"
       ).length;
 
-
     document.getElementById(
       "totalData"
     ).textContent = total;
@@ -488,7 +489,6 @@ async function loadData() {
       "ditolakData"
     ).textContent = ditolak;
 
-
     /* =========================
        STATUS
        ========================= */
@@ -500,7 +500,6 @@ async function loadData() {
       "Berhasil memuat " +
       total +
       " data dari D1.";
-
 
     /* =========================
        DATA KOSONG
@@ -519,26 +518,21 @@ async function loadData() {
       return;
     }
 
-
     /* =========================
        TAMPILKAN DATA
        ========================= */
 
     dataBody.innerHTML = "";
 
-
     data.forEach((item, index) => {
 
       const tr =
         document.createElement("tr");
 
-
       const status =
         item.status || "-";
 
-
       let statusClass = "";
-
 
       if (
         status ===
@@ -577,6 +571,12 @@ async function loadData() {
 
       }
 
+      const idPendataan =
+        item.id_pendataan || "";
+
+      const detailUrl =
+        "/admin/pendataan-detail.html?id=" +
+        encodeURIComponent(idPendataan);
 
       tr.innerHTML = `
 
@@ -585,9 +585,18 @@ async function loadData() {
         </td>
 
         <td class="id">
-          ${escapeHtml(
-            item.id_pendataan || "-"
-          )}
+          ${
+            idPendataan
+              ? `
+                <a
+                  class="id-link"
+                  href="${detailUrl}"
+                >
+                  ${escapeHtml(idPendataan)}
+                </a>
+              `
+              : "-"
+          }
         </td>
 
         <td class="name">
@@ -634,7 +643,6 @@ async function loadData() {
 
       `;
 
-
       dataBody.appendChild(tr);
 
     });
@@ -645,13 +653,11 @@ async function loadData() {
 
     console.error(error);
 
-
     statusMessage.className =
       "status-message error";
 
     statusMessage.textContent =
       "Gagal mengambil data dari database D1.";
-
 
     dataBody.innerHTML = `
       <tr>
