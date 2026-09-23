@@ -131,6 +131,308 @@
       background: #f8d7da;
       color: #721c24;
     }
+ /* =========================================
+   DESAIN ADMIN PENDATAAN DKD PPU
+   ========================================= */
+
+:root {
+  --dkd-hijau: #0b3028;
+  --dkd-hijau-gelap: #061814;
+  --dkd-hijau-muda: #174b3b;
+  --dkd-emas: #c99a3d;
+  --dkd-emas-terang: #e7bd62;
+  --dkd-krem: #f5ead5;
+  --dkd-putih: #fffdf8;
+  --dkd-teks: #173c2b;
+  --dkd-merah: #9f302c;
+}
+
+body {
+  font-family: "DM Sans", Arial, sans-serif !important;
+  background:
+    linear-gradient(
+      180deg,
+      #f5ead5 0%,
+      #faf5ea 48%,
+      #eee1ca 100%
+    ) !important;
+  color: var(--dkd-teks) !important;
+}
+
+/* Header */
+.header {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 30px !important;
+  background:
+    radial-gradient(
+      circle at 88% 20%,
+      rgba(201,154,61,0.18),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      var(--dkd-hijau-gelap),
+      var(--dkd-hijau) 58%,
+      var(--dkd-hijau-muda)
+    ) !important;
+  border-bottom: 2px solid rgba(201,154,61,0.55);
+  box-shadow: 0 12px 30px rgba(6,24,20,0.16);
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  right: -150px;
+  top: -180px;
+  border: 1px solid rgba(231,189,98,0.20);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(231,189,98,0.035),
+    0 0 0 56px rgba(231,189,98,0.025);
+  pointer-events: none;
+}
+
+.header h1 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 6px !important;
+  color: #f7e6b0 !important;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-size: 29px !important;
+  letter-spacing: 0.01em;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.35);
+}
+
+.header p {
+  position: relative;
+  z-index: 2;
+  color: rgba(255,255,255,0.78) !important;
+  font-size: 13px;
+}
+
+/* Container */
+.container {
+  max-width: 1450px !important;
+  margin: 34px auto !important;
+  padding: 0 24px !important;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 12px !important;
+  margin-bottom: 18px !important;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  border-radius: 11px !important;
+  padding: 11px 17px !important;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 700;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.toolbar button:hover {
+  transform: translateY(-2px);
+}
+
+.btn-back {
+  background: var(--dkd-putih) !important;
+  color: var(--dkd-hijau) !important;
+  border: 1px solid rgba(201,154,61,0.38) !important;
+  box-shadow: 0 7px 18px rgba(6,24,20,0.08);
+}
+
+.btn-refresh {
+  background: linear-gradient(
+    135deg,
+    var(--dkd-hijau),
+    var(--dkd-hijau-muda)
+  ) !important;
+  color: #f7e6b0 !important;
+  border: 1px solid rgba(201,154,61,0.35) !important;
+  box-shadow: 0 8px 20px rgba(6,24,20,0.15);
+}
+
+/* Status */
+.status {
+  position: relative;
+  margin-bottom: 18px !important;
+  padding: 15px 18px !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.98),
+    rgba(248,240,225,0.96)
+  ) !important;
+  border: 1px solid rgba(201,154,61,0.28);
+  border-left: 4px solid var(--dkd-emas);
+  border-radius: 14px !important;
+  color: var(--dkd-teks) !important;
+  box-shadow: 0 8px 22px rgba(6,24,20,0.07);
+}
+
+/* Tabel */
+.table-wrap {
+  position: relative;
+  overflow-x: auto;
+  background: var(--dkd-putih) !important;
+  border: 1px solid rgba(201,154,61,0.28);
+  border-radius: 20px !important;
+  box-shadow: 0 15px 35px rgba(6,24,20,0.10) !important;
+}
+
+.table-wrap::before {
+  content: "";
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  right: -85px;
+  top: -85px;
+  border: 1px solid rgba(201,154,61,0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+table {
+  min-width: 1150px !important;
+}
+
+th {
+  background: linear-gradient(
+    135deg,
+    var(--dkd-hijau-gelap),
+    var(--dkd-hijau)
+  ) !important;
+  color: #f7e6b0 !important;
+  border-bottom: 2px solid var(--dkd-emas) !important;
+  padding: 14px 14px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px !important;
+  color: #46574e !important;
+  border-bottom: 1px solid rgba(23,60,43,0.08) !important;
+  font-size: 13px !important;
+  background: rgba(255,253,248,0.94);
+}
+
+tbody tr {
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+tbody tr:hover td {
+  background: #fff8e9 !important;
+}
+
+/* Badge status */
+.badge {
+  border-radius: 20px !important;
+  padding: 6px 10px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+}
+
+.badge-menunggu {
+  background: #fff3d6 !important;
+  color: #89641b !important;
+  border: 1px solid rgba(201,154,61,0.28);
+}
+
+.badge-terverifikasi {
+  background: #e4f2e8 !important;
+  color: #17613d !important;
+  border: 1px solid rgba(23,97,61,0.18);
+}
+
+.badge-publikasi {
+  background: #dff0ef !important;
+  color: #176b68 !important;
+  border: 1px solid rgba(25,124,120,0.20);
+}
+
+/* Data kosong */
+.empty {
+  padding: 55px 30px !important;
+  background: #fffdf8 !important;
+  color: #78837d !important;
+  font-size: 13px;
+}
+
+/* Error */
+.error {
+  background: #fff0ed !important;
+  color: #8d3731 !important;
+  border-left: 4px solid var(--dkd-merah);
+}
+
+/* Scrollbar */
+.table-wrap::-webkit-scrollbar {
+  height: 9px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+  background: #eee5d5;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+  background: var(--dkd-emas);
+  border-radius: 10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb:hover {
+  background: var(--dkd-hijau);
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+  .header {
+    padding: 25px 18px !important;
+  }
+
+  .header h1 {
+    font-size: 24px !important;
+  }
+
+  .header p {
+    font-size: 11px;
+  }
+
+  .container {
+    margin: 24px auto !important;
+    padding: 0 14px !important;
+  }
+
+  .toolbar {
+    gap: 9px !important;
+  }
+
+  .toolbar button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .status {
+    font-size: 12px;
+  }
+
+  .table-wrap {
+    border-radius: 16px !important;
+  }
+}
   </style>
 </head>
 
@@ -351,3 +653,4 @@ function lihatDetail(id) {
 
 </body>
 </html>
+
