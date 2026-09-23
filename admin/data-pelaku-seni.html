@@ -8,7 +8,6 @@
 
 <title>Data Pelaku Seni & Budaya - Admin DKD PPU</title>
 
-
 <style>
 
 body{
@@ -18,109 +17,57 @@ background:#f5ead5;
 color:#0b3028;
 }
 
-
 .header{
-
-background:
-linear-gradient(
-135deg,
-#061814,
-#0b3028,
-#174b3b
-);
-
+background:#0b3028;
 color:#e7bd62;
-
 padding:25px;
-
 font-size:28px;
-
 font-weight:bold;
-
 border-bottom:3px solid #c99a3d;
-
 }
-
 
 .container{
-
 padding:30px;
-
 }
-
 
 .card{
-
 background:white;
-
 padding:25px;
-
 border-radius:15px;
-
 box-shadow:0 5px 20px #0002;
-
 }
-
 
 button{
-
 background:#0b3028;
-
 color:white;
-
 border:0;
-
 padding:12px 20px;
-
 border-radius:8px;
-
 cursor:pointer;
-
 margin-right:10px;
-
 }
-
 
 button:hover{
-
 background:#174b3b;
-
 }
-
 
 table{
-
 width:100%;
-
 border-collapse:collapse;
-
 margin-top:20px;
-
 }
-
 
 th{
-
 background:#0b3028;
-
 color:#e7bd62;
-
 }
-
 
 td,th{
-
 padding:10px;
-
 border:1px solid #ddd;
-
-text-align:left;
-
 }
 
-
 </style>
-
 
 </head>
 
@@ -144,7 +91,6 @@ Admin Dewan Kesenian Daerah PPU
 
 <div class="container">
 
-
 <div class="card">
 
 
@@ -153,9 +99,13 @@ Download Excel / CSV
 </button>
 
 
+<button onclick="downloadPDF()">
+Download PDF
+</button>
+
+
 
 <table id="tabel">
-
 
 <thead>
 
@@ -171,13 +121,18 @@ Download Excel / CSV
 <th>Desa/Kelurahan</th>
 <th>Status</th>
 
-
 </tr>
 
 </thead>
 
 
 <tbody id="data">
+
+<tr>
+<td colspan="9">
+Memuat data...
+</td>
+</tr>
 
 </tbody>
 
@@ -187,9 +142,7 @@ Download Excel / CSV
 
 </div>
 
-
 </div>
-
 
 
 
@@ -202,22 +155,17 @@ let dataPelaku=[];
 
 fetch("/content/pendataan.json")
 
-.then(response=>response.json())
+.then(res=>res.json())
 
-.then(data=>{
+.then(result=>{
 
-
-dataPelaku=data.data || [];
-
+dataPelaku=result.data || [];
 
 tampilkanData();
 
-
 })
 
-.catch(error=>{
-
-console.log(error);
+.catch(()=>{
 
 document.getElementById("data").innerHTML=
 
@@ -260,12 +208,9 @@ html+=`
 
 <td>${item.status || "-"}</td>
 
-
 </tr>
 
-
 `;
-
 
 });
 
@@ -282,49 +227,93 @@ function downloadCSV(){
 
 
 let csv=
-
-"No,Nomor Pendataan,Nama,Kategori,Jenis,Bidang,Kecamatan,Desa,Status\n";
-
+"No,NOMOR,NAMA,KATEGORI,JENIS,BIDANG,KECAMATAN,DESA,STATUS\n";
 
 
-dataPelaku.forEach((item,index)=>{
+dataPelaku.forEach((x,i)=>{
 
 
-csv+=
-
-`${index+1},${item.id},${item.nama},${item.kategori},${item.jenis},${item.bidang},${item.kecamatan},${item.desa},${item.status}\n`;
+csv+=`${i+1},${x.id},${x.nama},${x.kategori},${x.jenis},${x.bidang},${x.kecamatan},${x.desa},${x.status}\n`;
 
 
 });
-
 
 
 let blob=new Blob([csv],{
-
 type:"text/csv"
-
 });
-
 
 
 let url=URL.createObjectURL(blob);
 
 
-
 let a=document.createElement("a");
-
 
 a.href=url;
 
-
-a.download="data-pelaku-seni-dkd-ppu.csv";
-
+a.download="Data-Pelaku-Seni-DKD-PPU.csv";
 
 a.click();
 
 
+}
+
+
+
+
+function downloadPDF(){
+
+
+let isi=
+`
+DEWAN KESENIAN DAERAH
+KABUPATEN PENAJAM PASER UTARA
+
+DATA PELAKU SENI & BUDAYA
+
+Jumlah Data : ${dataPelaku.length}
+
+`;
+
+
+
+dataPelaku.forEach((x,i)=>{
+
+isi+=`
+
+${i+1}.
+${x.nama}
+Kategori : ${x.kategori}
+Jenis : ${x.jenis}
+Bidang : ${x.bidang}
+Kecamatan : ${x.kecamatan}
+Desa : ${x.desa}
+Status : ${x.status}
+
+`;
+
+});
+
+
+let blob=new Blob([isi],{
+type:"application/pdf"
+});
+
+
+let url=URL.createObjectURL(blob);
+
+
+let a=document.createElement("a");
+
+a.href=url;
+
+a.download="Data-Pelaku-Seni-DKD-PPU.pdf";
+
+a.click();
+
 
 }
+
 
 
 </script>
