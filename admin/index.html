@@ -1,10 +1,136 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin DKD PPU</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Admin DKD PPU</title>
+
+  <style>
+    :root {
+      --dkd-hijau: #0b3028;
+      --dkd-hijau-gelap: #061814;
+      --dkd-hijau-muda: #174b3b;
+      --dkd-emas: #c99a3d;
+      --dkd-emas-terang: #e7bd62;
+      --dkd-krem: #f5ead5;
+      --dkd-teal: #197c78;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--dkd-krem);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /*
+     * Identitas visual Admin DKD PPU
+     */
+
+    .nc-app {
+      min-height: 100vh;
+    }
+
+    /*
+     * Header / navbar Decap CMS
+     */
+
+    [class*="AppHeader"],
+    [class*="appHeader"] {
+      background:
+        linear-gradient(
+          135deg,
+          var(--dkd-hijau-gelap),
+          var(--dkd-hijau) 60%,
+          var(--dkd-hijau-muda)
+        ) !important;
+      border-bottom: 2px solid var(--dkd-emas) !important;
+      box-shadow: 0 8px 25px rgba(6, 24, 20, 0.18) !important;
+    }
+
+    /*
+     * Tombol utama
+     */
+
+    button[class*="Button"],
+    [role="button"] {
+      border-radius: 8px;
+    }
+
+    /*
+     * Link / aksen emas
+     */
+
+    a {
+      transition: color 0.2s ease;
+    }
+
+    /*
+     * Area utama Admin
+     */
+
+    [class*="AppMain"],
+    [class*="appMain"] {
+      background:
+        linear-gradient(
+          180deg,
+          #f5ead5 0%,
+          #faf5ea 50%,
+          #eee1ca 100%
+        ) !important;
+    }
+
+    /*
+     * Sentuhan warna DKD PPU
+     */
+
+    [class*="CollectionTop"],
+    [class*="collectionTop"] {
+      border-bottom-color: rgba(201, 154, 61, 0.35) !important;
+    }
+
+    /*
+     * Fokus input
+     */
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--dkd-emas) !important;
+      box-shadow: 0 0 0 2px rgba(201, 154, 61, 0.15) !important;
+      outline: none !important;
+    }
+
+    /*
+     * Scrollbar
+     */
+
+    ::-webkit-scrollbar {
+      width: 9px;
+      height: 9px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #eee5d5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #b99342;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--dkd-hijau);
+    }
+  </style>
 </head>
+
 <body>
-<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
+
 </body>
 </html>
