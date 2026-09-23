@@ -2391,3 +2391,13 @@ section::after {
   white-space: nowrap;
   overflow: visible;
 }
+
+/* Perbaikan Email Kontak */
+.contact-details div:nth-child(3) strong {
+  display: block !important;
+  font-size: 10px !important;
+  letter-spacing: -0.03em;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  word-break: normal !important;
+}
