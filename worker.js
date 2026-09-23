@@ -337,6 +337,81 @@ async function getAdmin(
 
 }
 
+// ============================================================
+// MEDIA SSO
+// Membuat token khusus untuk Media & Video
+// ============================================================
+
+function base64UrlEncode(bytes) {
+
+  let binary = "";
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+
+}
+
+
+async function createMediaSSOToken(env) {
+
+  const payload = JSON.stringify({
+    exp: Date.now() + (5 * 60 * 1000),
+    sub: "admin"
+  });
+
+
+  const payloadBytes =
+    new TextEncoder().encode(payload);
+
+
+  const payloadBase64 =
+    base64UrlEncode(payloadBytes);
+
+
+  const key =
+    await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(
+        env.MEDIA_SSO_SECRET
+      ),
+      {
+        name: "HMAC",
+        hash: "SHA-256"
+      },
+      false,
+      ["sign"]
+    );
+
+
+  const signature =
+    await crypto.subtle.sign(
+      "HMAC",
+      key,
+      new TextEncoder().encode(
+        payloadBase64
+      )
+    );
+
+
+  const signatureBase64 =
+    base64UrlEncode(
+      new Uint8Array(signature)
+    );
+
+
+  return (
+    payloadBase64 +
+    "." +
+    signatureBase64
+  );
+
+}
 
 // ============================================================
 // WORKER
@@ -456,6 +531,60 @@ export default {
     }
 
 
+    // ========================================================
+// MEDIA SSO AUTH
+// Admin yang sudah login dapat meminta token Media
+// ========================================================
+
+if (
+  url.pathname === "/api/media-auth" &&
+  request.method === "GET"
+) {
+
+  if (
+    !(await getAdmin(
+      request,
+      env
+    ))
+  ) {
+
+    return unauthorizedResponse();
+
+  }
+
+
+  try {
+
+    const token =
+      await createMediaSSOToken(
+        env
+      );
+
+
+    return Response.json({
+
+      ok: true,
+
+      token
+
+    });
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error:
+          "Gagal membuat token Media SSO."
+      },
+      {
+        status: 500
+      }
+    );
+
+  }
+
+}
     // ========================================================
     // TEST DATABASE
     // ADMIN ONLY
