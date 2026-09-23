@@ -1,6 +1,12 @@
-// =========================
+// =====================================================
+// DKD PPU - WORKER.JS
+// Sistem Pendataan Pelaku Seni dan Budaya
+// =====================================================
+
+
+// =====================================================
 // AUTHENTIKASI ADMIN
-// =========================
+// =====================================================
 
 async function createAdminSession(env) {
   const data = {
@@ -12,7 +18,10 @@ async function createAdminSession(env) {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(env.ADMIN_PASSWORD),
-    { name: "HMAC", hash: "SHA-256" },
+    {
+      name: "HMAC",
+      hash: "SHA-256"
+    },
     false,
     ["sign"]
   );
@@ -24,18 +33,21 @@ async function createAdminSession(env) {
   );
 
   const signatureBase64 = btoa(
-    String.fromCharCode(...new Uint8Array(signature))
+    String.fromCharCode(
+      ...new Uint8Array(signature)
+    )
   );
 
   return `${payload}.${signatureBase64}`;
 }
 
-async function verifyAdminSession(request, env) {
-  const cookie = request.headers.get("Cookie") || "";
 
-  const match = cookie.match(
-    /admin_session=([^;]+)/
-  );
+async function verifyAdminSession(request, env) {
+  const cookie =
+    request.headers.get("Cookie") || "";
+
+  const match =
+    cookie.match(/admin_session=([^;]+)/);
 
   if (!match) {
     return false;
@@ -49,26 +61,36 @@ async function verifyAdminSession(request, env) {
   }
 
   try {
-    const payload = JSON.parse(
-      atob(parts[0])
-    );
 
-    if (!payload.exp || Date.now() > payload.exp) {
+    const payload =
+      JSON.parse(atob(parts[0]));
+
+    if (
+      !payload.exp ||
+      Date.now() > payload.exp
+    ) {
       return false;
     }
 
-    const key = await crypto.subtle.importKey(
-      "raw",
-      new TextEncoder().encode(env.ADMIN_PASSWORD),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["verify"]
-    );
+    const key =
+      await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(
+          env.ADMIN_PASSWORD
+        ),
+        {
+          name: "HMAC",
+          hash: "SHA-256"
+        },
+        false,
+        ["verify"]
+      );
 
-    const signature = Uint8Array.from(
-      atob(parts[1]),
-      c => c.charCodeAt(0)
-    );
+    const signature =
+      Uint8Array.from(
+        atob(parts[1]),
+        c => c.charCodeAt(0)
+      );
 
     return await crypto.subtle.verify(
       "HMAC",
@@ -82,51 +104,179 @@ async function verifyAdminSession(request, env) {
   }
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
 
-    // =========================
+// =====================================================
+// MEMASTIKAN TABEL PENGATURAN ADMIN TERSEDIA
+// =====================================================
+
+async function ensureAdminSettingsTable(env) {
+
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS admin_settings (
+      id INTEGER PRIMARY KEY,
+      whatsapp_admin TEXT,
+      updated_at TEXT
+    )
+  `).run();
+
+  const existing =
+    await env.DB
+      .prepare(`
+        SELECT id
+        FROM admin_settings
+        WHERE id = 1
+        LIMIT 1
+      `)
+      .first();
+
+  if (!existing) {
+
+    await env.DB
+      .prepare(`
+        INSERT INTO admin_settings (
+          id,
+          whatsapp_admin,
+          updated_at
+        )
+        VALUES (
+          1,
+          NULL,
+          ?
+        )
+      `)
+      .bind(
+        new Date().toISOString()
+      )
+      .run();
+  }
+}
+
+
+// =====================================================
+// MEMBERSIHKAN NOMOR WHATSAPP
+// =====================================================
+
+function normalizeWhatsApp(number) {
+
+  if (!number) {
+    return null;
+  }
+
+  let value =
+    String(number)
+      .trim()
+      .replace(/\D/g, "");
+
+  // 08xxxxxxxxxx
+  if (value.startsWith("0")) {
+    value =
+      "62" + value.substring(1);
+  }
+
+  // 62xxxxxxxxxx
+  if (!value.startsWith("62")) {
+    return null;
+  }
+
+  return value;
+}
+
+
+// =====================================================
+// MEMBUAT LINK WHATSAPP
+// =====================================================
+
+function createWhatsAppLink(
+  number,
+  message
+) {
+
+  const normalized =
+    normalizeWhatsApp(number);
+
+  if (!normalized) {
+    return null;
+  }
+
+  return (
+    "https://wa.me/" +
+    normalized +
+    "?text=" +
+    encodeURIComponent(message)
+  );
+}
+
+
+// =====================================================
+// MAIN WORKER
+// =====================================================
+
+export default {
+
+  async fetch(request, env) {
+
+    const url =
+      new URL(request.url);
+
+
+    // =================================================
     // LOGIN ADMIN
-    // =========================
+    // =================================================
+
     if (
-      url.pathname === "/api/admin/login" &&
+      url.pathname ===
+        "/api/admin/login" &&
       request.method === "POST"
     ) {
+
       try {
-        const data = await request.json();
+
+        const data =
+          await request.json();
 
         if (!data.password) {
+
           return Response.json(
             {
               ok: false,
-              error: "Password wajib diisi."
+              error:
+                "Password wajib diisi."
             },
             { status: 400 }
           );
         }
 
-        if (data.password !== env.ADMIN_PASSWORD) {
+        if (
+          data.password !==
+          env.ADMIN_PASSWORD
+        ) {
+
           return Response.json(
             {
               ok: false,
-              error: "Password admin salah."
+              error:
+                "Password admin salah."
             },
             { status: 401 }
           );
         }
 
-        const session = await createAdminSession(env);
+        const session =
+          await createAdminSession(env);
 
         return new Response(
           JSON.stringify({
             ok: true,
-            message: "Login berhasil."
+            message:
+              "Login berhasil."
           }),
           {
             status: 200,
             headers: {
-              "Content-Type": "application/json",
+
+              "Content-Type":
+                "application/json",
+
               "Set-Cookie":
                 `admin_session=${session}; ` +
                 "HttpOnly; " +
@@ -138,36 +288,46 @@ export default {
           }
         );
 
-      } catch (error) {
+      } catch {
+
         return Response.json(
           {
             ok: false,
-            error: "Permintaan login tidak valid."
+            error:
+              "Permintaan login tidak valid."
           },
           { status: 400 }
         );
       }
     }
 
-    // =========================
-    // PENGATURAN WHATSAPP PENDATAAN
+
+    // =================================================
+    // TEST DATABASE
     // KHUSUS ADMIN
-    // =========================
+    // =================================================
 
     if (
-      url.pathname === "/api/admin/whatsapp" &&
+      url.pathname ===
+        "/api/db-test" &&
       request.method === "GET"
     ) {
+
       try {
 
         const isAdmin =
-          await verifyAdminSession(request, env);
+          await verifyAdminSession(
+            request,
+            env
+          );
 
         if (!isAdmin) {
+
           return Response.json(
             {
               ok: false,
-              error: "Tidak memiliki akses."
+              error:
+                "Tidak memiliki akses."
             },
             { status: 401 }
           );
@@ -175,177 +335,222 @@ export default {
 
         const result =
           await env.DB
-            .prepare(`
-              SELECT setting_value
-              FROM site_settings
-              WHERE setting_key = 'whatsapp_pendataan'
-              LIMIT 1
-            `)
+            .prepare(
+              "SELECT 1 AS ok"
+            )
             .first();
 
         return Response.json({
           ok: true,
-          whatsapp:
-            result?.setting_value || ""
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
-    }
-
-    if (
-      url.pathname === "/api/admin/whatsapp" &&
-      request.method === "POST"
-    ) {
-      try {
-
-        const isAdmin =
-          await verifyAdminSession(request, env);
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error: "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        let whatsapp =
-          String(data.whatsapp || "").trim();
-
-        if (!whatsapp) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor WhatsApp wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        // Hanya angka, spasi, +, -, dan tanda kurung
-        if (!/^[0-9+() -]+$/.test(whatsapp)) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor WhatsApp tidak valid."
-            },
-            { status: 400 }
-          );
-        }
-
-        // Simpan / perbarui nomor WhatsApp
-        await env.DB
-          .prepare(`
-            INSERT INTO site_settings (
-              setting_key,
-              setting_value
-            )
-            VALUES ('whatsapp_pendataan', ?)
-            ON CONFLICT(setting_key)
-            DO UPDATE SET
-              setting_value = excluded.setting_value
-          `)
-          .bind(whatsapp)
-          .run();
-
-        return Response.json({
-          ok: true,
-          message:
-            "Nomor WhatsApp berhasil disimpan.",
-          whatsapp
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
-    }
-
-    // =========================
-    // TEST KONEKSI DATABASE
-    // KHUSUS ADMIN
-    // =========================
-    if (
-      url.pathname === "/api/db-test" &&
-      request.method === "GET"
-    ) {
-      try {
-
-        const isAdmin =
-          await verifyAdminSession(request, env);
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error: "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const result = await env.DB
-          .prepare("SELECT 1 AS ok")
-          .first();
-
-        return Response.json({
-          ok: true,
-          database: "dkd-ppu-data",
+          database:
+            "dkd-ppu-data",
           result
         });
 
       } catch (error) {
+
         return Response.json(
           {
             ok: false,
-            error: error.message
+            error:
+              error.message
           },
           { status: 500 }
         );
       }
     }
 
-    // =========================
+
+    // =================================================
+    // PENGATURAN NOMOR WHATSAPP ADMIN
+    // GET = MELIHAT NOMOR
+    // POST = MENGUBAH NOMOR
+    // KHUSUS ADMIN
+    // =================================================
+
+    if (
+      url.pathname ===
+        "/api/admin/whatsapp"
+    ) {
+
+      const isAdmin =
+        await verifyAdminSession(
+          request,
+          env
+        );
+
+      if (!isAdmin) {
+
+        return Response.json(
+          {
+            ok: false,
+            error:
+              "Tidak memiliki akses."
+          },
+          { status: 401 }
+        );
+      }
+
+
+      // -----------------------------------------------
+      // GET NOMOR WHATSAPP
+      // -----------------------------------------------
+
+      if (
+        request.method === "GET"
+      ) {
+
+        try {
+
+          await ensureAdminSettingsTable(
+            env
+          );
+
+          const result =
+            await env.DB
+              .prepare(`
+                SELECT
+                  whatsapp_admin,
+                  updated_at
+                FROM admin_settings
+                WHERE id = 1
+                LIMIT 1
+              `)
+              .first();
+
+          return Response.json({
+            ok: true,
+            whatsapp_admin:
+              result?.whatsapp_admin ||
+              "",
+            updated_at:
+              result?.updated_at ||
+              null
+          });
+
+        } catch (error) {
+
+          return Response.json(
+            {
+              ok: false,
+              error:
+                error.message
+            },
+            { status: 500 }
+          );
+        }
+      }
+
+
+      // -----------------------------------------------
+      // SIMPAN NOMOR WHATSAPP
+      // -----------------------------------------------
+
+      if (
+        request.method === "POST"
+      ) {
+
+        try {
+
+          const data =
+            await request.json();
+
+          const whatsapp =
+            normalizeWhatsApp(
+              data.whatsapp_admin
+            );
+
+          if (!whatsapp) {
+
+            return Response.json(
+              {
+                ok: false,
+                error:
+                  "Nomor WhatsApp tidak valid."
+              },
+              { status: 400 }
+            );
+          }
+
+          await ensureAdminSettingsTable(
+            env
+          );
+
+          const now =
+            new Date().toISOString();
+
+          await env.DB
+            .prepare(`
+              UPDATE admin_settings
+              SET
+                whatsapp_admin = ?,
+                updated_at = ?
+              WHERE id = 1
+            `)
+            .bind(
+              whatsapp,
+              now
+            )
+            .run();
+
+          return Response.json({
+            ok: true,
+            message:
+              "Nomor WhatsApp Admin berhasil disimpan.",
+            whatsapp_admin:
+              whatsapp
+          });
+
+        } catch (error) {
+
+          return Response.json(
+            {
+              ok: false,
+              error:
+                error.message
+            },
+            { status: 500 }
+          );
+        }
+      }
+
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Metode tidak didukung."
+        },
+        { status: 405 }
+      );
+    }
+
+
+    // =================================================
     // SIMPAN DATA PENDATAAN
     // PUBLIC
-    // =========================
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan" &&
+      url.pathname ===
+        "/api/pendataan" &&
       request.method === "POST"
     ) {
+
       try {
 
         const data =
           await request.json();
 
-        // =========================
-        // VALIDASI DATA WAJIB
-        // =========================
-        if (!data.nama_individu_group) {
+
+        // ---------------------------------------------
+        // VALIDASI
+        // ---------------------------------------------
+
+        if (
+          !data.nama_individu_group
+        ) {
+
           return Response.json(
             {
               ok: false,
@@ -357,6 +562,7 @@ export default {
         }
 
         if (!data.kategori) {
+
           return Response.json(
             {
               ok: false,
@@ -367,14 +573,17 @@ export default {
           );
         }
 
-        // =========================
-        // MEMBUAT ID PENDATAAN
-        // =========================
+
+        // ---------------------------------------------
+        // ID PENDATAAN
+        // ---------------------------------------------
+
         const tahun =
           new Date().getFullYear();
 
         const kode =
-          crypto.randomUUID()
+          crypto
+            .randomUUID()
             .replace(/-/g, "")
             .substring(0, 8)
             .toUpperCase();
@@ -382,9 +591,11 @@ export default {
         const idPendataan =
           `DKD-${tahun}-${kode}`;
 
-        // =========================
-        // SIMPAN KE D1
-        // =========================
+
+        // ---------------------------------------------
+        // SIMPAN D1
+        // ---------------------------------------------
+
         await env.DB
           .prepare(`
             INSERT INTO pendataan_pelaku_seni (
@@ -405,36 +616,158 @@ export default {
               status,
               is_published
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (
+              ?, ?, ?, ?, ?, ?, ?, ?,
+              ?, ?, ?, ?, ?, ?, ?, ?
+            )
           `)
           .bind(
+
             idPendataan,
+
             data.nama_individu_group,
+
             data.kategori,
-            data.jenis_pelaku || null,
-            data.bidang_seni || null,
-            data.kecamatan || null,
-            data.desa_kelurahan || null,
-            data.alamat || null,
-            data.nomor_whatsapp || null,
-            data.email || null,
-            data.deskripsi_singkat || null,
-            data.foto_profil || null,
-            data.lampiran_identitas || null,
-            data.nama_personil || null,
+
+            data.jenis_pelaku ||
+              null,
+
+            data.bidang_seni ||
+              null,
+
+            data.kecamatan ||
+              null,
+
+            data.desa_kelurahan ||
+              null,
+
+            data.alamat ||
+              null,
+
+            data.nomor_whatsapp ||
+              null,
+
+            data.email ||
+              null,
+
+            data.deskripsi_singkat ||
+              null,
+
+            data.foto_profil ||
+              null,
+
+            data.lampiran_identitas ||
+              null,
+
+            data.nama_personil ||
+              null,
+
             "MENUNGGU VERIFIKASI",
+
             0
+
           )
           .run();
 
+
+        // ---------------------------------------------
+        // AMBIL NOMOR WHATSAPP ADMIN
+        // ---------------------------------------------
+
+        let whatsappAdmin =
+          null;
+
+        try {
+
+          await ensureAdminSettingsTable(
+            env
+          );
+
+          const setting =
+            await env.DB
+              .prepare(`
+                SELECT whatsapp_admin
+                FROM admin_settings
+                WHERE id = 1
+                LIMIT 1
+              `)
+              .first();
+
+          whatsappAdmin =
+            setting?.whatsapp_admin ||
+            null;
+
+        } catch {
+          whatsappAdmin = null;
+        }
+
+
+        // ---------------------------------------------
+        // PESAN WHATSAPP
+        // ---------------------------------------------
+
+        const message =
+`Halo Admin DKD PPU,
+
+Ada pendataan pelaku seni dan budaya baru.
+
+Nomor Pendataan:
+${idPendataan}
+
+Nama Individu / Group:
+${data.nama_individu_group}
+
+Kategori:
+${data.kategori}
+
+Jenis Pelaku:
+${data.jenis_pelaku || "-"}
+
+Bidang Seni:
+${data.bidang_seni || "-"}
+
+Kecamatan:
+${data.kecamatan || "-"}
+
+Desa/Kelurahan:
+${data.desa_kelurahan || "-"}
+
+Status:
+MENUNGGU VERIFIKASI
+
+Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.`;
+
+
+        const whatsappLink =
+          createWhatsAppLink(
+            whatsappAdmin,
+            message
+          );
+
+
+        // ---------------------------------------------
+        // RESPONSE
+        // ---------------------------------------------
+
         return Response.json({
+
           ok: true,
+
           message:
             "Data pendataan berhasil diterima.",
+
           id_pendataan:
             idPendataan,
+
           status:
-            "MENUNGGU VERIFIKASI"
+            "MENUNGGU VERIFIKASI",
+
+          whatsapp_admin_tersedia:
+            !!whatsappAdmin,
+
+          whatsapp_link:
+            whatsappLink
+
         });
 
       } catch (error) {
@@ -442,46 +775,56 @@ export default {
         return Response.json(
           {
             ok: false,
-            error: error.message
+            error:
+              error.message
           },
           { status: 500 }
         );
-
       }
     }
 
-    // =========================
+
+    // =================================================
     // AMBIL DATA PENDATAAN
     // KHUSUS ADMIN
-    // =========================
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan" &&
+      url.pathname ===
+        "/api/pendataan" &&
       request.method === "GET"
     ) {
+
       try {
 
-        // =========================
-        // CEK SESSION ADMIN
-        // =========================
         const isAdmin =
-          await verifyAdminSession(request, env);
+          await verifyAdminSession(
+            request,
+            env
+          );
 
         if (!isAdmin) {
+
           return Response.json(
             {
               ok: false,
-              error: "Tidak memiliki akses."
+              error:
+                "Tidak memiliki akses."
             },
             { status: 401 }
           );
         }
 
         const id =
-          url.searchParams.get("id");
+          url.searchParams.get(
+            "id"
+          );
 
-        // =========================
-        // DETAIL SATU DATA
-        // =========================
+
+        // ---------------------------------------------
+        // DETAIL
+        // ---------------------------------------------
+
         if (id) {
 
           const result =
@@ -517,7 +860,9 @@ export default {
               .bind(id)
               .first();
 
+
           if (!result) {
+
             return Response.json(
               {
                 ok: false,
@@ -528,15 +873,18 @@ export default {
             );
           }
 
+
           return Response.json({
             ok: true,
             data: result
           });
         }
 
-        // =========================
+
+        // ---------------------------------------------
         // SEMUA DATA
-        // =========================
+        // ---------------------------------------------
+
         const result =
           await env.DB
             .prepare(`
@@ -557,9 +905,11 @@ export default {
             `)
             .all();
 
+
         return Response.json({
           ok: true,
-          data: result.results
+          data:
+            result.results || []
         });
 
       } catch (error) {
@@ -567,608 +917,166 @@ export default {
         return Response.json(
           {
             ok: false,
-            error: error.message
+            error:
+              error.message
           },
           { status: 500 }
         );
-
       }
     }
 
-    // =========================
-    // VERIFIKASI DATA PENDATAAN
-    // =========================
+
+    // =================================================
+    // VERIFIKASI
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/verifikasi" &&
+      url.pathname ===
+        "/api/pendataan/verifikasi" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'TERVERIFIKASI',
-                verified_at = ?,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'MENUNGGU VERIFIKASI'
-            `)
-            .bind(
-              now,
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau belum berstatus MENUNGGU VERIFIKASI."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Data berhasil diverifikasi.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "TERVERIFIKASI"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "MENUNGGU VERIFIKASI",
+        "TERVERIFIKASI",
+        "Data berhasil diverifikasi."
+      );
     }
 
-    // =========================
-    // TOLAK PENDATAAN
-    // =========================
+
+    // =================================================
+    // TOLAK
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/tolak" &&
+      url.pathname ===
+        "/api/pendataan/tolak" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'DITOLAK',
-                is_published = 0,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'MENUNGGU VERIFIKASI'
-            `)
-            .bind(
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau statusnya bukan MENUNGGU VERIFIKASI."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Data berhasil ditolak.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "DITOLAK"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "MENUNGGU VERIFIKASI",
+        "DITOLAK",
+        "Data berhasil ditolak.",
+        true
+      );
     }
 
-    // =========================
-    // PUBLIKASIKAN DATA
-    // =========================
+
+    // =================================================
+    // PUBLIKASIKAN
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/publikasikan" &&
+      url.pathname ===
+        "/api/pendataan/publikasikan" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'DIPUBLIKASIKAN',
-                is_published = 1,
-                published_at = ?,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'TERVERIFIKASI'
-            `)
-            .bind(
-              now,
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau belum berstatus TERVERIFIKASI."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Data berhasil dipublikasikan.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "DIPUBLIKASIKAN"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "TERVERIFIKASI",
+        "DIPUBLIKASIKAN",
+        "Data berhasil dipublikasikan.",
+        false,
+        true
+      );
     }
 
-    // =========================
+
+    // =================================================
     // BATALKAN VERIFIKASI
-    // =========================
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/batal-verifikasi" &&
+      url.pathname ===
+        "/api/pendataan/batal-verifikasi" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'MENUNGGU VERIFIKASI',
-                is_published = 0,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'TERVERIFIKASI'
-            `)
-            .bind(
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau statusnya bukan TERVERIFIKASI."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Verifikasi berhasil dibatalkan.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "MENUNGGU VERIFIKASI"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "TERVERIFIKASI",
+        "MENUNGGU VERIFIKASI",
+        "Verifikasi berhasil dibatalkan.",
+        true
+      );
     }
 
-    // =========================
-    // TARIK DARI PUBLIKASI
-    // =========================
+
+    // =================================================
+    // TARIK PUBLIKASI
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/tarik-publikasi" &&
+      url.pathname ===
+        "/api/pendataan/tarik-publikasi" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'TERVERIFIKASI',
-                is_published = 0,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'DIPUBLIKASIKAN'
-            `)
-            .bind(
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau belum berstatus DIPUBLIKASIKAN."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Data berhasil ditarik dari publikasi.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "TERVERIFIKASI"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "DIPUBLIKASIKAN",
+        "TERVERIFIKASI",
+        "Data berhasil ditarik dari publikasi.",
+        true
+      );
     }
 
-    // =========================
-    // VERIFIKASI ULANG PENDATAAN
-    // =========================
+
+    // =================================================
+    // VERIFIKASI ULANG
+    // =================================================
+
     if (
-      url.pathname === "/api/pendataan/verifikasi-ulang" &&
+      url.pathname ===
+        "/api/pendataan/verifikasi-ulang" &&
       request.method === "POST"
     ) {
-      try {
 
-        const isAdmin =
-          await verifyAdminSession(
-            request,
-            env
-          );
-
-        if (!isAdmin) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Tidak memiliki akses."
-            },
-            { status: 401 }
-          );
-        }
-
-        const data =
-          await request.json();
-
-        if (!data.id_pendataan) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Nomor pendataan wajib diisi."
-            },
-            { status: 400 }
-          );
-        }
-
-        const now =
-          new Date().toISOString();
-
-        const result =
-          await env.DB
-            .prepare(`
-              UPDATE pendataan_pelaku_seni
-              SET
-                status = 'MENUNGGU VERIFIKASI',
-                is_published = 0,
-                updated_at = ?
-              WHERE
-                id_pendataan = ?
-                AND status = 'DITOLAK'
-            `)
-            .bind(
-              now,
-              data.id_pendataan
-            )
-            .run();
-
-        if (result.meta.changes === 0) {
-          return Response.json(
-            {
-              ok: false,
-              error:
-                "Data tidak ditemukan atau statusnya bukan DITOLAK."
-            },
-            { status: 400 }
-          );
-        }
-
-        return Response.json({
-          ok: true,
-          message:
-            "Data berhasil dikembalikan ke tahap verifikasi.",
-          id_pendataan:
-            data.id_pendataan,
-          status:
-            "MENUNGGU VERIFIKASI"
-        });
-
-      } catch (error) {
-
-        return Response.json(
-          {
-            ok: false,
-            error: error.message
-          },
-          { status: 500 }
-        );
-
-      }
+      return await updateStatus(
+        request,
+        env,
+        "DITOLAK",
+        "MENUNGGU VERIFIKASI",
+        "Data berhasil dikembalikan ke tahap verifikasi.",
+        true
+      );
     }
 
-    // =========================
-    // API PUBLIK DATA PELAKU SENI
-    // =========================
+
+    // =================================================
+    // API PUBLIK
+    // =================================================
+
     if (
-      url.pathname === "/api/public/pendataan" &&
+      url.pathname ===
+        "/api/public/pendataan" &&
       request.method === "GET"
     ) {
 
       try {
 
         const id =
-          url.searchParams.get("id");
+          url.searchParams.get(
+            "id"
+          );
 
-        let result;
 
-        // =========================
-        // DETAIL DATA PUBLIK
-        // =========================
+        // ---------------------------------------------
+        // DETAIL PUBLIK
+        // ---------------------------------------------
+
         if (id) {
 
-          result =
+          const result =
             await env.DB
               .prepare(`
                 SELECT
@@ -1191,6 +1099,7 @@ export default {
               .bind(id)
               .first();
 
+
           if (!result) {
 
             return Response.json(
@@ -1201,20 +1110,21 @@ export default {
               },
               { status: 404 }
             );
-
           }
+
 
           return Response.json({
             ok: true,
             data: result
           });
-
         }
 
-        // =========================
-        // SEMUA DATA PUBLIK
-        // =========================
-        result =
+
+        // ---------------------------------------------
+        // SEMUA PUBLIK
+        // ---------------------------------------------
+
+        const result =
           await env.DB
             .prepare(`
               SELECT
@@ -1236,6 +1146,7 @@ export default {
             `)
             .all();
 
+
         return Response.json({
           ok: true,
           data:
@@ -1247,17 +1158,198 @@ export default {
         return Response.json(
           {
             ok: false,
-            error: error.message
+            error:
+              error.message
           },
           { status: 500 }
         );
-
       }
     }
 
-    // =========================
+
+    // =================================================
     // WEBSITE STATIS
-    // =========================
-    return env.ASSETS.fetch(request);
+    // =================================================
+
+    return env.ASSETS.fetch(
+      request
+    );
   }
 };
+
+
+// =====================================================
+// FUNGSI UPDATE STATUS
+// =====================================================
+
+async function updateStatus(
+  request,
+  env,
+  currentStatus,
+  newStatus,
+  message,
+  forceUnpublish = false,
+  publish = false
+) {
+
+  try {
+
+    // -----------------------------------------------
+    // CEK ADMIN
+    // -----------------------------------------------
+
+    const isAdmin =
+      await verifyAdminSession(
+        request,
+        env
+      );
+
+    if (!isAdmin) {
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Tidak memiliki akses."
+        },
+        { status: 401 }
+      );
+    }
+
+
+    // -----------------------------------------------
+    // DATA
+    // -----------------------------------------------
+
+    const data =
+      await request.json();
+
+
+    if (!data.id_pendataan) {
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Nomor pendataan wajib diisi."
+        },
+        { status: 400 }
+      );
+    }
+
+
+    const now =
+      new Date().toISOString();
+
+
+    let sql = `
+      UPDATE pendataan_pelaku_seni
+      SET
+        status = ?,
+        updated_at = ?
+    `;
+
+    const params = [
+      newStatus,
+      now
+    ];
+
+
+    // -----------------------------------------------
+    // PUBLIKASI
+    // -----------------------------------------------
+
+    if (publish) {
+
+      sql += `,
+        is_published = 1,
+        published_at = ?
+      `;
+
+      params.push(now);
+
+    } else if (forceUnpublish) {
+
+      sql += `,
+        is_published = 0
+      `;
+    }
+
+
+    // -----------------------------------------------
+    // VERIFIKASI
+    // -----------------------------------------------
+
+    if (
+      newStatus ===
+      "TERVERIFIKASI"
+    ) {
+
+      sql += `,
+        verified_at = ?
+      `;
+
+      params.push(now);
+    }
+
+
+    sql += `
+      WHERE
+        id_pendataan = ?
+        AND status = ?
+    `;
+
+    params.push(
+      data.id_pendataan,
+      currentStatus
+    );
+
+
+    const result =
+      await env.DB
+        .prepare(sql)
+        .bind(...params)
+        .run();
+
+
+    if (
+      result.meta.changes === 0
+    ) {
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Data tidak ditemukan atau statusnya tidak sesuai."
+        },
+        { status: 400 }
+      );
+    }
+
+
+    return Response.json({
+
+      ok: true,
+
+      message,
+
+      id_pendataan:
+        data.id_pendataan,
+
+      status:
+        newStatus
+
+    });
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error:
+          error.message
+      },
+      { status: 500 }
+    );
+  }
+}
