@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Detail Pendataan - Admin DKD PPU</title>
+
+  <style>
+    :root {
+      --hijau: #0b3028;
+      --hijau-gelap: #061814;
+      --hijau-muda: #174b3b;
+      --emas: #c99a3d;
+      --emas-terang: #e7bd62;
+      --krem: #f5ead5;
+      --putih: #fffdf8;
+      --teks: #173c2b;
+      --abu: #68736d;
+      --teal: #197c78;
+      --merah: #9f302c;
+      --hijau-wa: #168c52;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--teks);
+      background:
+        linear-gradient(180deg,#f5ead5 0%,#faf5ea 52%,#eee1ca 100%);
+    }
+
+    .header {
+      position: relative;
+      overflow: hidden;
+      padding: 30px 24px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 18%,rgba(231,189,98,.16),transparent 25%),
+        linear-gradient(135deg,var(--hijau-gelap),var(--hijau) 58%,var(--hijau-muda));
+      border-bottom: 2px solid rgba(201,154,61,.65);
+      box-shadow: 0 12px 30px rgba(6,24,20,.16);
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -160px;
+      top: -190px;
+      border: 1px solid rgba(231,189,98,.20);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 30px rgba(231,189,98,.035),
+        0 0 0 60px rgba(231,189,98,.02);
+    }
+
+    .header-inner,
+    .container {
+      width: min(1000px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 7px;
+      color: #f7e6b0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 29px;
+      line-height: 1.2;
+    }
+
+    .header p {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+    }
+
+    .container {
+      margin-top: 28px;
+      margin-bottom: 50px;
+    }
+
+    .toolbar {
+      margin-bottom: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .btn-back {
+      color: var(--hijau);
+      background: var(--putih);
+      border: 1px solid rgba(201,154,61,.4);
+      box-shadow: 0 7px 18px rgba(6,24,20,.08);
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      background: linear-gradient(145deg,rgba(255,255,255,.98),rgba(248,240,225,.96));
+      border: 1px solid rgba(201,154,61,.3);
+      border-radius: 22px;
+      box-shadow: 0 15px 35px rgba(6,24,20,.10);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: -95px;
+      top: -95px;
+      border: 1px solid rgba(201,154,61,.14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 25px rgba(201,154,61,.025),
+        0 0 0 50px rgba(201,154,61,.018);
+      pointer-events: none;
+    }
+
+    .card h2 {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 20px;
+      padding-bottom: 16px;
+      color: var(--hijau);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      line-height: 1.2;
+      border-bottom: 1px solid rgba(201,154,61,.22);
+    }
+
+    .card h2::after {
+      content: "";
+      display: block;
+      width: 58px;
+      height: 3px;
+      margin-top: 11px;
+      background: linear-gradient(90deg,var(--emas),var(--teal));
+    }
+
+    .detail-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(23,60,43,.09);
+    }
+
+    .detail-row:last-of-type {
+      border-bottom: 0;
+    }
+
+    .detail-label {
+      color: var(--hijau);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    .detail-value {
+      color: #526159;
+      font-size: 13px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .badge-menunggu {
+      color: #89641b;
+      background: #fff3d6;
+      border: 1px solid rgba(201,154,61,.28);
+    }
+
+    .badge-terverifikasi {
+      color: #17613d;
+      background: #e4f2e8;
+      border: 1px solid rgba(23,97,61,.18);
+    }
+
+    .badge-dipublikasikan {
+      color: #176b68;
+      background: #dff0ef;
+      border: 1px solid rgba(25,124,120,.20);
+    }
+
+    .badge-ditolak {
+      color: #842029;
+      background: #f8d7da;
+      border: 1px solid rgba(159,48,44,.18);
+    }
+
+    .detail-actions {
+      position: relative;
+      z-index: 2;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(201,154,61,.25);
+    }
+
+    .detail-actions-title {
+      margin-bottom: 13px;
+      color: var(--hijau);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .detail-actions button {
+      margin-right: 7px;
+      margin-bottom: 8px;
+      box-shadow: 0 7px 18px rgba(6,24,20,.12);
+    }
+
+    .btn-verifikasi {
+      color: #f7e6b0;
+      background: linear-gradient(135deg,#0b6b48,#174b3b);
+    }
+
+    .btn-tolak,
+    .btn-tarik {
+      color: #fff;
+      background: linear-gradient(135deg,#8f302c,#9f302c);
+    }
+
+    .btn-publikasi,
+    .btn-lihat {
+      color: #fff;
+      background: linear-gradient(135deg,#176b68,#197c78);
+    }
+
+    .btn-batal-verifikasi {
+      color: #172016;
+      background: linear-gradient(135deg,#9a6b22,#c99a3d);
+    }
+
+    .btn-verifikasi-ulang {
+      color: #f7e6b0;
+      background: linear-gradient(135deg,#0b6b48,#174b3b);
+    }
+
+    .btn-whatsapp {
+      color: #fff;
+      background: linear-gradient(135deg,#137642,var(--hijau-wa));
+    }
+
+    .loading,
+    .error {
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(6,24,20,.08);
+    }
+
+    .loading {
+      color: var(--abu);
+      text-align: center;
+      background: rgba(255,253,248,.96);
+      border: 1px solid rgba(201,154,61,.28);
+    }
+
+    .error {
+      color: #8d3731;
+      background: #fff0ed;
+      border: 1px solid rgba(159,48,44,.20);
+      border-left: 4px solid var(--merah);
+    }
+
+    @media (max-width: 700px) {
+      .header { padding: 25px 18px; }
+
+      .header-inner,
+      .container {
+        width: min(100% - 24px, 1000px);
+      }
+
+      .header h1 { font-size: 23px; }
+      .header p { font-size: 11px; line-height: 1.5; }
+
+      .container {
+        margin-top: 22px;
+      }
+
+      .btn-back {
+        width: 100%;
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      .card h2 {
+        font-size: 22px;
+      }
+
+      .detail-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 13px 0;
+      }
+
+      .detail-label { font-size: 11px; }
+      .detail-value { font-size: 12px; }
+
+      .detail-actions {
+        margin-top: 21px;
+        padding-top: 18px;
+      }
+
+      .detail-actions-title {
+        font-size: 17px;
+      }
+
+      .detail-actions button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 9px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .card { padding: 18px; }
+      .card h2 { font-size: 21px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1>Detail Pendataan Pelaku Seni</h1>
+      <p>Admin DKD Kabupaten Penajam Paser Utara</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <button
+        type="button"
+        class="btn-back"
+        onclick="window.location.href='/admin/pendataan.html'"
+      >
+        ← Kembali ke Data Pendataan
+      </button>
+    </div>
+
+    <div id="hasil">
+      <div class="loading">Memuat detail data...</div>
+    </div>
+  </main>
+
+  <script>
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getId() {
+      return new URLSearchParams(window.location.search).get("id");
+    }
+
+    async function postAction(endpoint, successMessage, confirmMessage) {
+      const id = getId();
+
+      if (!id) {
+        alert("Nomor pendataan tidak ditemukan.");
+        return;
+      }
+
+      if (confirmMessage && !confirm(confirmMessage)) {
+        return;
+      }
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id_pendataan: id
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || "Tindakan gagal.");
+        }
+
+        alert(successMessage);
+        window.location.reload();
+      } catch (error) {
+        alert("Gagal melakukan tindakan:\n\n" + error.message);
+      }
+    }
+
+    async function verifikasiData() {
+      await postAction(
+        "/api/pendataan/verifikasi",
+        "Data berhasil diverifikasi.",
+        "Apakah data ini benar-benar akan diverifikasi?"
+      );
+    }
+
+    async function tolakData() {
+      await postAction(
+        "/api/pendataan/tolak",
+        "Data berhasil ditolak.",
+        "Apakah data ini benar-benar akan ditolak?"
+      );
+    }
+
+    async function publikasikanData() {
+      await postAction(
+        "/api/pendataan/publikasikan",
+        "Data berhasil dipublikasikan.",
+        "Apakah data ini akan dipublikasikan ke website?"
+      );
+    }
+
+    async function batalkanVerifikasi() {
+      await postAction(
+        "/api/pendataan/batal-verifikasi",
+        "Verifikasi berhasil dibatalkan.",
+        "Apakah verifikasi data ini akan dibatalkan?"
+      );
+    }
+
+    async function tarikPublikasi() {
+      await postAction(
+        "/api/pendataan/tarik-publikasi",
+        "Data berhasil ditarik dari publikasi.",
+        "Apakah data ini akan ditarik dari publikasi?"
+      );
+    }
+
+    async function verifikasiUlang() {
+      await postAction(
+        "/api/pendataan/verifikasi-ulang",
+        "Data berhasil dikembalikan ke tahap MENUNGGU VERIFIKASI.",
+        "Apakah data ini akan dikembalikan ke tahap MENUNGGU VERIFIKASI?"
+      );
+    }
+
+    function lihatWebsite() {
+      const id = getId();
+
+      if (!id) {
+        alert("Nomor pendataan tidak ditemukan.");
+        return;
+      }
+
+      window.open(
+        "/data-pelaku-seni.html?id=" + encodeURIComponent(id),
+        "_blank"
+      );
+    }
+
+    async function notifikasiWhatsApp() {
+      const id = getId();
+
+      if (!id) {
+        alert("Nomor pendataan tidak ditemukan.");
+        return;
+      }
+
+      try {
+        const dataResponse = await fetch(
+          "/api/pendataan?id=" + encodeURIComponent(id),
+          {
+            credentials: "include"
+          }
+        );
+
+        const dataResult = await dataResponse.json();
+
+        if (!dataResponse.ok || !dataResult.ok || !dataResult.data) {
+          throw new Error(
+            dataResult.error || "Data pendataan tidak dapat ditemukan."
+          );
+        }
+
+        const item = dataResult.data;
+
+        const waResponse = await fetch(
+          "/api/admin/whatsapp",
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
+
+        const waResult = await waResponse.json();
+
+        if (!waResponse.ok || !waResult.ok) {
+          throw new Error(
+            waResult.error ||
+            "Nomor WhatsApp Admin belum tersedia."
+          );
+        }
+
+        let nomor = String(waResult.whatsapp_admin || "")
+          .replace(/\D/g, "");
+
+        if (nomor.startsWith("0")) {
+          nomor = "62" + nomor.substring(1);
+        }
+
+        if (!nomor || !nomor.startsWith("62") || nomor.length < 10) {
+          throw new Error(
+            "Nomor WhatsApp Admin belum valid. Silakan periksa di Pengaturan Admin."
+          );
+        }
+
+        const pesan =
+`Halo Admin DKD PPU,
+
+Terdapat pendataan pelaku seni dan budaya baru yang perlu diperiksa.
+
+Nomor Pendataan:
+${item.id_pendataan || "-"}
+
+Nama Individu / Group:
+${item.nama_individu_group || "-"}
+
+Kategori:
+${item.kategori || "-"}
+
+Jenis Pelaku:
+${item.jenis_pelaku || "-"}
+
+Bidang Seni:
+${item.bidang_seni || "-"}
+
+Kecamatan:
+${item.kecamatan || "-"}
+
+Desa/Kelurahan:
+${item.desa_kelurahan || "-"}
+
+Status:
+${item.status || "-"}
+
+Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.`;
+
+        const url =
+          "https://wa.me/" +
+          nomor +
+          "?text=" +
+          encodeURIComponent(pesan);
+
+        window.open(url, "_blank");
+
+      } catch (error) {
+        alert(
+          "Gagal membuka WhatsApp:\n\n" +
+          error.message
+        );
+      }
+    }
+
+    function makeActions(item) {
+      let buttons = "";
+
+      if (item.status === "MENUNGGU VERIFIKASI") {
+        buttons = `
+          <div class="detail-actions">
+            <div class="detail-actions-title">Tindakan Admin</div>
+
+            <button
+              type="button"
+              class="btn-verifikasi"
+              onclick="verifikasiData()"
+            >
+              ✓ VERIFIKASI
+            </button>
+
+            <button
+              type="button"
+              class="btn-tolak"
+              onclick="tolakData()"
+            >
+              ✕ TOLAK
+            </button>
+
+            <button
+              type="button"
+              class="btn-whatsapp"
+              onclick="notifikasiWhatsApp()"
+            >
+              🟢 NOTIFIKASI WHATSAPP
+            </button>
+          </div>
+        `;
+      }
+
+      else if (item.status === "TERVERIFIKASI") {
+        buttons = `
+          <div class="detail-actions">
+            <div class="detail-actions-title">Tindakan Admin</div>
+
+            <button
+              type="button"
+              class="btn-publikasi"
+              onclick="publikasikanData()"
+            >
+              🌐 PUBLIKASIKAN
+            </button>
+
+            <button
+              type="button"
+              class="btn-batal-verifikasi"
+              onclick="batalkanVerifikasi()"
+            >
+              ↩ BATALKAN VERIFIKASI
+            </button>
+          </div>
+        `;
+      }
+
+      else if (item.status === "DIPUBLIKASIKAN") {
+        buttons = `
+          <div class="detail-actions">
+            <div class="detail-actions-title">Tindakan Admin</div>
+
+            <button
+              type="button"
+              class="btn-lihat"
+              onclick="lihatWebsite()"
+            >
+              👁 LIHAT DI WEBSITE
+            </button>
+
+            <button
+              type="button"
+              class="btn-tarik"
+              onclick="tarikPublikasi()"
+            >
+              ↩ TARIK DARI PUBLIKASI
+            </button>
+          </div>
+        `;
+      }
+
+      else if (item.status === "DITOLAK") {
+        buttons = `
+          <div class="detail-actions">
+            <div class="detail-actions-title">Tindakan Admin</div>
+
+            <button
+              type="button"
+              class="btn-verifikasi-ulang"
+              onclick="verifikasiUlang()"
+            >
+              🔄 VERIFIKASI ULANG
+            </button>
+          </div>
+        `;
+      }
+
+      return buttons;
+    }
+
+    function getStatusClass(status) {
+      if (status === "TERVERIFIKASI") {
+        return "badge-terverifikasi";
+      }
+
+      if (status === "DIPUBLIKASIKAN") {
+        return "badge-dipublikasikan";
+      }
+
+      if (status === "DITOLAK") {
+        return "badge-ditolak";
+      }
+
+      return "badge-menunggu";
+    }
+
+    function detailRow(label, value) {
+      return `
+        <div class="detail-row">
+          <div class="detail-label">${escapeHtml(label)}</div>
+          <div class="detail-value">${escapeHtml(value || "-")}</div>
+        </div>
+      `;
+    }
+
+    async function loadDetail() {
+      const hasil = document.getElementById("hasil");
+      const id = getId();
+
+      if (!id) {
+        hasil.innerHTML = `
+          <div class="error">
+            Nomor pendataan tidak ditemukan.
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "/api/pendataan?id=" + encodeURIComponent(id),
+          {
+            credentials: "include"
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(
+            result.error || "Data tidak dapat ditemukan."
+          );
+        }
+
+        const item = result.data;
+
+        if (!item) {
+          throw new Error("Data pendataan tidak ditemukan.");
+        }
+
+        const statusClass = getStatusClass(item.status);
+
+        hasil.innerHTML = `
+          <div class="card">
+
+            <h2>
+              ${escapeHtml(item.nama_individu_group || "-")}
+            </h2>
+
+            ${detailRow("Nomor Pendataan", item.id_pendataan)}
+            ${detailRow("Kategori", item.kategori)}
+            ${detailRow("Jenis Pelaku", item.jenis_pelaku)}
+            ${detailRow("Bidang Seni", item.bidang_seni)}
+            ${detailRow("Kecamatan", item.kecamatan)}
+            ${detailRow("Desa/Kelurahan", item.desa_kelurahan)}
+            ${detailRow("Alamat", item.alamat)}
+            ${detailRow("Nomor WhatsApp", item.nomor_whatsapp)}
+            ${detailRow("Email", item.email)}
+            ${detailRow("Deskripsi Singkat", item.deskripsi_singkat)}
+            ${detailRow("Nama Personil", item.nama_personil)}
+
+            <div class="detail-row">
+              <div class="detail-label">Status</div>
+              <div class="detail-value">
+                <span class="badge ${statusClass}">
+                  ${escapeHtml(item.status || "-")}
+                </span>
+              </div>
+            </div>
+
+            ${detailRow("Tanggal Masuk", item.created_at)}
+
+            ${makeActions(item)}
+
+          </div>
+        `;
+
+      } catch (error) {
+        hasil.innerHTML = `
+          <div class="error">
+            <strong>Gagal memuat data.</strong>
+            <br><br>
+            ${escapeHtml(error.message)}
+          </div>
+        `;
+      }
+    }
+
+    loadDetail();
+  </script>
+</body>
+</html>
