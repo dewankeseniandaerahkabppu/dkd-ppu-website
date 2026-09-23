@@ -39,6 +39,10 @@
       font-weight: bold;
     }
 
+    .back:hover {
+      text-decoration: underline;
+    }
+
     h1 {
       margin: 0;
       font-size: 28px;
@@ -56,31 +60,72 @@
       padding: 0 20px;
     }
 
-    .info {
+    /* =========================
+       PILIHAN KATEGORI
+       ========================= */
+
+    .category-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .category-button {
+      border: 2px solid #c99a3d;
+      background: white;
+      color: #0b3028;
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .category-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.09);
+    }
+
+    .category-button.active {
+      background: #0b3028;
+      color: #f5ead2;
+      border-color: #0b3028;
+    }
+
+    .category-button .category-small {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: normal;
+      opacity: .75;
+    }
+
+    /* =========================
+       JUDUL KATEGORI
+       ========================= */
+
+    .category-title {
       background: white;
       border-radius: 14px;
       padding: 18px 20px;
       margin-bottom: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,.07);
+      border-left: 5px solid #c99a3d;
     }
 
-    .info strong {
+    .category-title h2 {
+      margin: 0;
       color: #0b3028;
+      font-size: 21px;
     }
 
-    .status-message {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .loading {
-      color: #197c78;
-      font-weight: bold;
-    }
-
-    .error {
-      color: #9f302c;
-      font-weight: bold;
+    .category-title p {
+      margin: 6px 0 0;
+      color: #666;
+      font-size: 13px;
     }
 
     /* =========================
@@ -129,6 +174,37 @@
 
     .stat-card.ditolak {
       border-top-color: #9f302c;
+    }
+
+    /* =========================
+       INFO
+       ========================= */
+
+    .info {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    }
+
+    .info strong {
+      color: #0b3028;
+    }
+
+    .status-message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .loading {
+      color: #197c78;
+      font-weight: bold;
+    }
+
+    .error {
+      color: #9f302c;
+      font-weight: bold;
     }
 
     /* =========================
@@ -229,10 +305,16 @@
       color: #777;
     }
 
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
     @media (max-width: 1000px) {
+
       .stats {
         grid-template-columns: repeat(3, 1fr);
       }
+
     }
 
     @media (max-width: 600px) {
@@ -250,8 +332,26 @@
         margin-top: 18px;
       }
 
-      .info {
+      .category-box {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .category-button {
+        padding: 15px 10px;
+        font-size: 15px;
+      }
+
+      .category-button .category-small {
+        font-size: 10px;
+      }
+
+      .category-title {
         padding: 15px;
+      }
+
+      .category-title h2 {
+        font-size: 18px;
       }
 
       .stats {
@@ -265,6 +365,10 @@
 
       .stat-number {
         font-size: 25px;
+      }
+
+      .info {
+        padding: 15px;
       }
 
     }
@@ -291,45 +395,166 @@
 
 <main>
 
+  <!-- =========================
+       PILIHAN TRADISIONAL / MODERN
+       ========================= -->
+
+  <div class="category-box">
+
+    <button
+      type="button"
+      class="category-button active"
+      id="btnTradisional"
+      onclick="pilihKategori('TRADISIONAL')"
+    >
+      TRADISIONAL
+      <span class="category-small">
+        Seni dan budaya tradisional
+      </span>
+    </button>
+
+    <button
+      type="button"
+      class="category-button"
+      id="btnModern"
+      onclick="pilihKategori('MODERN')"
+    >
+      MODERN
+      <span class="category-small">
+        Seni dan budaya modern
+      </span>
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       JUDUL KATEGORI AKTIF
+       ========================= -->
+
+  <div class="category-title">
+
+    <h2 id="categoryTitle">
+      DATA TRADISIONAL
+    </h2>
+
+    <p id="categoryDescription">
+      Data pelaku seni dan budaya kategori Tradisional.
+    </p>
+
+  </div>
+
+
+  <!-- =========================
+       STATISTIK
+       ========================= -->
+
   <div class="stats">
 
     <div class="stat-card">
-      <div class="stat-label">TOTAL DATA</div>
-      <div class="stat-number" id="totalData">0</div>
+
+      <div class="stat-label">
+        TOTAL DATA
+      </div>
+
+      <div
+        class="stat-number"
+        id="totalData"
+      >
+        0
+      </div>
+
     </div>
+
 
     <div class="stat-card menunggu">
-      <div class="stat-label">MENUNGGU VERIFIKASI</div>
-      <div class="stat-number" id="menungguData">0</div>
+
+      <div class="stat-label">
+        MENUNGGU VERIFIKASI
+      </div>
+
+      <div
+        class="stat-number"
+        id="menungguData"
+      >
+        0
+      </div>
+
     </div>
+
 
     <div class="stat-card terverifikasi">
-      <div class="stat-label">TERVERIFIKASI</div>
-      <div class="stat-number" id="terverifikasiData">0</div>
+
+      <div class="stat-label">
+        TERVERIFIKASI
+      </div>
+
+      <div
+        class="stat-number"
+        id="terverifikasiData"
+      >
+        0
+      </div>
+
     </div>
+
 
     <div class="stat-card dipublikasikan">
-      <div class="stat-label">DIPUBLIKASIKAN</div>
-      <div class="stat-number" id="dipublikasikanData">0</div>
+
+      <div class="stat-label">
+        DIPUBLIKASIKAN
+      </div>
+
+      <div
+        class="stat-number"
+        id="dipublikasikanData"
+      >
+        0
+      </div>
+
     </div>
 
+
     <div class="stat-card ditolak">
-      <div class="stat-label">DITOLAK</div>
-      <div class="stat-number" id="ditolakData">0</div>
+
+      <div class="stat-label">
+        DITOLAK
+      </div>
+
+      <div
+        class="stat-number"
+        id="ditolakData"
+      >
+        0
+      </div>
+
     </div>
 
   </div>
+
+
+  <!-- =========================
+       INFO DATABASE
+       ========================= -->
 
   <div class="info">
 
     <strong>Sumber Data:</strong>
     Database D1 DKD PPU
 
-    <div id="statusMessage" class="status-message loading">
+    <div
+      id="statusMessage"
+      class="status-message loading"
+    >
       Memuat data pendataan...
     </div>
 
   </div>
+
+
+  <!-- =========================
+       TABLE
+       ========================= -->
 
   <div class="table-box">
 
@@ -340,15 +565,41 @@
         <thead>
 
           <tr>
+
             <th>No</th>
-            <th>Nomor Pendataan</th>
-            <th>Nama Individu / Group</th>
-            <th>Kategori</th>
-            <th>Jenis Pelaku</th>
-            <th>Bidang Seni</th>
-            <th>Kecamatan</th>
-            <th>Desa / Kelurahan</th>
-            <th>Status</th>
+
+            <th>
+              Nomor Pendataan
+            </th>
+
+            <th>
+              Nama Individu / Group
+            </th>
+
+            <th>
+              Kategori
+            </th>
+
+            <th>
+              Jenis Pelaku
+            </th>
+
+            <th>
+              Bidang Seni
+            </th>
+
+            <th>
+              Kecamatan
+            </th>
+
+            <th>
+              Desa / Kelurahan
+            </th>
+
+            <th>
+              Status
+            </th>
+
           </tr>
 
         </thead>
@@ -356,9 +607,14 @@
         <tbody id="dataBody">
 
           <tr>
-            <td colspan="9" class="kosong">
+
+            <td
+              colspan="9"
+              class="kosong"
+            >
               Memuat data...
             </td>
+
           </tr>
 
         </tbody>
@@ -371,15 +627,88 @@
 
 </main>
 
+
 <script>
+
+/* =========================
+   DATA GLOBAL
+   ========================= */
+
+let semuaData = [];
+
+let kategoriAktif = "TRADISIONAL";
+
+
+/* =========================
+   PILIH KATEGORI
+   ========================= */
+
+function pilihKategori(kategori) {
+
+  kategoriAktif = kategori;
+
+  const btnTradisional =
+    document.getElementById("btnTradisional");
+
+  const btnModern =
+    document.getElementById("btnModern");
+
+  if (kategori === "TRADISIONAL") {
+
+    btnTradisional.classList.add("active");
+
+    btnModern.classList.remove("active");
+
+    document.getElementById(
+      "categoryTitle"
+    ).textContent =
+      "DATA TRADISIONAL";
+
+    document.getElementById(
+      "categoryDescription"
+    ).textContent =
+      "Data pelaku seni dan budaya kategori Tradisional.";
+
+  }
+
+  else {
+
+    btnModern.classList.add("active");
+
+    btnTradisional.classList.remove("active");
+
+    document.getElementById(
+      "categoryTitle"
+    ).textContent =
+      "DATA MODERN";
+
+    document.getElementById(
+      "categoryDescription"
+    ).textContent =
+      "Data pelaku seni dan budaya kategori Modern.";
+
+  }
+
+  tampilkanData();
+
+}
+
+
+/* =========================
+   LOAD DATA DARI D1
+   ========================= */
 
 async function loadData() {
 
   const statusMessage =
-    document.getElementById("statusMessage");
+    document.getElementById(
+      "statusMessage"
+    );
 
   const dataBody =
-    document.getElementById("dataBody");
+    document.getElementById(
+      "dataBody"
+    );
 
   try {
 
@@ -389,13 +718,22 @@ async function loadData() {
     statusMessage.textContent =
       "Memuat data dari database D1...";
 
-    const response = await fetch("/api/pendataan", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Accept": "application/json"
-      }
-    });
+
+    const response =
+      await fetch(
+        "/api/pendataan",
+        {
+          method: "GET",
+
+          credentials: "include",
+
+          headers: {
+            "Accept":
+              "application/json"
+          }
+        }
+      );
+
 
     if (response.status === 401) {
 
@@ -405,9 +743,13 @@ async function loadData() {
       statusMessage.textContent =
         "Sesi admin tidak tersedia. Silakan login kembali.";
 
+
       dataBody.innerHTML = `
         <tr>
-          <td colspan="9" class="kosong">
+          <td
+            colspan="9"
+            class="kosong"
+          >
             Sesi admin tidak tersedia.
           </td>
         </tr>
@@ -416,236 +758,44 @@ async function loadData() {
       return;
     }
 
+
     if (!response.ok) {
+
       throw new Error(
-        "HTTP " + response.status
+        "HTTP " +
+        response.status
       );
+
     }
+
 
     const result =
       await response.json();
 
-    const data =
+
+    semuaData =
       Array.isArray(result)
         ? result
         : (
-            Array.isArray(result.data)
+            Array.isArray(
+              result.data
+            )
               ? result.data
               : []
           );
 
-    /* =========================
-       HITUNG STATISTIK
-       ========================= */
-
-    const total =
-      data.length;
-
-    const menunggu =
-      data.filter(
-        item =>
-          item.status ===
-          "MENUNGGU VERIFIKASI"
-      ).length;
-
-    const terverifikasi =
-      data.filter(
-        item =>
-          item.status ===
-          "TERVERIFIKASI"
-      ).length;
-
-    const dipublikasikan =
-      data.filter(
-        item =>
-          item.status ===
-          "DIPUBLIKASIKAN"
-      ).length;
-
-    const ditolak =
-      data.filter(
-        item =>
-          item.status ===
-          "DITOLAK"
-      ).length;
-
-    document.getElementById(
-      "totalData"
-    ).textContent = total;
-
-    document.getElementById(
-      "menungguData"
-    ).textContent = menunggu;
-
-    document.getElementById(
-      "terverifikasiData"
-    ).textContent = terverifikasi;
-
-    document.getElementById(
-      "dipublikasikanData"
-    ).textContent = dipublikasikan;
-
-    document.getElementById(
-      "ditolakData"
-    ).textContent = ditolak;
-
-    /* =========================
-       STATUS
-       ========================= */
 
     statusMessage.className =
       "status-message";
 
+
     statusMessage.textContent =
       "Berhasil memuat " +
-      total +
+      semuaData.length +
       " data dari D1.";
 
-    /* =========================
-       DATA KOSONG
-       ========================= */
 
-    if (!data.length) {
-
-      dataBody.innerHTML = `
-        <tr>
-          <td colspan="9" class="kosong">
-            Belum ada data pelaku seni dan budaya.
-          </td>
-        </tr>
-      `;
-
-      return;
-    }
-
-    /* =========================
-       TAMPILKAN DATA
-       ========================= */
-
-    dataBody.innerHTML = "";
-
-    data.forEach((item, index) => {
-
-      const tr =
-        document.createElement("tr");
-
-      const status =
-        item.status || "-";
-
-      let statusClass = "";
-
-      if (
-        status ===
-        "MENUNGGU VERIFIKASI"
-      ) {
-
-        statusClass =
-          "menunggu-badge";
-
-      }
-      else if (
-        status ===
-        "TERVERIFIKASI"
-      ) {
-
-        statusClass =
-          "terverifikasi-badge";
-
-      }
-      else if (
-        status ===
-        "DIPUBLIKASIKAN"
-      ) {
-
-        statusClass =
-          "dipublikasikan-badge";
-
-      }
-      else if (
-        status ===
-        "DITOLAK"
-      ) {
-
-        statusClass =
-          "ditolak-badge";
-
-      }
-
-      const idPendataan =
-        item.id_pendataan || "";
-
-      const detailUrl =
-        "/admin/pendataan-detail.html?id=" +
-        encodeURIComponent(idPendataan);
-
-      tr.innerHTML = `
-
-        <td>
-          ${index + 1}
-        </td>
-
-        <td class="id">
-          ${
-            idPendataan
-              ? `
-                <a
-                  class="id-link"
-                  href="${detailUrl}"
-                >
-                  ${escapeHtml(idPendataan)}
-                </a>
-              `
-              : "-"
-          }
-        </td>
-
-        <td class="name">
-          ${escapeHtml(
-            item.nama_individu_group || "-"
-          )}
-        </td>
-
-        <td>
-          ${escapeHtml(
-            item.kategori || "-"
-          )}
-        </td>
-
-        <td>
-          ${escapeHtml(
-            item.jenis_pelaku || "-"
-          )}
-        </td>
-
-        <td>
-          ${escapeHtml(
-            item.bidang_seni || "-"
-          )}
-        </td>
-
-        <td>
-          ${escapeHtml(
-            item.kecamatan || "-"
-          )}
-        </td>
-
-        <td>
-          ${escapeHtml(
-            item.desa_kelurahan || "-"
-          )}
-        </td>
-
-        <td>
-          <span class="badge ${statusClass}">
-            ${escapeHtml(status)}
-          </span>
-        </td>
-
-      `;
-
-      dataBody.appendChild(tr);
-
-    });
+    tampilkanData();
 
   }
 
@@ -653,15 +803,21 @@ async function loadData() {
 
     console.error(error);
 
+
     statusMessage.className =
       "status-message error";
+
 
     statusMessage.textContent =
       "Gagal mengambil data dari database D1.";
 
+
     dataBody.innerHTML = `
       <tr>
-        <td colspan="9" class="kosong">
+        <td
+          colspan="9"
+          class="kosong"
+        >
           Gagal memuat data.
           Silakan periksa sesi login Admin.
         </td>
@@ -674,20 +830,353 @@ async function loadData() {
 
 
 /* =========================
+   TAMPILKAN DATA
+   SESUAI KATEGORI AKTIF
+   ========================= */
+
+function tampilkanData() {
+
+  const dataBody =
+    document.getElementById(
+      "dataBody"
+    );
+
+
+  const dataKategori =
+    semuaData.filter(
+      item =>
+        String(
+          item.kategori || ""
+        ).toUpperCase()
+        === kategoriAktif
+    );
+
+
+  /* =========================
+     HITUNG STATISTIK
+     ========================= */
+
+  const total =
+    dataKategori.length;
+
+
+  const menunggu =
+    dataKategori.filter(
+      item =>
+        item.status ===
+        "MENUNGGU VERIFIKASI"
+    ).length;
+
+
+  const terverifikasi =
+    dataKategori.filter(
+      item =>
+        item.status ===
+        "TERVERIFIKASI"
+    ).length;
+
+
+  const dipublikasikan =
+    dataKategori.filter(
+      item =>
+        item.status ===
+        "DIPUBLIKASIKAN"
+    ).length;
+
+
+  const ditolak =
+    dataKategori.filter(
+      item =>
+        item.status ===
+        "DITOLAK"
+    ).length;
+
+
+  document.getElementById(
+    "totalData"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "menungguData"
+  ).textContent =
+    menunggu;
+
+
+  document.getElementById(
+    "terverifikasiData"
+  ).textContent =
+    terverifikasi;
+
+
+  document.getElementById(
+    "dipublikasikanData"
+  ).textContent =
+    dipublikasikan;
+
+
+  document.getElementById(
+    "ditolakData"
+  ).textContent =
+    ditolak;
+
+
+  /* =========================
+     DATA KOSONG
+     ========================= */
+
+  if (!dataKategori.length) {
+
+    dataBody.innerHTML = `
+      <tr>
+        <td
+          colspan="9"
+          class="kosong"
+        >
+          Belum ada data
+          kategori ${escapeHtml(
+            kategoriAktif
+          )}.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  /* =========================
+     TAMPILKAN DATA
+     ========================= */
+
+  dataBody.innerHTML = "";
+
+
+  dataKategori.forEach(
+    (item, index) => {
+
+      const tr =
+        document.createElement(
+          "tr"
+        );
+
+
+      const status =
+        item.status || "-";
+
+
+      let statusClass = "";
+
+
+      if (
+        status ===
+        "MENUNGGU VERIFIKASI"
+      ) {
+
+        statusClass =
+          "menunggu-badge";
+
+      }
+
+      else if (
+        status ===
+        "TERVERIFIKASI"
+      ) {
+
+        statusClass =
+          "terverifikasi-badge";
+
+      }
+
+      else if (
+        status ===
+        "DIPUBLIKASIKAN"
+      ) {
+
+        statusClass =
+          "dipublikasikan-badge";
+
+      }
+
+      else if (
+        status ===
+        "DITOLAK"
+      ) {
+
+        statusClass =
+          "ditolak-badge";
+
+      }
+
+
+      const idPendataan =
+        item.id_pendataan || "";
+
+
+      const detailUrl =
+        "/admin/pendataan-detail.html?id=" +
+        encodeURIComponent(
+          idPendataan
+        );
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${index + 1}
+        </td>
+
+
+        <td class="id">
+
+          ${
+            idPendataan
+
+              ? `
+
+                <a
+                  class="id-link"
+                  href="${detailUrl}"
+                >
+                  ${escapeHtml(
+                    idPendataan
+                  )}
+                </a>
+
+              `
+
+              : "-"
+
+          }
+
+        </td>
+
+
+        <td class="name">
+
+          ${escapeHtml(
+            item.nama_individu_group ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            item.kategori ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            item.jenis_pelaku ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            item.bidang_seni ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            item.kecamatan ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          ${escapeHtml(
+            item.desa_kelurahan ||
+            "-"
+          )}
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="badge ${statusClass}"
+          >
+            ${escapeHtml(
+              status
+            )}
+          </span>
+
+        </td>
+
+      `;
+
+
+      dataBody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
    PENGAMAN TEKS
    ========================= */
 
 function escapeHtml(value) {
 
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
+
+/* =========================
+   MULAI
+   ========================= */
 
 loadData();
 
