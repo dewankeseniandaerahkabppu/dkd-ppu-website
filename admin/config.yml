@@ -11,6 +11,7 @@ public_folder: "/assets/uploads"
 locale: "id"
 
 collections:
+
   - name: "site"
     label: "Pengaturan Website"
     files:
@@ -23,23 +24,16 @@ collections:
           - { label: "Logo Website", name: "logo", widget: "image", required: false }
           - { label: "Nama Lengkap", name: "name", widget: "string" }
           - { label: "Tagline", name: "tagline", widget: "string" }
-          - { label: "Teks Kecil Hero", name: "heroEyebrow", widget: "string" }
           - { label: "Judul Hero", name: "heroTitle", widget: "string" }
           - { label: "Deskripsi Hero", name: "heroText", widget: "text" }
-          - { label: "Judul Profil", name: "profileTitle", widget: "string" }
-          - { label: "Isi Profil", name: "profileText", widget: "markdown" }
-          - label: "Statistik"
-            name: "stats"
-            widget: "list"
-            fields:
-              - { label: "Angka", name: "number", widget: "string" }
-              - { label: "Keterangan", name: "label", widget: "string" }
+          - { label: "Profil DKD", name: "profileText", widget: "markdown" }
 
-  - name: "programs"
+
+  - name: "program"
     label: "Program"
     files:
       - label: "Daftar Program"
-        name: "programs"
+        name: "program"
         file: "content/programs.json"
         format: "json"
         fields:
@@ -49,8 +43,7 @@ collections:
             fields:
               - { label: "Nama Program", name: "title", widget: "string" }
               - { label: "Deskripsi", name: "text", widget: "text" }
-              - { label: "Kategori", name: "tag", widget: "string" }
-              - { label: "Ikon", name: "icon", widget: "string", default: "✦" }
+
 
   - name: "news"
     label: "Berita"
@@ -65,10 +58,10 @@ collections:
             widget: "list"
             fields:
               - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Tanggal", name: "date", widget: "datetime" }
               - { label: "Kategori", name: "category", widget: "string" }
-              - { label: "Ringkasan", name: "excerpt", widget: "text" }
-              - { label: "Isi Berita", name: "body", widget: "markdown", required: false }
+              - { label: "Isi", name: "body", widget: "markdown" }
+
 
   - name: "gallery"
     label: "Galeri"
@@ -78,19 +71,18 @@ collections:
         file: "content/gallery.json"
         format: "json"
         fields:
-          - label: "Galeri"
+          - label: "Foto"
             name: "gallery"
             widget: "list"
             fields:
               - { label: "Judul", name: "title", widget: "string" }
-              - { label: "Keterangan", name: "caption", widget: "string" }
-              - { label: "Foto", name: "image", widget: "image", required: false }
-              - { label: "Gaya", name: "tone", widget: "select", options: ["red", "gold", "green", "dark"], default: "green" }
+              - { label: "Foto", name: "image", widget: "image" }
+
 
   - name: "agenda"
     label: "Agenda"
     files:
-      - label: "Daftar Agenda"
+      - label: "Agenda Kegiatan"
         name: "agenda"
         file: "content/agenda.json"
         format: "json"
@@ -99,9 +91,10 @@ collections:
             name: "agenda"
             widget: "list"
             fields:
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Tanggal", name: "date", widget: "datetime" }
               - { label: "Nama Kegiatan", name: "title", widget: "string" }
               - { label: "Lokasi", name: "place", widget: "string" }
+
 
   - name: "contact"
     label: "Kontak & Media Sosial"
@@ -111,12 +104,80 @@ collections:
         file: "content/contact.json"
         format: "json"
         fields:
-          - { label: "Judul Kontak", name: "title", widget: "string" }
-          - { label: "Pengantar", name: "intro", widget: "text" }
           - { label: "Alamat", name: "address", widget: "text" }
-          - { label: "WhatsApp / Telepon", name: "phone", widget: "string" }
+          - { label: "WhatsApp", name: "phone", widget: "string" }
           - { label: "Email", name: "email", widget: "string" }
-          - { label: "Jam Layanan", name: "hours", widget: "string" }
-          - { label: "Instagram", name: "instagram", widget: "string" }
-          - { label: "Facebook", name: "facebook", widget: "string" }
-          - { label: "YouTube", name: "youtube", widget: "string" }
+
+
+  # ==========================
+  # PENDATAAN PELAKU SENI
+  # ==========================
+
+  - name: "pendataan"
+    label: "Pendataan Pelaku Seni"
+    files:
+
+      - label: "Data Pelaku Seni"
+        name: "pendataan"
+        file: "content/pendataan.json"
+        format: "json"
+
+        fields:
+
+          - label: "Data Pelaku Seni"
+            name: "data"
+            widget: "list"
+
+            fields:
+
+              - { label: "Nomor Pendataan", name: "id", widget: "string" }
+
+              - { 
+                  label: "Nama Individu / Group",
+                  name: "nama",
+                  widget: "string"
+                }
+
+              - {
+                  label: "Kategori",
+                  name: "kategori",
+                  widget: "select",
+                  options:
+                    - TRADISIONAL
+                    - MODERN
+                }
+
+              - {
+                  label: "Jenis Pelaku",
+                  name: "jenis",
+                  widget: "string"
+                }
+
+              - {
+                  label: "Bidang Seni",
+                  name: "bidang",
+                  widget: "string"
+                }
+
+              - {
+                  label: "Kecamatan",
+                  name: "kecamatan",
+                  widget: "string"
+                }
+
+              - {
+                  label: "Desa/Kelurahan",
+                  name: "desa",
+                  widget: "string"
+                }
+
+              - {
+                  label: "Status",
+                  name: "status",
+                  widget: "select",
+                  options:
+                    - MENUNGGU VERIFIKASI
+                    - TERVERIFIKASI
+                    - DITOLAK
+                    - DIPUBLIKASIKAN
+                }
