@@ -1,324 +1,447 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Data Pelaku Seni & Budaya - Admin DKD PPU</title>
 
-<title>Data Pelaku Seni & Budaya - Admin DKD PPU</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5ead2;
+      color: #18332d;
+    }
 
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f5ead5;
-color:#0b3028;
-}
+    header {
+      background: #0b3028;
+      color: #f5ead2;
+      padding: 24px 20px;
+      border-bottom: 4px solid #c99a3d;
+    }
 
-.header{
-background:#0b3028;
-color:#e7bd62;
-padding:25px;
-font-size:28px;
-font-weight:bold;
-border-bottom:3px solid #c99a3d;
-}
+    header .wrap {
+      max-width: 1400px;
+      margin: auto;
+    }
 
-.container{
-padding:30px;
-}
+    .back {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #e7bd62;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-.card{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 20px #0002;
-}
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
 
-button{
-background:#0b3028;
-color:white;
-border:0;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-margin-right:10px;
-}
+    .subtitle {
+      margin-top: 7px;
+      color: #d8d0bd;
+      font-size: 14px;
+    }
 
-button:hover{
-background:#174b3b;
-}
+    main {
+      max-width: 1400px;
+      margin: 25px auto;
+      padding: 0 20px;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
+    .info {
+      background: white;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    }
 
-th{
-background:#0b3028;
-color:#e7bd62;
-}
+    .info strong {
+      color: #0b3028;
+    }
 
-td,th{
-padding:10px;
-border:1px solid #ddd;
-}
+    .status-message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
 
-</style>
+    .loading {
+      color: #197c78;
+      font-weight: bold;
+    }
 
+    .error {
+      color: #9f302c;
+      font-weight: bold;
+    }
+
+    .table-box {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1050px;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #0b3028;
+      color: #f5ead2;
+      padding: 14px 12px;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #eee6d6;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    tr:hover td {
+      background: #faf7ef;
+    }
+
+    .id {
+      font-weight: bold;
+      color: #197c78;
+      white-space: nowrap;
+    }
+
+    .name {
+      font-weight: bold;
+      color: #18332d;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .menunggu {
+      background: #fff0c8;
+      color: #795700;
+    }
+
+    .terverifikasi {
+      background: #d9eee8;
+      color: #176458;
+    }
+
+    .dipublikasikan {
+      background: #d8e8f5;
+      color: #20577a;
+    }
+
+    .ditolak {
+      background: #f5d9d7;
+      color: #8a2925;
+    }
+
+    .kosong {
+      text-align: center;
+      padding: 40px 20px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 20px 15px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      main {
+        padding: 0 12px;
+        margin-top: 18px;
+      }
+
+      .info {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
+<header>
+  <div class="wrap">
+    <a class="back" href="/admin/">← Kembali ke Admin DKD PPU</a>
 
-<div class="header">
+    <h1>DATA PELAKU SENI &amp; BUDAYA</h1>
 
-DATA PELAKU SENI & BUDAYA
+    <div class="subtitle">
+      Data pendataan yang tersimpan pada sistem DKD PPU
+    </div>
+  </div>
+</header>
 
-<br>
+<main>
 
-<small>
-Admin Dewan Kesenian Daerah PPU
-</small>
+  <div class="info">
+    <strong>Sumber Data:</strong> Database D1 DKD PPU
 
-</div>
+    <div id="statusMessage" class="status-message loading">
+      Memuat data pendataan...
+    </div>
+  </div>
 
+  <div class="table-box">
+    <div class="table-scroll">
 
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nomor Pendataan</th>
+            <th>Nama Individu / Group</th>
+            <th>Kategori</th>
+            <th>Jenis Pelaku</th>
+            <th>Bidang Seni</th>
+            <th>Kecamatan</th>
+            <th>Desa / Kelurahan</th>
+            <th>Status</th>
+          </tr>
+        </thead>
 
-<div class="container">
+        <tbody id="dataBody">
+          <tr>
+            <td colspan="9" class="kosong">
+              Memuat data...
+            </td>
+          </tr>
+        </tbody>
 
-<div class="card">
+      </table>
 
+    </div>
+  </div>
 
-<button onclick="downloadCSV()">
-Download Excel / CSV
-</button>
-
-
-<button onclick="downloadPDF()">
-Download PDF
-</button>
-
-
-
-<table id="tabel">
-
-<thead>
-
-<tr>
-
-<th>No</th>
-<th>Nomor Pendataan</th>
-<th>Nama Individu / Group</th>
-<th>Kategori</th>
-<th>Jenis Pelaku</th>
-<th>Bidang Seni</th>
-<th>Kecamatan</th>
-<th>Desa/Kelurahan</th>
-<th>Status</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="data">
-
-<tr>
-<td colspan="9">
-Memuat data...
-</td>
-</tr>
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-</div>
-
-
+</main>
 
 <script>
 
+async function loadData() {
 
-let dataPelaku=[];
+  const statusMessage =
+    document.getElementById("statusMessage");
 
+  const dataBody =
+    document.getElementById("dataBody");
 
+  try {
 
-fetch("/content/pendataan.json")
+    statusMessage.className =
+      "status-message loading";
 
-.then(res=>res.json())
+    statusMessage.textContent =
+      "Memuat data dari database D1...";
 
-.then(result=>{
+    const response = await fetch("/api/pendataan", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Accept": "application/json"
+      }
+    });
 
-dataPelaku=result.data || [];
+    if (response.status === 401) {
 
-tampilkanData();
+      statusMessage.className =
+        "status-message error";
 
-})
+      statusMessage.textContent =
+        "Sesi admin tidak tersedia. Silakan login kembali.";
 
-.catch(()=>{
+      dataBody.innerHTML = `
+        <tr>
+          <td colspan="9" class="kosong">
+            Sesi admin tidak tersedia.
+          </td>
+        </tr>
+      `;
 
-document.getElementById("data").innerHTML=
+      return;
+    }
 
-"<tr><td colspan='9'>Data belum tersedia</td></tr>";
+    if (!response.ok) {
+      throw new Error(
+        "HTTP " + response.status
+      );
+    }
 
-});
+    const result = await response.json();
 
+    /*
+     * Worker dapat mengembalikan array langsung
+     * atau object yang memiliki properti data.
+     */
+    const data = Array.isArray(result)
+      ? result
+      : (Array.isArray(result.data) ? result.data : []);
 
+    if (!data.length) {
 
+      statusMessage.className =
+        "status-message";
 
+      statusMessage.textContent =
+        "Belum ada data pendataan.";
 
-function tampilkanData(){
+      dataBody.innerHTML = `
+        <tr>
+          <td colspan="9" class="kosong">
+            Belum ada data pelaku seni dan budaya.
+          </td>
+        </tr>
+      `;
 
+      return;
+    }
 
-let html="";
+    statusMessage.className =
+      "status-message";
 
+    statusMessage.textContent =
+      "Berhasil memuat " +
+      data.length +
+      " data dari D1.";
 
-dataPelaku.forEach((item,index)=>{
+    dataBody.innerHTML = "";
 
+    data.forEach((item, index) => {
 
-html+=`
+      const tr =
+        document.createElement("tr");
 
-<tr>
+      const status =
+        item.status || "-";
 
-<td>${index+1}</td>
+      let statusClass = "";
 
-<td>${item.id || "-"}</td>
+      if (status === "MENUNGGU VERIFIKASI") {
+        statusClass = "menunggu";
+      }
+      else if (status === "TERVERIFIKASI") {
+        statusClass = "terverifikasi";
+      }
+      else if (status === "DIPUBLIKASIKAN") {
+        statusClass = "dipublikasikan";
+      }
+      else if (status === "DITOLAK") {
+        statusClass = "ditolak";
+      }
 
-<td>${item.nama || "-"}</td>
+      tr.innerHTML = `
 
-<td>${item.kategori || "-"}</td>
+        <td>${index + 1}</td>
 
-<td>${item.jenis || "-"}</td>
+        <td class="id">
+          ${escapeHtml(item.id_pendataan || "-")}
+        </td>
 
-<td>${item.bidang || "-"}</td>
+        <td class="name">
+          ${escapeHtml(item.nama_individu_group || "-")}
+        </td>
 
-<td>${item.kecamatan || "-"}</td>
+        <td>
+          ${escapeHtml(item.kategori || "-")}
+        </td>
 
-<td>${item.desa || "-"}</td>
+        <td>
+          ${escapeHtml(item.jenis_pelaku || "-")}
+        </td>
 
-<td>${item.status || "-"}</td>
+        <td>
+          ${escapeHtml(item.bidang_seni || "-")}
+        </td>
 
-</tr>
+        <td>
+          ${escapeHtml(item.kecamatan || "-")}
+        </td>
 
-`;
+        <td>
+          ${escapeHtml(item.desa_kelurahan || "-")}
+        </td>
 
-});
+        <td>
+          <span class="badge ${statusClass}">
+            ${escapeHtml(status)}
+          </span>
+        </td>
 
+      `;
 
-document.getElementById("data").innerHTML=html;
+      dataBody.appendChild(tr);
 
+    });
+
+  }
+  catch (error) {
+
+    console.error(error);
+
+    statusMessage.className =
+      "status-message error";
+
+    statusMessage.textContent =
+      "Gagal mengambil data dari database D1.";
+
+    dataBody.innerHTML = `
+      <tr>
+        <td colspan="9" class="kosong">
+          Gagal memuat data.
+          Silakan periksa sesi login Admin.
+        </td>
+      </tr>
+    `;
+
+  }
 
 }
 
 
+/* Pengaman tampilan teks dari database */
+function escapeHtml(value) {
 
-
-function downloadCSV(){
-
-
-let csv=
-"No,NOMOR,NAMA,KATEGORI,JENIS,BIDANG,KECAMATAN,DESA,STATUS\n";
-
-
-dataPelaku.forEach((x,i)=>{
-
-
-csv+=`${i+1},${x.id},${x.nama},${x.kategori},${x.jenis},${x.bidang},${x.kecamatan},${x.desa},${x.status}\n`;
-
-
-});
-
-
-let blob=new Blob([csv],{
-type:"text/csv"
-});
-
-
-let url=URL.createObjectURL(blob);
-
-
-let a=document.createElement("a");
-
-a.href=url;
-
-a.download="Data-Pelaku-Seni-DKD-PPU.csv";
-
-a.click();
-
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
 
-
-
-function downloadPDF(){
-
-
-let isi=
-`
-DEWAN KESENIAN DAERAH
-KABUPATEN PENAJAM PASER UTARA
-
-DATA PELAKU SENI & BUDAYA
-
-Jumlah Data : ${dataPelaku.length}
-
-`;
-
-
-
-dataPelaku.forEach((x,i)=>{
-
-isi+=`
-
-${i+1}.
-${x.nama}
-Kategori : ${x.kategori}
-Jenis : ${x.jenis}
-Bidang : ${x.bidang}
-Kecamatan : ${x.kecamatan}
-Desa : ${x.desa}
-Status : ${x.status}
-
-`;
-
-});
-
-
-let blob=new Blob([isi],{
-type:"application/pdf"
-});
-
-
-let url=URL.createObjectURL(blob);
-
-
-let a=document.createElement("a");
-
-a.href=url;
-
-a.download="Data-Pelaku-Seni-DKD-PPU.pdf";
-
-a.click();
-
-
-}
-
-
+loadData();
 
 </script>
 
-
 </body>
-
 </html>
