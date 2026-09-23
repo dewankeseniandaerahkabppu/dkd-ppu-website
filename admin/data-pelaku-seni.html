@@ -1,70 +1,126 @@
 <!doctype html>
 <html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Data Pelaku Seni - Admin DKD PPU</title>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Data Pelaku Seni & Budaya - Admin DKD PPU</title>
+
 
 <style>
 
 body{
- margin:0;
- font-family:Arial;
- background:#f5ead5;
- color:#0b3028;
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f5ead5;
+color:#0b3028;
 }
+
 
 .header{
- background:#0b3028;
- color:#e7bd62;
- padding:25px;
- font-size:28px;
- font-weight:bold;
+
+background:
+linear-gradient(
+135deg,
+#061814,
+#0b3028,
+#174b3b
+);
+
+color:#e7bd62;
+
+padding:25px;
+
+font-size:28px;
+
+font-weight:bold;
+
+border-bottom:3px solid #c99a3d;
+
 }
+
 
 .container{
- padding:30px;
+
+padding:30px;
+
 }
+
 
 .card{
- background:white;
- border-radius:15px;
- padding:25px;
- box-shadow:0 5px 20px #0002;
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+box-shadow:0 5px 20px #0002;
+
 }
+
 
 button{
- background:#0b3028;
- color:white;
- border:none;
- padding:12px 20px;
- border-radius:8px;
- cursor:pointer;
- margin-right:10px;
+
+background:#0b3028;
+
+color:white;
+
+border:0;
+
+padding:12px 20px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+margin-right:10px;
+
 }
+
 
 button:hover{
- background:#174b3b;
+
+background:#174b3b;
+
 }
+
 
 table{
- width:100%;
- border-collapse:collapse;
- margin-top:20px;
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
 }
+
 
 th{
- background:#0b3028;
- color:#e7bd62;
+
+background:#0b3028;
+
+color:#e7bd62;
+
 }
+
 
 td,th{
- padding:12px;
- border:1px solid #ddd;
+
+padding:10px;
+
+border:1px solid #ddd;
+
+text-align:left;
+
 }
 
+
 </style>
+
 
 </head>
 
@@ -73,19 +129,23 @@ td,th{
 
 
 <div class="header">
-DATA PELAKU SENI
+
+DATA PELAKU SENI & BUDAYA
+
 <br>
-<small>Admin Dewan Kesenian Daerah PPU</small>
+
+<small>
+Admin Dewan Kesenian Daerah PPU
+</small>
+
 </div>
+
 
 
 <div class="container">
 
-<div class="card">
 
-<button onclick="downloadPDF()">
-Download PDF
-</button>
+<div class="card">
 
 
 <button onclick="downloadCSV()">
@@ -96,35 +156,28 @@ Download Excel / CSV
 
 <table id="tabel">
 
+
 <thead>
 
 <tr>
 
 <th>No</th>
+<th>Nomor Pendataan</th>
 <th>Nama Individu / Group</th>
 <th>Kategori</th>
 <th>Jenis Pelaku</th>
 <th>Bidang Seni</th>
 <th>Kecamatan</th>
+<th>Desa/Kelurahan</th>
+<th>Status</th>
+
 
 </tr>
 
 </thead>
 
 
-<tbody>
-
-<tr>
-
-<td>1</td>
-<td>Contoh Data</td>
-<td>TRADISIONAL</td>
-<td>Seniman</td>
-<td>Tari</td>
-<td>Penajam</td>
-
-</tr>
-
+<tbody id="data">
 
 </tbody>
 
@@ -134,41 +187,142 @@ Download Excel / CSV
 
 </div>
 
+
 </div>
+
+
 
 
 <script>
 
-function downloadCSV(){
 
-let csv="No,Nama,Kategori,Jenis,Bidang,Kecamatan\n";
-
-csv+="1,Contoh Data,TRADISIONAL,Seniman,Tari,Penajam";
+let dataPelaku=[];
 
 
-let blob=new Blob([csv],{
-type:"text/csv"
+
+fetch("/content/pendataan.json")
+
+.then(response=>response.json())
+
+.then(data=>{
+
+
+dataPelaku=data.data || [];
+
+
+tampilkanData();
+
+
+})
+
+.catch(error=>{
+
+console.log(error);
+
+document.getElementById("data").innerHTML=
+
+"<tr><td colspan='9'>Data belum tersedia</td></tr>";
+
 });
 
 
-let url=URL.createObjectURL(blob);
 
 
-let a=document.createElement("a");
 
-a.href=url;
+function tampilkanData(){
 
-a.download="data-pelaku-seni.csv";
 
-a.click();
+let html="";
+
+
+dataPelaku.forEach((item,index)=>{
+
+
+html+=`
+
+<tr>
+
+<td>${index+1}</td>
+
+<td>${item.id || "-"}</td>
+
+<td>${item.nama || "-"}</td>
+
+<td>${item.kategori || "-"}</td>
+
+<td>${item.jenis || "-"}</td>
+
+<td>${item.bidang || "-"}</td>
+
+<td>${item.kecamatan || "-"}</td>
+
+<td>${item.desa || "-"}</td>
+
+<td>${item.status || "-"}</td>
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+document.getElementById("data").innerHTML=html;
 
 
 }
 
 
-function downloadPDF(){
 
-alert("Fitur PDF akan diaktifkan pada tahap berikutnya");
+
+function downloadCSV(){
+
+
+let csv=
+
+"No,Nomor Pendataan,Nama,Kategori,Jenis,Bidang,Kecamatan,Desa,Status\n";
+
+
+
+dataPelaku.forEach((item,index)=>{
+
+
+csv+=
+
+`${index+1},${item.id},${item.nama},${item.kategori},${item.jenis},${item.bidang},${item.kecamatan},${item.desa},${item.status}\n`;
+
+
+});
+
+
+
+let blob=new Blob([csv],{
+
+type:"text/csv"
+
+});
+
+
+
+let url=URL.createObjectURL(blob);
+
+
+
+let a=document.createElement("a");
+
+
+a.href=url;
+
+
+a.download="data-pelaku-seni-dkd-ppu.csv";
+
+
+a.click();
+
+
 
 }
 
@@ -177,4 +331,5 @@ alert("Fitur PDF akan diaktifkan pada tahap berikutnya");
 
 
 </body>
+
 </html>
