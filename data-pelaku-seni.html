@@ -134,6 +134,331 @@
         font-size: 21px;
       }
     }
+  
+  /* =========================================================
+   PROFIL PELAKU SENI DAN BUDAYA — DKD PPU
+   DESAIN BARU
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", Arial, sans-serif;
+  background:
+    linear-gradient(
+      180deg,
+      #f5ead5 0%,
+      #faf5ea 50%,
+      #eee1ca 100%
+    );
+  color: #173c2b;
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 52px 20px 46px;
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(201,154,61,0.18),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #061814 0%,
+      #0b3028 58%,
+      #174b3b 100%
+    );
+  color: #fff;
+  border-bottom: 2px solid rgba(201,154,61,0.55);
+  box-shadow: 0 15px 35px rgba(6,24,20,0.16);
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -180px;
+  top: -210px;
+  border: 1px solid rgba(231,189,98,0.20);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 30px rgba(231,189,98,0.035),
+    0 0 0 60px rgba(231,189,98,0.025);
+  pointer-events: none;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  left: -110px;
+  bottom: -105px;
+  border: 1px solid rgba(25,124,120,0.30);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.header h1 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  color: #f7e6b0;
+  font-size: clamp(27px, 4vw, 43px);
+  line-height: 1.08;
+  letter-spacing: 0.015em;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.35);
+}
+
+.header p {
+  position: relative;
+  z-index: 2;
+  margin: 14px 0 0;
+  color: rgba(255,255,255,0.80);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+/* CONTAINER */
+.container {
+  position: relative;
+  max-width: 900px;
+  margin: 55px auto;
+  padding: 0 24px;
+}
+
+/* CARD PROFIL */
+.card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      #fffdf8,
+      #f5ead7
+    ) !important;
+  border: 1px solid rgba(201,154,61,0.30) !important;
+  border-radius: 24px !important;
+  padding: 34px !important;
+  box-shadow:
+    0 15px 38px rgba(6,24,20,0.11) !important;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  right: -105px;
+  top: -105px;
+  border: 1px solid rgba(201,154,61,0.16);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(201,154,61,0.025),
+    0 0 0 56px rgba(201,154,61,0.018);
+  pointer-events: none;
+}
+
+/* JUDUL */
+.judul {
+  position: relative;
+  z-index: 2;
+  color: #0b3028 !important;
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-size: clamp(28px, 4vw, 38px) !important;
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: 30px !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid rgba(201,154,61,0.28) !important;
+}
+
+.judul::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin-top: 15px;
+  background: linear-gradient(
+    90deg,
+    #c99a3d,
+    #197c78
+  );
+}
+
+/* BARIS DATA */
+.row {
+  position: relative;
+  z-index: 2;
+  display: grid !important;
+  grid-template-columns: 210px 1fr !important;
+  gap: 20px;
+  padding: 17px 0 !important;
+  border-bottom: 1px solid rgba(23,60,43,0.09) !important;
+}
+
+.row:last-child {
+  border-bottom: 0 !important;
+}
+
+.label {
+  color: #173c2b !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  color: #59655e !important;
+  font-size: 14px !important;
+  line-height: 1.65;
+}
+
+/* STATUS */
+.status {
+  display: inline-block;
+  padding: 7px 13px !important;
+  border-radius: 20px !important;
+  background: rgba(25,124,120,0.10) !important;
+  border: 1px solid rgba(25,124,120,0.25) !important;
+  color: #17645f !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+}
+
+/* TOMBOL KEMBALI */
+.back {
+  display: block;
+  width: fit-content;
+  margin: 35px auto 0;
+  background: #0b3028 !important;
+  color: #f7e6b0 !important;
+  text-decoration: none;
+  padding: 12px 20px !important;
+  border: 1px solid rgba(201,154,61,0.45) !important;
+  border-radius: 11px !important;
+  font-size: 12px !important;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(6,24,20,0.12);
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.back:hover {
+  transform: translateY(-3px);
+  background: #174b3b !important;
+}
+
+/* LOADING / ERROR */
+.loading,
+.error {
+  background: rgba(255,255,255,0.86) !important;
+  border: 1px solid rgba(201,154,61,0.22) !important;
+  border-radius: 18px !important;
+  padding: 30px 24px !important;
+  text-align: center;
+  color: #69736d !important;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.error {
+  background: #fff0ed !important;
+  border-color: rgba(159,48,44,0.22) !important;
+  color: #8d3731 !important;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 65px;
+  padding: 25px 20px 35px !important;
+  border-top: 1px solid rgba(201,154,61,0.25) !important;
+  color: #758078 !important;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* MOBILE */
+@media (max-width: 650px) {
+
+  .header {
+    padding: 36px 16px 34px;
+  }
+
+  .header h1 {
+    font-size: 25px;
+    line-height: 1.12;
+  }
+
+  .header p {
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .container {
+    margin: 30px auto;
+    padding: 0 14px;
+  }
+
+  .card {
+    padding: 21px !important;
+    border-radius: 19px !important;
+  }
+
+  .judul {
+    font-size: 27px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .row {
+    grid-template-columns: 1fr !important;
+    gap: 5px;
+    padding: 14px 0 !important;
+  }
+
+  .label {
+    font-size: 10px !important;
+    text-transform: uppercase;
+    color: #0b3028 !important;
+  }
+
+  .value {
+    font-size: 13px !important;
+  }
+
+  .status {
+    font-size: 10px !important;
+    padding: 6px 11px !important;
+  }
+
+  .back {
+    margin-top: 28px;
+    font-size: 11px !important;
+    padding: 11px 16px !important;
+  }
+
+  .footer {
+    margin-top: 45px;
+    padding: 22px 15px 30px !important;
+  }
+}
   </style>
 </head>
 
