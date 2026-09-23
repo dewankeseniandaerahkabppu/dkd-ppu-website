@@ -150,6 +150,142 @@ export default {
     }
 
     // =========================
+    // PENGATURAN WHATSAPP PENDATAAN
+    // KHUSUS ADMIN
+    // =========================
+
+    if (
+      url.pathname === "/api/admin/whatsapp" &&
+      request.method === "GET"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(request, env);
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const result =
+          await env.DB
+            .prepare(`
+              SELECT setting_value
+              FROM site_settings
+              WHERE setting_key = 'whatsapp_pendataan'
+              LIMIT 1
+            `)
+            .first();
+
+        return Response.json({
+          ok: true,
+          whatsapp:
+            result?.setting_value || ""
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    if (
+      url.pathname === "/api/admin/whatsapp" &&
+      request.method === "POST"
+    ) {
+      try {
+
+        const isAdmin =
+          await verifyAdminSession(request, env);
+
+        if (!isAdmin) {
+          return Response.json(
+            {
+              ok: false,
+              error: "Tidak memiliki akses."
+            },
+            { status: 401 }
+          );
+        }
+
+        const data =
+          await request.json();
+
+        let whatsapp =
+          String(data.whatsapp || "").trim();
+
+        if (!whatsapp) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor WhatsApp wajib diisi."
+            },
+            { status: 400 }
+          );
+        }
+
+        // Hanya angka, spasi, +, -, dan tanda kurung
+        if (!/^[0-9+() -]+$/.test(whatsapp)) {
+          return Response.json(
+            {
+              ok: false,
+              error:
+                "Nomor WhatsApp tidak valid."
+            },
+            { status: 400 }
+          );
+        }
+
+        // Simpan / perbarui nomor WhatsApp
+        await env.DB
+          .prepare(`
+            INSERT INTO site_settings (
+              setting_key,
+              setting_value
+            )
+            VALUES ('whatsapp_pendataan', ?)
+            ON CONFLICT(setting_key)
+            DO UPDATE SET
+              setting_value = excluded.setting_value
+          `)
+          .bind(whatsapp)
+          .run();
+
+        return Response.json({
+          ok: true,
+          message:
+            "Nomor WhatsApp berhasil disimpan.",
+          whatsapp
+        });
+
+      } catch (error) {
+
+        return Response.json(
+          {
+            ok: false,
+            error: error.message
+          },
+          { status: 500 }
+        );
+
+      }
+    }
+
+    // =========================
     // TEST KONEKSI DATABASE
     // KHUSUS ADMIN
     // =========================
