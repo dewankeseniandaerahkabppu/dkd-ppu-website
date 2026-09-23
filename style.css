@@ -2374,3 +2374,11 @@ section::after {
     border-top: 1px solid rgba(255,255,255,0.12) !important;
   }
 }
+
+/* Perapihan teks Email pada Kontak */
+.contact-details div:nth-child(3) a {
+  font-size: 12px !important;
+  letter-spacing: -0.01em;
+  overflow-wrap: normal;
+  word-break: normal;
+}
