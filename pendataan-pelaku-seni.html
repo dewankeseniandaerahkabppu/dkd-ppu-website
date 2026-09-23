@@ -262,6 +262,721 @@
         width: 100%;
       }
     }
+    /* =========================================================
+   DESAIN BARU — PENDATAAN PELAKU SENI DAN BUDAYA DKD PPU
+   ========================================================= */
+
+:root {
+  --pasir: #c99a3d;
+  --pasir-terang: #e7bd62;
+  --hijau: #0b3028;
+  --hijau-gelap: #061814;
+  --hijau-muda: #174b3b;
+  --teal: #197c78;
+  --krem: #f5ead5;
+  --krem-terang: #faf5ea;
+  --merah: #9f302c;
+  --teks: #173c2b;
+  --abu: #68736d;
+}
+
+/* =========================
+   DASAR HALAMAN
+   ========================= */
+
+body {
+  margin: 0;
+  font-family: "DM Sans", Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(
+      180deg,
+      var(--krem) 0%,
+      var(--krem-terang) 48%,
+      #eee1ca 100%
+    );
+  color: var(--teks);
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.header {
+  position: relative;
+  overflow: hidden;
+  padding: 58px 20px 52px;
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(201,154,61,0.18),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      var(--hijau-gelap) 0%,
+      var(--hijau) 58%,
+      var(--hijau-muda) 100%
+    );
+  color: #fff;
+  border-bottom: 2px solid rgba(201,154,61,0.55);
+  box-shadow: 0 15px 35px rgba(6,24,20,0.16);
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  right: -190px;
+  top: -220px;
+  border: 1px solid rgba(231,189,98,0.20);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 30px rgba(231,189,98,0.035),
+    0 0 0 60px rgba(231,189,98,0.025),
+    0 0 0 90px rgba(231,189,98,0.018);
+  pointer-events: none;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  left: -115px;
+  bottom: -110px;
+  border: 1px solid rgba(25,124,120,0.30);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.header-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0 0 12px;
+  color: #f7e6b0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: 0.015em;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.35);
+}
+
+.header p {
+  margin: 0;
+  color: rgba(255,255,255,0.82);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+/* =========================
+   CONTAINER
+   ========================= */
+
+.container {
+  position: relative;
+  max-width: 920px;
+  margin: 55px auto;
+  padding: 0 24px;
+}
+
+/* =========================
+   KATEGORI
+   ========================= */
+
+.kategori-box {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.98),
+      rgba(248,240,225,0.96)
+    );
+  border: 1px solid rgba(201,154,61,0.30);
+  border-radius: 24px;
+  padding: 30px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 12px 32px rgba(6,24,20,0.09);
+}
+
+.kategori-box::after {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: -75px;
+  top: -75px;
+  border: 1px solid rgba(201,154,61,0.16);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 22px rgba(201,154,61,0.025),
+    0 0 0 44px rgba(201,154,61,0.018);
+  pointer-events: none;
+}
+
+.kategori-label {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 9px;
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.20em;
+}
+
+.kategori-title {
+  position: relative;
+  z-index: 2;
+  color: var(--hijau);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(27px, 4vw, 39px);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.kategori-description {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin-top: 12px;
+  color: var(--abu);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================
+   FORM CARD
+   ========================= */
+
+.form-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.99),
+      rgba(250,246,237,0.97)
+    );
+  border: 1px solid rgba(201,154,61,0.28);
+  border-radius: 26px;
+  padding: 38px;
+  box-shadow: 0 18px 45px rgba(6,24,20,0.10);
+}
+
+.form-card::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -145px;
+  top: 250px;
+  border: 1px solid rgba(25,124,120,0.10);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 28px rgba(25,124,120,0.018),
+    0 0 0 56px rgba(25,124,120,0.012);
+  pointer-events: none;
+}
+
+.form-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.form-card h2 {
+  margin: 4px 0 8px;
+  color: var(--hijau);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+.form-card > p {
+  max-width: 720px;
+  color: var(--abu);
+  margin-top: 0;
+  margin-bottom: 32px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================
+   BADGE
+   ========================= */
+
+.badge {
+  display: inline-block;
+  padding: 7px 12px;
+  margin-bottom: 5px;
+  border: 1px solid rgba(201,154,61,0.45);
+  border-radius: 30px;
+  background: rgba(201,154,61,0.12);
+  color: #80601f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+/* =========================
+   SECTION TITLE
+   ========================= */
+
+.section-title {
+  position: relative;
+  margin-top: 36px;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,154,61,0.22);
+  color: var(--hijau);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 65px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--pasir),
+    var(--teal)
+  );
+}
+
+/* =========================
+   FORM GROUP
+   ========================= */
+
+.form-group {
+  margin-bottom: 21px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--teks);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.required {
+  color: var(--merah);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(23,60,43,0.17);
+  border-radius: 11px;
+  background: #fffdf9;
+  color: var(--teks);
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #929992;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--pasir);
+  background: #fffefa;
+  box-shadow: 0 0 0 3px rgba(201,154,61,0.13);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* =========================
+   CHECKBOX
+   ========================= */
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 13px;
+  border: 1px solid rgba(23,60,43,0.12);
+  border-radius: 11px;
+  background: rgba(255,255,255,0.65);
+  color: #425149;
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.checkbox-item:hover {
+  border-color: rgba(201,154,61,0.48);
+  background: #fffdf8;
+  transform: translateY(-1px);
+}
+
+.checkbox-item input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--hijau);
+}
+
+/* Pernyataan */
+
+#persetujuan {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--hijau);
+}
+
+/* =========================
+   PERSONIL BAND
+   ========================= */
+
+.personil-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.personil-row input {
+  flex: 1;
+}
+
+.btn-remove {
+  width: auto;
+  padding: 10px 14px;
+  border: 1px solid rgba(159,48,44,0.18);
+  border-radius: 9px;
+  background: #fff0ed;
+  color: #8d3731;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-remove:hover {
+  background: #ffe3df;
+  transform: translateY(-1px);
+}
+
+.btn-add {
+  margin-top: 2px;
+  padding: 10px 15px;
+  border: 1px solid rgba(201,154,61,0.45);
+  border-radius: 9px;
+  background: #fffaf0;
+  color: var(--hijau);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-add:hover {
+  background: #f8ecd2;
+  border-color: var(--pasir);
+  transform: translateY(-1px);
+}
+
+.help {
+  margin-top: 8px;
+  color: #7b857f;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* =========================
+   TOMBOL KIRIM
+   ========================= */
+
+.btn-submit {
+  position: relative;
+  width: 100%;
+  margin-top: 28px;
+  padding: 15px 18px;
+  border: 1px solid rgba(231,189,98,0.35);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--hijau),
+      var(--hijau-muda)
+    );
+  color: #f7e6b0;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(6,24,20,0.18);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  background:
+    linear-gradient(
+      135deg,
+      #174b3b,
+      #245b42
+    );
+  box-shadow: 0 17px 35px rgba(6,24,20,0.24);
+}
+
+.btn-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+/* =========================
+   PESAN HASIL
+   ========================= */
+
+.notice {
+  padding: 16px 18px;
+  border-radius: 12px;
+  margin-top: 20px;
+  display: none;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.notice.success {
+  display: block;
+  background: #eaf6ed;
+  border: 1px solid rgba(22,101,52,0.18);
+  color: #166534;
+}
+
+.notice.error {
+  display: block;
+  background: #fff0ed;
+  border: 1px solid rgba(159,48,44,0.20);
+  color: #8d3731;
+}
+
+/* =========================
+   KEMBALI
+   ========================= */
+
+.btn-back {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 15px;
+  border: 1px solid rgba(201,154,61,0.38);
+  border-radius: 10px;
+  background: rgba(11,48,40,0.05);
+  color: var(--hijau);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-back:hover {
+  background: rgba(201,154,61,0.12);
+  transform: translateX(-3px);
+}
+
+/* =========================
+   RESPONSIVE TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .container {
+    margin: 40px auto;
+  }
+
+  .form-card {
+    padding: 30px;
+  }
+
+}
+
+/* =========================
+   RESPONSIVE MOBILE
+   ========================= */
+
+@media (max-width: 650px) {
+
+  .header {
+    padding: 38px 16px 36px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+  }
+
+  .header p {
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .container {
+    margin: 30px auto;
+    padding: 0 14px;
+  }
+
+  .kategori-box {
+    padding: 24px 20px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .kategori-label {
+    font-size: 9px;
+  }
+
+  .kategori-title {
+    font-size: 27px;
+  }
+
+  .kategori-description {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .form-card {
+    padding: 23px 18px;
+    border-radius: 21px;
+  }
+
+  .form-card h2 {
+    font-size: 27px;
+  }
+
+  .form-card > p {
+    font-size: 12px;
+    line-height: 1.65;
+    margin-bottom: 26px;
+  }
+
+  .section-title {
+    margin-top: 30px;
+    margin-bottom: 19px;
+    font-size: 19px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .checkbox-group {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .checkbox-item {
+    padding: 11px;
+    font-size: 12px;
+  }
+
+  .personil-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-remove {
+    width: 100%;
+  }
+
+  .btn-add {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn-submit {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .btn-back {
+    font-size: 11px;
+  }
+
+}
+
+/* =========================
+   MOBILE SANGAT KECIL
+   ========================= */
+
+@media (max-width: 390px) {
+
+  .header h1 {
+    font-size: 25px;
+  }
+
+  .kategori-title {
+    font-size: 24px;
+  }
+
+  .form-card {
+    padding: 20px 15px;
+  }
+
+  .form-card h2 {
+    font-size: 25px;
+  }
+
+}
   </style>
 </head>
 
