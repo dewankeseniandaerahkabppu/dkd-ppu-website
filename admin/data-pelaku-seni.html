@@ -83,6 +83,58 @@
       font-weight: bold;
     }
 
+    /* =========================
+       STATISTIK
+       ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.07);
+      border-top: 4px solid #c99a3d;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .stat-number {
+      font-size: 30px;
+      font-weight: bold;
+      color: #0b3028;
+    }
+
+    .stat-card.menunggu {
+      border-top-color: #c99a3d;
+    }
+
+    .stat-card.terverifikasi {
+      border-top-color: #197c78;
+    }
+
+    .stat-card.dipublikasikan {
+      border-top-color: #3b78a8;
+    }
+
+    .stat-card.ditolak {
+      border-top-color: #9f302c;
+    }
+
+    /* =========================
+       TABLE
+       ========================= */
+
     .table-box {
       background: white;
       border-radius: 14px;
@@ -140,22 +192,22 @@
       white-space: nowrap;
     }
 
-    .menunggu {
+    .menunggu-badge {
       background: #fff0c8;
       color: #795700;
     }
 
-    .terverifikasi {
+    .terverifikasi-badge {
       background: #d9eee8;
       color: #176458;
     }
 
-    .dipublikasikan {
+    .dipublikasikan-badge {
       background: #d8e8f5;
       color: #20577a;
     }
 
-    .ditolak {
+    .ditolak-badge {
       background: #f5d9d7;
       color: #8a2925;
     }
@@ -166,7 +218,14 @@
       color: #777;
     }
 
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     @media (max-width: 600px) {
+
       header {
         padding: 20px 15px;
       }
@@ -183,6 +242,20 @@
       .info {
         padding: 15px;
       }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-number {
+        font-size: 25px;
+      }
+
     }
   </style>
 </head>
@@ -191,31 +264,72 @@
 
 <header>
   <div class="wrap">
-    <a class="back" href="/admin/">← Kembali ke Admin DKD PPU</a>
+
+    <a class="back" href="/admin/">
+      ← Kembali ke Admin DKD PPU
+    </a>
 
     <h1>DATA PELAKU SENI &amp; BUDAYA</h1>
 
     <div class="subtitle">
       Data pendataan yang tersimpan pada sistem DKD PPU
     </div>
+
   </div>
 </header>
 
 <main>
 
+  <div class="stats">
+
+    <div class="stat-card">
+      <div class="stat-label">TOTAL DATA</div>
+      <div class="stat-number" id="totalData">0</div>
+    </div>
+
+    <div class="stat-card menunggu">
+      <div class="stat-label">MENUNGGU VERIFIKASI</div>
+      <div class="stat-number" id="menungguData">0</div>
+    </div>
+
+    <div class="stat-card terverifikasi">
+      <div class="stat-label">TERVERIFIKASI</div>
+      <div class="stat-number" id="terverifikasiData">0</div>
+    </div>
+
+    <div class="stat-card dipublikasikan">
+      <div class="stat-label">DIPUBLIKASIKAN</div>
+      <div class="stat-number" id="dipublikasikanData">0</div>
+    </div>
+
+    <div class="stat-card ditolak">
+      <div class="stat-label">DITOLAK</div>
+      <div class="stat-number" id="ditolakData">0</div>
+    </div>
+
+  </div>
+
+
   <div class="info">
-    <strong>Sumber Data:</strong> Database D1 DKD PPU
+
+    <strong>Sumber Data:</strong>
+    Database D1 DKD PPU
 
     <div id="statusMessage" class="status-message loading">
       Memuat data pendataan...
     </div>
+
   </div>
 
+
   <div class="table-box">
+
     <div class="table-scroll">
 
       <table>
+
         <thead>
+
           <tr>
             <th>No</th>
             <th>Nomor Pendataan</th>
@@ -227,22 +341,27 @@
             <th>Desa / Kelurahan</th>
             <th>Status</th>
           </tr>
+
         </thead>
 
         <tbody id="dataBody">
+
           <tr>
             <td colspan="9" class="kosong">
               Memuat data...
             </td>
           </tr>
+
         </tbody>
 
       </table>
 
     </div>
+
   </div>
 
 </main>
+
 
 <script>
 
@@ -262,6 +381,7 @@ async function loadData() {
     statusMessage.textContent =
       "Memuat data dari database D1...";
 
+
     const response = await fetch("/api/pendataan", {
       method: "GET",
       credentials: "include",
@@ -269,6 +389,7 @@ async function loadData() {
         "Accept": "application/json"
       }
     });
+
 
     if (response.status === 401) {
 
@@ -289,29 +410,103 @@ async function loadData() {
       return;
     }
 
+
     if (!response.ok) {
       throw new Error(
         "HTTP " + response.status
       );
     }
 
-    const result = await response.json();
 
-    /*
-     * Worker dapat mengembalikan array langsung
-     * atau object yang memiliki properti data.
-     */
-    const data = Array.isArray(result)
-      ? result
-      : (Array.isArray(result.data) ? result.data : []);
+    const result =
+      await response.json();
+
+
+    const data =
+      Array.isArray(result)
+        ? result
+        : (
+            Array.isArray(result.data)
+              ? result.data
+              : []
+          );
+
+
+    /* =========================
+       HITUNG STATISTIK
+       ========================= */
+
+    const total =
+      data.length;
+
+    const menunggu =
+      data.filter(
+        item =>
+          item.status ===
+          "MENUNGGU VERIFIKASI"
+      ).length;
+
+    const terverifikasi =
+      data.filter(
+        item =>
+          item.status ===
+          "TERVERIFIKASI"
+      ).length;
+
+    const dipublikasikan =
+      data.filter(
+        item =>
+          item.status ===
+          "DIPUBLIKASIKAN"
+      ).length;
+
+    const ditolak =
+      data.filter(
+        item =>
+          item.status ===
+          "DITOLAK"
+      ).length;
+
+
+    document.getElementById(
+      "totalData"
+    ).textContent = total;
+
+    document.getElementById(
+      "menungguData"
+    ).textContent = menunggu;
+
+    document.getElementById(
+      "terverifikasiData"
+    ).textContent = terverifikasi;
+
+    document.getElementById(
+      "dipublikasikanData"
+    ).textContent = dipublikasikan;
+
+    document.getElementById(
+      "ditolakData"
+    ).textContent = ditolak;
+
+
+    /* =========================
+       STATUS
+       ========================= */
+
+    statusMessage.className =
+      "status-message";
+
+    statusMessage.textContent =
+      "Berhasil memuat " +
+      total +
+      " data dari D1.";
+
+
+    /* =========================
+       DATA KOSONG
+       ========================= */
 
     if (!data.length) {
-
-      statusMessage.className =
-        "status-message";
-
-      statusMessage.textContent =
-        "Belum ada data pendataan.";
 
       dataBody.innerHTML = `
         <tr>
@@ -324,69 +519,111 @@ async function loadData() {
       return;
     }
 
-    statusMessage.className =
-      "status-message";
 
-    statusMessage.textContent =
-      "Berhasil memuat " +
-      data.length +
-      " data dari D1.";
+    /* =========================
+       TAMPILKAN DATA
+       ========================= */
 
     dataBody.innerHTML = "";
+
 
     data.forEach((item, index) => {
 
       const tr =
         document.createElement("tr");
 
+
       const status =
         item.status || "-";
 
+
       let statusClass = "";
 
-      if (status === "MENUNGGU VERIFIKASI") {
-        statusClass = "menunggu";
+
+      if (
+        status ===
+        "MENUNGGU VERIFIKASI"
+      ) {
+
+        statusClass =
+          "menunggu-badge";
+
       }
-      else if (status === "TERVERIFIKASI") {
-        statusClass = "terverifikasi";
+      else if (
+        status ===
+        "TERVERIFIKASI"
+      ) {
+
+        statusClass =
+          "terverifikasi-badge";
+
       }
-      else if (status === "DIPUBLIKASIKAN") {
-        statusClass = "dipublikasikan";
+      else if (
+        status ===
+        "DIPUBLIKASIKAN"
+      ) {
+
+        statusClass =
+          "dipublikasikan-badge";
+
       }
-      else if (status === "DITOLAK") {
-        statusClass = "ditolak";
+      else if (
+        status ===
+        "DITOLAK"
+      ) {
+
+        statusClass =
+          "ditolak-badge";
+
       }
+
 
       tr.innerHTML = `
 
-        <td>${index + 1}</td>
+        <td>
+          ${index + 1}
+        </td>
 
         <td class="id">
-          ${escapeHtml(item.id_pendataan || "-")}
+          ${escapeHtml(
+            item.id_pendataan || "-"
+          )}
         </td>
 
         <td class="name">
-          ${escapeHtml(item.nama_individu_group || "-")}
+          ${escapeHtml(
+            item.nama_individu_group || "-"
+          )}
         </td>
 
         <td>
-          ${escapeHtml(item.kategori || "-")}
+          ${escapeHtml(
+            item.kategori || "-"
+          )}
         </td>
 
         <td>
-          ${escapeHtml(item.jenis_pelaku || "-")}
+          ${escapeHtml(
+            item.jenis_pelaku || "-"
+          )}
         </td>
 
         <td>
-          ${escapeHtml(item.bidang_seni || "-")}
+          ${escapeHtml(
+            item.bidang_seni || "-"
+          )}
         </td>
 
         <td>
-          ${escapeHtml(item.kecamatan || "-")}
+          ${escapeHtml(
+            item.kecamatan || "-"
+          )}
         </td>
 
         <td>
-          ${escapeHtml(item.desa_kelurahan || "-")}
+          ${escapeHtml(
+            item.desa_kelurahan || "-"
+          )}
         </td>
 
         <td>
@@ -397,20 +634,24 @@ async function loadData() {
 
       `;
 
+
       dataBody.appendChild(tr);
 
     });
 
   }
+
   catch (error) {
 
     console.error(error);
+
 
     statusMessage.className =
       "status-message error";
 
     statusMessage.textContent =
       "Gagal mengambil data dari database D1.";
+
 
     dataBody.innerHTML = `
       <tr>
@@ -426,7 +667,10 @@ async function loadData() {
 }
 
 
-/* Pengaman tampilan teks dari database */
+/* =========================
+   PENGAMAN TEKS
+   ========================= */
+
 function escapeHtml(value) {
 
   return String(value)
