@@ -1341,6 +1341,7 @@ if (
                 bidang_seni,
                 kecamatan,
                 desa_kelurahan,
+                nomor_whatsapp,
                 status,
                 is_published,
                 created_at
