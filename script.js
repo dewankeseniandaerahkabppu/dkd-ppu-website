@@ -51,6 +51,90 @@ $("#news-list").innerHTML=news.map((n,i)=>`
   </article>
 `).join("");
   $("#gallery-list").innerHTML=gallery.map((g,i)=>`<button class="gallery-card reveal-card tone-${esc(g.tone||"green")}" data-i="${i}" style="--delay:${i*90}ms">${g.image?`<img src="${esc(g.image)}" alt="">`:`<span class="gallery-symbol">${["✦","♫","❯","◈"][i%4]}</span>`}<strong>${esc(g.title)}</strong><small>${esc(g.caption)}</small></button>`).join("");
+    // ===============================
+  // VIDEO KEGIATAN DKD PPU
+  // ===============================
+  async function loadPublicVideos() {
+
+    const videoList =
+      document.getElementById("video-list");
+
+    if (!videoList) return;
+
+    try {
+
+      const response =
+        await fetch(
+          "https://dkd-ppu-media-api.dewankeseniandaerah-kabppu.workers.dev/api/videos"
+        );
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil video.");
+      }
+
+      const data =
+        await response.json();
+
+      const videos =
+        data.videos || [];
+
+      if (!videos.length) {
+
+        videoList.innerHTML =
+          '<p class="video-loading">Belum ada video kegiatan.</p>';
+
+        return;
+      }
+
+      videoList.innerHTML =
+        videos.map(video => `
+
+          <article class="video-card">
+
+            <video
+              controls
+              preload="metadata"
+              playsinline
+              src="${esc(video.source_url)}">
+            </video>
+
+            <div class="video-card-body">
+
+              <span class="video-category">
+                ${esc(video.category || "Dokumentasi")}
+              </span>
+
+              <h3>
+                ${esc(video.title || "Video Kegiatan DKD PPU")}
+              </h3>
+
+              ${
+                video.description
+                  ? `<p>${esc(video.description)}</p>`
+                  : ""
+              }
+
+            </div>
+
+          </article>
+
+        `).join("");
+
+    } catch (error) {
+
+      console.error(
+        "Video kegiatan:",
+        error
+      );
+
+      videoList.innerHTML =
+        '<p class="video-loading">Video kegiatan belum dapat dimuat.</p>';
+
+    }
+
+  }
+
+  loadPublicVideos();
   $("#agenda-list").innerHTML=agenda.map((a,i)=>{let d=new Date(a.date+"T00:00:00");return `<article class="agenda-item reveal-card" style="--delay:${i*90}ms"><div class="agenda-date"><strong>${String(d.getDate()).padStart(2,"0")}</strong><span>${d.toLocaleDateString("id-ID",{month:"short"}).toUpperCase()}</span></div><div><h3>${esc(a.title)}</h3><p>${esc(a.place)}</p></div></article>`}).join("");
   $("#contact-title").textContent=contact.title;$("#contact-intro").textContent=contact.intro;
   $("#contact-details").innerHTML=[["Alamat",contact.address],["WhatsApp / Telepon",contact.phone],["Email",contact.email],["Jam Layanan",contact.hours]].map(x=>`<div><small>${x[0]}</small><strong>${esc(x[1])}</strong></div>`).join("");
