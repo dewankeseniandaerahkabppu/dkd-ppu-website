@@ -2549,18 +2549,18 @@ section::after {
   min-height: 68px;
 
   box-sizing: border-box;
-  padding: 16px 24px;
+  padding: 8px 24px;
 
-  border: 2px solid #7d1f18;
-  border-radius: 18px;
+border: 2px solid #7d1f18 !important;
+border-radius: 18px;
 
-  background: linear-gradient(
-    135deg,
-    #8f241c,
-    #b7372b
-  );
+background: linear-gradient(
+  135deg,
+  #8f241c,
+  #b7372b
+) !important;
 
-  color: #fff4d6;
+color: #fff4d6 !important;
 
   font-family: Georgia, "Times New Roman", serif;
   font-size: 15px;
@@ -2579,6 +2579,21 @@ section::after {
     transform .3s ease,
     box-shadow .3s ease,
     background .3s ease;
+}
+
+.hero .btn-pendataan {
+  background: linear-gradient(
+    135deg,
+    #8f241c,
+    #b7372b
+  ) !important;
+
+  color: #fff4d6 !important;
+
+  border: 2px solid #7d1f18 !important;
+
+  box-shadow:
+    0 10px 28px rgba(95, 25, 18, .32) !important;
 }
 
 
