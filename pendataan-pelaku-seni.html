@@ -1397,7 +1397,7 @@ textarea {
           class="btn-submit"
           id="btnSubmit"
         >
-          KIRIM DATA
+          KIRIM DATA & NOTIFIKASI KE ADMIN DKD
         </button>
 
         <div id="hasilPendataan" class="notice"></div>
@@ -1774,14 +1774,17 @@ textarea {
 
 
         tampilkanHasil(
-          "Data berhasil dikirim. Nomor pendataan Anda: " +
-          result.id_pendataan +
-          ". Data akan menunggu proses verifikasi oleh DKD PPU.",
-          true
-        );
+  "Data berhasil dikirim. Nomor pendataan Anda: " +
+  result.id_pendataan +
+  ". Data akan menunggu proses verifikasi oleh DKD PPU.",
+  true
+);
 
+if (result.whatsapp_link) {
+  window.location.href = result.whatsapp_link;
+}
 
-        this.reset();
+this.reset();
 
 
         /*
@@ -1791,7 +1794,7 @@ textarea {
 
 
         btn.disabled = false;
-        btn.textContent = "KIRIM DATA";
+        btn.textContent = "KIRIM DATA & NOTIFIKASI KE ADMIN DKD";
 
 
       } catch (error) {
@@ -1805,7 +1808,7 @@ textarea {
         );
 
         btn.disabled = false;
-        btn.textContent = "KIRIM DATA";
+        btn.textContent = "KIRIM DATA & NOTIFIKASI KE ADMIN DKD";
       }
 
     });
