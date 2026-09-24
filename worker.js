@@ -1038,36 +1038,22 @@ if (
         // PESAN WHATSAPP
         // ====================================================
 
-        const pesan =
-`Halo Admin DKD PPU,
+       const pesan =
+`*Kami telah mengisi pendataan pelaku seni dan budaya.*
 
-Ada pendataan pelaku seni dan budaya baru.
+*Nomor Pendataan:* ${idPendataan}
 
-Nomor Pendataan:
-${idPendataan}
+*Nama:* ${data.nama_individu_group}
 
-Nama Individu / Group:
-${data.nama_individu_group}
+*Kategori:* ${data.kategori}
 
-Kategori:
-${data.kategori}
+*Jenis Pelaku:* ${data.jenis_pelaku || "-"}
 
-Jenis Pelaku:
-${data.jenis_pelaku || "-"}
+*Bidang Seni:* ${data.bidang_seni || "-"}
 
-Bidang Seni:
-${data.bidang_seni || "-"}
+*Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.*
 
-Kecamatan:
-${data.kecamatan || "-"}
-
-Desa/Kelurahan:
-${data.desa_kelurahan || "-"}
-
-Status:
-MENUNGGU VERIFIKASI
-
-Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.`;
+*Terima kasih.*`;
 
 
         const whatsappLink =
