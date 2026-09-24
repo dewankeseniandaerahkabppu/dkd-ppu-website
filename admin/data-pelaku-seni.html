@@ -278,7 +278,26 @@
       font-weight: bold;
       white-space: nowrap;
     }
+.btn-hapus {
+  padding: 7px 14px;
+  border: 1px solid #b42318;
+  border-radius: 8px;
+  background: #fff;
+  color: #b42318;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.btn-hapus:hover {
+  background: #b42318;
+  color: #fff;
+}
+
+.btn-hapus:active {
+  transform: scale(0.97);
+}
     .menunggu-badge {
       background: #fff0c8;
       color: #795700;
@@ -749,7 +768,7 @@ async function loadData() {
       dataBody.innerHTML = `
         <tr>
           <td
-            colspan="9"
+            colspan="10"
             class="kosong"
           >
             Sesi admin tidak tersedia.
@@ -817,7 +836,7 @@ async function loadData() {
     dataBody.innerHTML = `
       <tr>
         <td
-          colspan="9"
+          colspan="10"
           class="kosong"
         >
           Gagal memuat data.
@@ -825,6 +844,96 @@ async function loadData() {
         </td>
       </tr>
     `;
+
+  }
+
+}
+
+/* =========================
+   HAPUS DATA PENDATAAN
+   ========================= */
+
+async function hapusData(
+  idPendataan,
+  nama
+) {
+
+  const konfirmasi =
+    confirm(
+      "Apakah Anda yakin ingin menghapus data ini?\n\n" +
+      "Nomor Pendataan: " +
+      idPendataan +
+      "\n" +
+      "Nama: " +
+      nama +
+      "\n\n" +
+      "Data yang sudah dihapus tidak dapat dikembalikan."
+    );
+
+  if (!konfirmasi) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/pendataan/hapus",
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "Accept":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            id_pendataan:
+              idPendataan
+          })
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok || !result.ok) {
+
+      throw new Error(
+        result.error ||
+        "Gagal menghapus data."
+      );
+
+    }
+
+
+    alert(
+      "Data berhasil dihapus."
+    );
+
+
+    await loadData();
+
+
+  } catch (error) {
+
+    console.error(
+      "Hapus data:",
+      error
+    );
+
+    alert(
+      "Gagal menghapus data.\n\n" +
+      error.message
+    );
 
   }
 
@@ -932,8 +1041,9 @@ function tampilkanData() {
 
     dataBody.innerHTML = `
       <tr>
+
         <td
-          colspan="9"
+          colspan="10"
           class="kosong"
         >
           Belum ada data
@@ -941,6 +1051,7 @@ function tampilkanData() {
             kategoriAktif
           )}.
         </td>
+
       </tr>
     `;
 
@@ -1016,6 +1127,11 @@ function tampilkanData() {
         item.id_pendataan || "";
 
 
+      const nama =
+        item.nama_individu_group ||
+        "-";
+
+
       const detailUrl =
         "/admin/pendataan-detail.html?id=" +
         encodeURIComponent(
@@ -1058,8 +1174,7 @@ function tampilkanData() {
         <td class="name">
 
           ${escapeHtml(
-            item.nama_individu_group ||
-            "-"
+            nama
           )}
 
         </td>
@@ -1127,7 +1242,38 @@ function tampilkanData() {
 
         </td>
 
+
+                        <td>
+
+          <button
+            type="button"
+            class="btn-hapus"
+          >
+            Hapus
+          </button>
+
+        </td>
+
       `;
+
+
+      const tombolHapus =
+        tr.querySelector(
+          ".btn-hapus"
+        );
+
+
+      tombolHapus.addEventListener(
+        "click",
+        () => {
+
+          hapusData(
+            idPendataan,
+            nama
+          );
+
+        }
+      );
 
 
       dataBody.appendChild(
@@ -1138,7 +1284,6 @@ function tampilkanData() {
   );
 
 }
-
 
 /* =========================
    PENGAMAN TEKS
