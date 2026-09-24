@@ -2532,37 +2532,81 @@ section::after {
   }
 }
 
+
 /* =================================
    TOMBOL UTAMA PENDATAAN
    ================================= */
 
 .btn-pendataan {
   position: relative;
+
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 58px;
-  padding: 15px 28px;
-  border: 2px solid #c89b3c;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #c89b3c, #e0bb61);
-  color: #073b2f;
-  font-weight: 800;
-  letter-spacing: .03em;
+
+  min-height: 68px;
+  min-width: 270px;
+
+  padding: 16px 30px;
+
+  border: 2px solid #7d1f18;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    135deg,
+    #8f241c,
+    #b7372b
+  );
+
+  color: #fff4d6;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  font-weight: 700;
+
+  letter-spacing: .025em;
+  line-height: 1.4;
+
   text-transform: uppercase;
-  box-shadow: 0 10px 25px rgba(0,0,0,.16);
-  transform: scale(1.05);
-  transition: .3s ease;
+  text-align: center;
+
+  box-shadow:
+    0 10px 28px rgba(95, 25, 18, .32);
+
+  transform: scale(1.06);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease,
+    background .3s ease;
 }
+
+
+/* EFEK SAAT MOUSE DI ATAS */
 
 .btn-pendataan:hover {
-  transform: scale(1.08) translateY(-3px);
-  box-shadow: 0 15px 30px rgba(0,0,0,.22);
+
+  background: linear-gradient(
+    135deg,
+    #741a15,
+    #9f2b23
+  );
+
+  transform:
+    scale(1.09)
+    translateY(-3px);
+
+  box-shadow:
+    0 15px 35px rgba(95, 25, 18, .42);
 }
 
+
+/* SAAT DITEKAN */
+
 .btn-pendataan:active {
-  transform: scale(1.02);
+
+  transform:
+    scale(1.03);
 }
 
 
@@ -2578,13 +2622,28 @@ section::after {
   }
 
   .btn-pendataan {
-    min-height: 60px;
+
+    width: 100%;
+    min-width: 0;
+
+    min-height: 64px;
+
     transform: none;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
     font-size: 14px;
   }
 
   .btn-pendataan:hover {
-    transform: translateY(-2px);
+
+    transform:
+      translateY(-2px);
   }
 
 }
+
+ 
