@@ -2531,3 +2531,59 @@ section::after {
     font-size: 21px;
   }
 }
+
+/* =================================
+   TOMBOL UTAMA PENDATAAN
+   ================================= */
+
+.btn-pendataan {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 15px 28px;
+  border: 2px solid #c89b3c;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #c89b3c, #e0bb61);
+  color: #073b2f;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 25px rgba(0,0,0,.16);
+  transform: scale(1.05);
+  transition: .3s ease;
+}
+
+.btn-pendataan:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0,0,0,.22);
+}
+
+.btn-pendataan:active {
+  transform: scale(1.02);
+}
+
+
+/* =================================
+   TOMBOL PENDATAAN DI HP
+   ================================= */
+
+@media(max-width:700px) {
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-pendataan {
+    min-height: 60px;
+    transform: none;
+    font-size: 14px;
+  }
+
+  .btn-pendataan:hover {
+    transform: translateY(-2px);
+  }
+
+}
