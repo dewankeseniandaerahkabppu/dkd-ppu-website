@@ -161,61 +161,93 @@
 <main>
 
   <!-- LOGIN -->
- <section id="loginBox" class="card">
-  <h2>Media & Video</h2>
+  <section id="loginBox" class="card">
+    <h2>Media & Video</h2>
 
-  <p
-    class="muted"
-    id="loginStatus"
-  >
-    Memeriksa sesi Admin DKD PPU...
-  </p>
-</section>
+    <p
+      class="muted"
+      id="loginStatus"
+    >
+      Memeriksa sesi Admin DKD PPU...
+    </p>
+  </section>
+
 
   <!-- PANEL ADMIN -->
   <section id="adminPanel" class="hidden">
 
     <div class="card">
+
       <div class="topbar">
+
         <div>
           <h2>Tambah Video</h2>
+
           <p class="muted">
             Upload video MP4 melalui Cloudinary.
           </p>
         </div>
 
         <button
-  class="btn-secondary"
-  onclick="window.location.href='/admin/'"
->
-  ← Kembali ke Dashboard
-</button>
+          class="btn-secondary"
+          onclick="window.location.href='/admin/'"
+        >
+          ← Kembali ke Dashboard
+        </button>
+
       </div>
 
+
       <label>Judul Video</label>
+
       <input
         type="text"
         id="title"
         placeholder="Contoh: Pentas Seni DKD PPU"
       >
 
+
       <label>Kategori</label>
+
       <select id="category">
-        <option value="Dokumentasi">Dokumentasi</option>
-        <option value="Kegiatan">Kegiatan</option>
-        <option value="Pertunjukan">Pertunjukan</option>
-        <option value="Budaya">Budaya</option>
-        <option value="Wawancara">Wawancara</option>
-        <option value="Lainnya">Lainnya</option>
+
+        <option value="Dokumentasi">
+          Dokumentasi
+        </option>
+
+        <option value="Kegiatan">
+          Kegiatan
+        </option>
+
+        <option value="Pertunjukan">
+          Pertunjukan
+        </option>
+
+        <option value="Budaya">
+          Budaya
+        </option>
+
+        <option value="Wawancara">
+          Wawancara
+        </option>
+
+        <option value="Lainnya">
+          Lainnya
+        </option>
+
       </select>
 
+
       <label>Deskripsi</label>
+
       <textarea
         id="description"
         placeholder="Deskripsi singkat video"
       ></textarea>
 
+
       <label>File Video</label>
+
 
       <button
         type="button"
@@ -225,12 +257,26 @@
         📹 Upload Video MP4
       </button>
 
-      <div id="uploadStatus" class="status"></div>
 
-      <input type="hidden" id="sourceUrl">
-      <input type="hidden" id="cloudinaryPublicId">
+      <div
+        id="uploadStatus"
+        class="status"
+      ></div>
+
+
+      <input
+        type="hidden"
+        id="sourceUrl"
+      >
+
+      <input
+        type="hidden"
+        id="cloudinaryPublicId"
+      >
+
 
       <br>
+
 
       <button
         type="button"
@@ -239,16 +285,20 @@
       >
         💾 Simpan Video
       </button>
+
     </div>
 
 
     <!-- DAFTAR VIDEO -->
+
     <div class="card">
+
       <h2>Daftar Video</h2>
 
       <div id="videoList">
         Memuat data video...
       </div>
+
     </div>
 
   </section>
@@ -257,19 +307,35 @@
 
 
 <!-- CLOUDINARY -->
+
 <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
 
+
 <script>
+
+
+/* =========================
+   KONFIGURASI
+========================= */
 
 const API_BASE =
   window.DKD_API_BASE ||
   "https://dkd-ppu-media-api.dewankeseniandaerah-kabppu.workers.dev";
 
-const CLOUDINARY_CLOUD_NAME = "s8rcnej6";
-const CLOUDINARY_UPLOAD_PRESET = "dkd_ppu_video";
+
+const CLOUDINARY_CLOUD_NAME =
+  "s8rcnej6";
+
+
+const CLOUDINARY_UPLOAD_PRESET =
+  "dkd_ppu_video";
+
 
 let authToken =
-  localStorage.getItem("dkd_ppu_admin_token") || "";
+  localStorage.getItem(
+    "dkd_ppu_admin_token"
+  ) || "";
+
 
 let uploader = null;
 
@@ -278,17 +344,100 @@ let uploader = null;
    STATUS
 ========================= */
 
-function showStatus(id, message) {
-  const el = document.getElementById(id);
+function showStatus(
+  id,
+  message
+) {
 
-  el.textContent = message;
-  el.style.display = "block";
+  const el =
+    document.getElementById(id);
+
+  el.textContent =
+    message;
+
+  el.style.display =
+    "block";
 }
 
 
 /* =========================
-   LOGIN
+   REFRESH TOKEN MEDIA SSO
 ========================= */
+
+async function refreshMediaToken() {
+
+  const response =
+    await fetch(
+      "/api/media-auth",
+      {
+        method: "GET",
+        credentials: "include"
+      }
+    );
+
+
+  const data =
+    await response.json();
+
+
+  if (
+    !response.ok ||
+    !data.token
+  ) {
+
+    throw new Error(
+      data.error ||
+      "Sesi Admin tidak tersedia."
+    );
+  }
+
+
+  authToken =
+    data.token;
+
+
+  return authToken;
+}
+
+
+/* =========================
+   REQUEST KE MEDIA API
+========================= */
+
+async function mediaFetch(
+  path,
+  options = {}
+) {
+
+  /*
+    Selalu ambil token SSO terbaru
+    sebelum mengakses Media API.
+  */
+
+  await refreshMediaToken();
+
+
+  const headers =
+    new Headers(
+      options.headers || {}
+    );
+
+
+  headers.set(
+    "Authorization",
+    "Bearer " + authToken
+  );
+
+
+  return fetch(
+    API_BASE + path,
+    {
+      ...options,
+      headers
+    }
+  );
+}
+
 
 /* =========================
    LOGIN ADMIN UTAMA / MEDIA SSO
@@ -301,34 +450,10 @@ async function login() {
     "Memeriksa sesi Admin DKD PPU..."
   );
 
+
   try {
 
-    const response =
-      await fetch(
-        "/api/media-auth",
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Sesi Admin tidak tersedia."
-      );
-
-    }
-
-
-    authToken =
-      data.token;
+    await refreshMediaToken();
 
 
     document.getElementById(
@@ -354,7 +479,7 @@ async function login() {
   }
 
 }
-  
+
 
 /* =========================
    LOGOUT
@@ -364,30 +489,43 @@ async function logout() {
 
   try {
 
-    await fetch(
-      API_BASE + "/api/logout",
-      {
-        method: "POST",
-        headers: {
-          "Authorization":
-            "Bearer " + authToken
+    if (authToken) {
+
+      await fetch(
+        API_BASE +
+        "/api/logout",
+        {
+          method: "POST",
+
+          headers: {
+            "Authorization":
+              "Bearer " +
+              authToken
+          }
         }
-      }
-    );
+      );
+
+    }
 
   } catch (error) {
+
     console.log(error);
+
   }
 
+
   authToken = "";
+
 
   localStorage.removeItem(
     "dkd_ppu_admin_token"
   );
 
+
   document.getElementById(
     "adminPanel"
   ).classList.add("hidden");
+
 
   document.getElementById(
     "loginBox"
@@ -407,38 +545,55 @@ function openUploader() {
       cloudinary.createUploadWidget(
 
         {
+
           cloudName:
             CLOUDINARY_CLOUD_NAME,
 
           uploadPreset:
             CLOUDINARY_UPLOAD_PRESET,
 
-          resourceType: "video",
+          resourceType:
+            "video",
 
-          sources: ["local"],
+          sources:
+            ["local"],
 
-          clientAllowedFormats: ["mp4"],
+          clientAllowedFormats:
+            ["mp4"],
 
-          singleUploadAutoClose: true,
+          singleUploadAutoClose:
+            true,
 
-          showUploadMoreButton: false,
+          showUploadMoreButton:
+            false,
 
-          language: "id"
+          language:
+            "id"
+
         },
 
-        function(error, result) {
+
+        function(
+          error,
+          result
+        ) {
 
           if (error) {
 
-            console.error(error);
+            console.error(
+              error
+            );
+
 
             showStatus(
               "uploadStatus",
               "Upload gagal."
             );
 
+
             return;
           }
+
 
           if (
             result &&
@@ -448,27 +603,37 @@ function openUploader() {
             const info =
               result.info;
 
+
             document.getElementById(
               "sourceUrl"
             ).value =
-              info.secure_url || "";
+              info.secure_url ||
+              "";
+
 
             document.getElementById(
               "cloudinaryPublicId"
             ).value =
-              info.public_id || "";
+              info.public_id ||
+              "";
+
 
             showStatus(
               "uploadStatus",
               "✅ Video berhasil di-upload."
             );
+
           }
 
         }
+
       );
+
   }
 
+
   uploader.open();
+
 }
 
 
@@ -479,20 +644,28 @@ function openUploader() {
 async function saveVideo() {
 
   const title =
-    document.getElementById("title")
-      .value.trim();
+    document.getElementById(
+      "title"
+    ).value.trim();
+
 
   const category =
-    document.getElementById("category")
-      .value;
+    document.getElementById(
+      "category"
+    ).value;
+
 
   const description =
-    document.getElementById("description")
-      .value.trim();
+    document.getElementById(
+      "description"
+    ).value.trim();
+
 
   const sourceUrl =
-    document.getElementById("sourceUrl")
-      .value.trim();
+    document.getElementById(
+      "sourceUrl"
+    ).value.trim();
+
 
   if (!title) {
 
@@ -500,8 +673,10 @@ async function saveVideo() {
       "Judul video wajib diisi."
     );
 
+
     return;
   }
+
 
   if (!sourceUrl) {
 
@@ -509,54 +684,71 @@ async function saveVideo() {
       "Silakan upload video MP4 terlebih dahulu."
     );
 
+
     return;
   }
+
 
   showStatus(
     "uploadStatus",
     "Menyimpan data video..."
   );
 
+
   try {
 
-    const response = await fetch(
-      API_BASE + "/api/videos",
-      {
-        method: "POST",
+    /*
+      Token diperbarui otomatis di sini.
+      Jadi meskipun halaman sudah dibuka
+      lebih dari 5 menit, POST tetap
+      menggunakan token baru.
+    */
 
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-            "Bearer " + authToken
-        },
+    const response =
+      await mediaFetch(
+        "/api/videos",
+        {
 
-        body: JSON.stringify({
+          method:
+            "POST",
 
-          title,
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-          category,
+          body:
+            JSON.stringify({
 
-          description,
+              title,
 
-          source_type:
-            "cloudinary",
+              category,
 
-          source_url:
-            sourceUrl,
+              description,
 
-          cloudinary_public_id:
-            document.getElementById(
-              "cloudinaryPublicId"
-            ).value,
+              source_type:
+                "cloudinary",
 
-          published: 1
+              source_url:
+                sourceUrl,
 
-        })
-      }
-    );
+              cloudinary_public_id:
+                document.getElementById(
+                  "cloudinaryPublicId"
+                ).value,
+
+              published:
+                1
+
+            })
+
+        }
+      );
+
 
     const data =
       await response.json();
+
 
     if (!response.ok) {
 
@@ -564,33 +756,43 @@ async function saveVideo() {
         data.error ||
         "Gagal menyimpan video"
       );
+
     }
+
 
     alert(
       "✅ Video berhasil disimpan."
     );
 
+
     document.getElementById(
       "title"
     ).value = "";
+
 
     document.getElementById(
       "description"
     ).value = "";
 
+
     document.getElementById(
       "sourceUrl"
     ).value = "";
+
 
     document.getElementById(
       "cloudinaryPublicId"
     ).value = "";
 
+
     document.getElementById(
       "uploadStatus"
-    ).style.display = "none";
+    ).style.display =
+      "none";
+
 
     loadVideos();
+
 
   } catch (error) {
 
@@ -598,7 +800,9 @@ async function saveVideo() {
       "uploadStatus",
       "❌ " + error.message
     );
+
   }
+
 }
 
 
@@ -613,24 +817,27 @@ async function loadVideos() {
       "videoList"
     );
 
+
   list.innerHTML =
     "Memuat data video...";
 
+
   try {
 
-    const response = await fetch(
-      API_BASE +
-      "/api/videos?admin=1",
-      {
-        headers: {
-          "Authorization":
-            "Bearer " + authToken
-        }
-      }
-    );
+    /*
+      mediaFetch() otomatis mengambil
+      token SSO terbaru.
+    */
+
+    const response =
+      await mediaFetch(
+        "/api/videos?admin=1"
+      );
+
 
     const data =
       await response.json();
+
 
     if (!response.ok) {
 
@@ -638,18 +845,23 @@ async function loadVideos() {
         data.error ||
         "Gagal mengambil video"
       );
+
     }
+
 
     const videos =
       data.videos || [];
+
 
     if (!videos.length) {
 
       list.innerHTML =
         '<p class="muted">Belum ada video.</p>';
 
+
       return;
     }
+
 
     list.innerHTML =
       videos.map(
@@ -658,33 +870,52 @@ async function loadVideos() {
         <div class="video-item">
 
           <h3>
-            ${escapeHtml(video.title)}
+            ${escapeHtml(
+              video.title
+            )}
           </h3>
 
+
           <div class="muted">
+
             Kategori:
-            ${escapeHtml(video.category)}
+            ${escapeHtml(
+              video.category
+            )}
+
           </div>
+
 
           ${
             video.description
               ? `<p>
-                  ${escapeHtml(video.description)}
+                  ${escapeHtml(
+                    video.description
+                  )}
                  </p>`
               : ""
           }
 
+
           ${
-            video.source_type === "cloudinary"
+            video.source_type ===
+            "cloudinary"
+
               ? `
+
                 <video
                   controls
                   preload="metadata"
-                  src="${escapeHtml(video.source_url)}"
+                  src="${escapeHtml(
+                    video.source_url
+                  )}"
                 ></video>
+
               `
+
               : ""
           }
+
 
           <button
             class="btn-danger"
@@ -701,8 +932,12 @@ async function loadVideos() {
   } catch (error) {
 
     list.innerHTML =
-      `<p>❌ ${escapeHtml(error.message)}</p>`;
+      `<p>❌ ${escapeHtml(
+        error.message
+      )}</p>`;
+
   }
+
 }
 
 
@@ -717,27 +952,35 @@ async function deleteVideo(id) {
       "Yakin ingin menghapus data video ini?"
     )
   ) {
+
     return;
+
   }
+
 
   try {
 
-    const response = await fetch(
-      API_BASE +
-      "/api/videos/" +
-      encodeURIComponent(id),
-      {
-        method: "DELETE",
+    /*
+      Token otomatis diperbarui
+      sebelum DELETE.
+    */
 
-        headers: {
-          "Authorization":
-            "Bearer " + authToken
+    const response =
+      await mediaFetch(
+        "/api/videos/" +
+        encodeURIComponent(id),
+        {
+
+          method:
+            "DELETE"
+
         }
-      }
-    );
+      );
+
 
     const data =
       await response.json();
+
 
     if (!response.ok) {
 
@@ -745,13 +988,17 @@ async function deleteVideo(id) {
         data.error ||
         "Gagal menghapus video"
       );
+
     }
+
 
     alert(
       "Data video berhasil dihapus."
     );
 
+
     loadVideos();
+
 
   } catch (error) {
 
@@ -759,7 +1006,9 @@ async function deleteVideo(id) {
       "Gagal menghapus: " +
       error.message
     );
+
   }
+
 }
 
 
@@ -767,26 +1016,48 @@ async function deleteVideo(id) {
    ESCAPE HTML
 ========================= */
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  return String(
+    value || ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
 
-
-/* =========================
-   CEK LOGIN SAAT DIBUKA
-========================= */
 
 /* =========================
    CEK SESI ADMIN UTAMA
 ========================= */
 
 login();
+
 
 </script>
 
