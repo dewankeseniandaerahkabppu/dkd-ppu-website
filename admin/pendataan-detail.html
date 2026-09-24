@@ -493,211 +493,211 @@
       );
     }
 
-    async function notifikasiWhatsApp() {
-      const id = getId();
+    async function kirimPesanWhatsApp() {
+  const id = getId();
 
-      if (!id) {
-        alert("Nomor pendataan tidak ditemukan.");
-        return;
+  if (!id) {
+    alert("Nomor pendataan tidak ditemukan.");
+    return;
+  }
+
+  try {
+    const dataResponse = await fetch(
+      "/api/pendataan?id=" + encodeURIComponent(id),
+      {
+        credentials: "include"
       }
+    );
 
-      try {
-        const dataResponse = await fetch(
-          "/api/pendataan?id=" + encodeURIComponent(id),
-          {
-            credentials: "include"
-          }
-        );
+    const dataResult = await dataResponse.json();
 
-        const dataResult = await dataResponse.json();
-
-        if (!dataResponse.ok || !dataResult.ok || !dataResult.data) {
-          throw new Error(
-            dataResult.error || "Data pendataan tidak dapat ditemukan."
-          );
-        }
-
-        const item = dataResult.data;
-
-        const waResponse = await fetch(
-          "/api/admin/whatsapp",
-          {
-            method: "GET",
-            credentials: "include"
-          }
-        );
-
-        const waResult = await waResponse.json();
-
-        if (!waResponse.ok || !waResult.ok) {
-          throw new Error(
-            waResult.error ||
-            "Nomor WhatsApp Admin belum tersedia."
-          );
-        }
-
-        let nomor = String(waResult.whatsapp_admin || "")
-          .replace(/\D/g, "");
-
-        if (nomor.startsWith("0")) {
-          nomor = "62" + nomor.substring(1);
-        }
-
-        if (!nomor || !nomor.startsWith("62") || nomor.length < 10) {
-          throw new Error(
-            "Nomor WhatsApp Admin belum valid. Silakan periksa di Pengaturan Admin."
-          );
-        }
-
-        const pesan =
-`Halo Admin DKD PPU,
-
-Terdapat pendataan pelaku seni dan budaya baru yang perlu diperiksa.
-
-Nomor Pendataan:
-${item.id_pendataan || "-"}
-
-Nama Individu / Group:
-${item.nama_individu_group || "-"}
-
-Kategori:
-${item.kategori || "-"}
-
-Jenis Pelaku:
-${item.jenis_pelaku || "-"}
-
-Bidang Seni:
-${item.bidang_seni || "-"}
-
-Kecamatan:
-${item.kecamatan || "-"}
-
-Desa/Kelurahan:
-${item.desa_kelurahan || "-"}
-
-Status:
-${item.status || "-"}
-
-Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.`;
-
-        const url =
-          "https://wa.me/" +
-          nomor +
-          "?text=" +
-          encodeURIComponent(pesan);
-
-        window.open(url, "_blank");
-
-      } catch (error) {
-        alert(
-          "Gagal membuka WhatsApp:\n\n" +
-          error.message
-        );
-      }
+    if (!dataResponse.ok || !dataResult.ok || !dataResult.data) {
+      throw new Error(
+        dataResult.error || "Data pendataan tidak dapat ditemukan."
+      );
     }
 
+    const item = dataResult.data;
+
+    let nomor = String(item.nomor_whatsapp || "")
+      .replace(/\D/g, "");
+
+    if (nomor.startsWith("0")) {
+      nomor = "62" + nomor.substring(1);
+    }
+
+    if (!nomor || !nomor.startsWith("62") || nomor.length < 10) {
+      throw new Error(
+        "Nomor WhatsApp pendaftar belum tersedia atau tidak valid."
+      );
+    }
+
+    let pesan = "";
+
+    if (item.status === "TERVERIFIKASI") {
+      pesan =
+`*TERIMA KASIH TELAH MELAKUKAN PENDATAAN PELAKU SENI DAN BUDAYA DI DKD PPU.*
+
+*Nomor Pendataan:* ${item.id_pendataan || "-"}
+
+*Nama Individu / Group:* ${item.nama_individu_group || "-"}
+
+*Status:* DIVERIFIKASI
+
+Data Anda telah *DIVERIFIKASI* oleh DKD PPU dan telah tercatat dalam sistem pendataan pelaku seni dan budaya.
+
+Mohon menyimpan Nomor Pendataan tersebut sebagai referensi data Anda.
+
+*Terima kasih atas partisipasi dan dukungan Anda terhadap pendataan seni dan budaya di Kabupaten Penajam Paser Utara.*`;
+    }
+
+    else if (item.status === "DITOLAK") {
+      pesan =
+`*TERIMA KASIH TELAH MELAKUKAN PENDATAAN PELAKU SENI DAN BUDAYA DI DKD PPU.*
+
+*Nomor Pendataan:* ${item.id_pendataan || "-"}
+
+*Nama Individu / Group:* ${item.nama_individu_group || "-"}
+
+*Status:* BELUM DAPAT DIVERIFIKASI
+
+Data Anda *BELUM DAPAT DIVERIFIKASI* oleh DKD PPU dan belum dapat diterima dalam proses pendataan saat ini.
+
+Apabila terdapat data yang perlu diperbaiki atau dilengkapi, silakan menghubungi Admin DKD PPU untuk mendapatkan informasi lebih lanjut.
+
+*Terima kasih atas perhatian dan partisipasi Anda.*`;
+    }
+
+    else {
+      throw new Error(
+        "Pesan WhatsApp hanya dapat dikirim setelah data diverifikasi atau ditolak."
+      );
+    }
+
+    const url =
+      "https://wa.me/" +
+      nomor +
+      "?text=" +
+      encodeURIComponent(pesan);
+
+    window.open(url, "_blank");
+
+  } catch (error) {
+    alert(
+      "Gagal membuka WhatsApp:\n\n" +
+      error.message
+    );
+  }
+}
     function makeActions(item) {
-      let buttons = "";
+  let buttons = "";
 
-      if (item.status === "MENUNGGU VERIFIKASI") {
-        buttons = `
-          <div class="detail-actions">
-            <div class="detail-actions-title">Tindakan Admin</div>
+  if (item.status === "MENUNGGU VERIFIKASI") {
+    buttons = `
+      <div class="detail-actions">
+        <div class="detail-actions-title">Tindakan Admin</div>
 
-            <button
-              type="button"
-              class="btn-verifikasi"
-              onclick="verifikasiData()"
-            >
-              ✓ VERIFIKASI
-            </button>
+        <button
+          type="button"
+          class="btn-verifikasi"
+          onclick="verifikasiData()"
+        >
+          ✓ VERIFIKASI
+        </button>
 
-            <button
-              type="button"
-              class="btn-tolak"
-              onclick="tolakData()"
-            >
-              ✕ TOLAK
-            </button>
+        <button
+          type="button"
+          class="btn-tolak"
+          onclick="tolakData()"
+        >
+          ✕ TOLAK
+        </button>
+      </div>
+    `;
+  }
 
-            <button
-              type="button"
-              class="btn-whatsapp"
-              onclick="notifikasiWhatsApp()"
-            >
-              🟢 NOTIFIKASI WHATSAPP
-            </button>
-          </div>
-        `;
-      }
+  else if (item.status === "TERVERIFIKASI") {
+    buttons = `
+      <div class="detail-actions">
+        <div class="detail-actions-title">Tindakan Admin</div>
 
-      else if (item.status === "TERVERIFIKASI") {
-        buttons = `
-          <div class="detail-actions">
-            <div class="detail-actions-title">Tindakan Admin</div>
+        <button
+          type="button"
+          class="btn-publikasi"
+          onclick="publikasikanData()"
+        >
+          🌐 PUBLIKASIKAN
+        </button>
 
-            <button
-              type="button"
-              class="btn-publikasi"
-              onclick="publikasikanData()"
-            >
-              🌐 PUBLIKASIKAN
-            </button>
+        <button
+          type="button"
+          class="btn-batal-verifikasi"
+          onclick="batalkanVerifikasi()"
+        >
+          ↩ BATALKAN VERIFIKASI
+        </button>
 
-            <button
-              type="button"
-              class="btn-batal-verifikasi"
-              onclick="batalkanVerifikasi()"
-            >
-              ↩ BATALKAN VERIFIKASI
-            </button>
-          </div>
-        `;
-      }
+        <button
+          type="button"
+          class="btn-whatsapp"
+          onclick="kirimPesanWhatsApp()"
+        >
+          🟢 KIRIM PESAN WHATSAPP
+        </button>
+      </div>
+    `;
+  }
 
-      else if (item.status === "DIPUBLIKASIKAN") {
-        buttons = `
-          <div class="detail-actions">
-            <div class="detail-actions-title">Tindakan Admin</div>
+  else if (item.status === "DIPUBLIKASIKAN") {
+    buttons = `
+      <div class="detail-actions">
+        <div class="detail-actions-title">Tindakan Admin</div>
 
-            <button
-              type="button"
-              class="btn-lihat"
-              onclick="lihatWebsite()"
-            >
-              👁 LIHAT DI WEBSITE
-            </button>
+        <button
+          type="button"
+          class="btn-lihat"
+          onclick="lihatWebsite()"
+        >
+          👁 LIHAT DI WEBSITE
+        </button>
 
-            <button
-              type="button"
-              class="btn-tarik"
-              onclick="tarikPublikasi()"
-            >
-              ↩ TARIK DARI PUBLIKASI
-            </button>
-          </div>
-        `;
-      }
+        <button
+          type="button"
+          class="btn-tarik"
+          onclick="tarikPublikasi()"
+        >
+          ↩ TARIK DARI PUBLIKASI
+        </button>
+      </div>
+    `;
+  }
 
-      else if (item.status === "DITOLAK") {
-        buttons = `
-          <div class="detail-actions">
-            <div class="detail-actions-title">Tindakan Admin</div>
+  else if (item.status === "DITOLAK") {
+    buttons = `
+      <div class="detail-actions">
+        <div class="detail-actions-title">Tindakan Admin</div>
 
-            <button
-              type="button"
-              class="btn-verifikasi-ulang"
-              onclick="verifikasiUlang()"
-            >
-              🔄 VERIFIKASI ULANG
-            </button>
-          </div>
-        `;
-      }
+        <button
+          type="button"
+          class="btn-verifikasi-ulang"
+          onclick="verifikasiUlang()"
+        >
+          🔄 VERIFIKASI ULANG
+        </button>
 
-      return buttons;
-    }
+        <button
+          type="button"
+          class="btn-whatsapp"
+          onclick="kirimPesanWhatsApp()"
+        >
+          🟢 KIRIM PESAN WHATSAPP
+        </button>
+      </div>
+    `;
+  }
 
+  return buttons;
+}
     function getStatusClass(status) {
       if (status === "TERVERIFIKASI") {
         return "badge-terverifikasi";
