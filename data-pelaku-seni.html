@@ -459,6 +459,409 @@ body {
     padding: 22px 15px 30px !important;
   }
 }
+ /* =========================================================
+   PROFIL CARD — DKD PPU
+   ========================================================= */
+
+.profil-cover {
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  margin: 0 0 25px;
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(231,189,98,0.22),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #061814 0%,
+      #0b3028 55%,
+      #174b3b 100%
+    );
+  border: 1px solid rgba(201,154,61,0.45);
+  box-shadow: 0 14px 30px rgba(6,24,20,0.16);
+}
+
+.profil-cover-pattern {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -170px;
+  top: -180px;
+  border: 1px solid rgba(231,189,98,0.22);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 30px rgba(231,189,98,0.035),
+    0 0 0 60px rgba(231,189,98,0.025),
+    0 0 0 90px rgba(231,189,98,0.018);
+}
+
+.profil-cover-content {
+  position: relative;
+  z-index: 2;
+  min-height: 300px;
+  padding: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profil-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 7px 13px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(231,189,98,0.45);
+  border-radius: 30px;
+  background: rgba(255,255,255,0.06);
+  color: #f7e6b0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.profil-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(231,189,98,0.45);
+  color: #f7e6b0;
+  font-size: 22px;
+  background: rgba(255,255,255,0.04);
+}
+
+.profil-cover-title {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.profil-cover-title span {
+  color: rgba(255,255,255,0.68);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.profil-cover-title strong {
+  max-width: 700px;
+  color: #f7e6b0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.08;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.profil-cover-subtitle {
+  margin-top: 18px;
+  max-width: 620px;
+  color: rgba(255,255,255,0.72);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}
+
+/* =========================================================
+   TEMPLATE OTOMATIS — TRADISIONAL & MODERN
+   ========================================================= */
+
+/* DEFAULT / MODERN */
+
+.profil-cover.template-modern {
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(25,124,120,0.28),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #061814 0%,
+      #0b3028 48%,
+      #197c78 100%
+    );
+}
+
+.profil-cover.template-modern::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -80px;
+  bottom: -120px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 25px rgba(255,255,255,0.025),
+    0 0 0 50px rgba(255,255,255,0.018);
+}
+
+
+/* TRADISIONAL */
+
+.profil-cover.template-tradisional {
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(201,154,61,0.30),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #21150a 0%,
+      #4b2f13 48%,
+      #80602b 100%
+    );
+}
+
+.profil-cover.template-tradisional::after {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: -75px;
+  bottom: -100px;
+  border: 2px solid rgba(247,230,176,0.18);
+  transform: rotate(45deg);
+  box-shadow:
+    0 0 0 22px rgba(247,230,176,0.025),
+    0 0 0 44px rgba(247,230,176,0.018);
+}
+
+.profil-cover.template-tradisional .profil-badge {
+  border-color: rgba(247,230,176,0.55);
+}
+
+.profil-cover.template-tradisional .profil-icon {
+  border-color: rgba(247,230,176,0.55);
+}
+
+.profil-cover.template-tradisional .profil-cover-title strong {
+  color: #ffe9a8;
+}
+
+.profil-cover.template-tradisional .profil-cover-subtitle {
+  color: rgba(255,245,220,0.76);
+}
+/* IDENTITAS */
+
+.profil-identitas {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 25px;
+  align-items: center;
+  margin-bottom: 35px;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(201,154,61,0.20);
+}
+
+.profil-label {
+  margin-bottom: 8px;
+  color: #758078;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+}
+
+.profil-nama-value {
+  color: #0b3028;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.profil-status-box {
+  text-align: right;
+}
+
+
+/* SECTION */
+
+.profil-section {
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 17px;
+  background: rgba(255,255,255,0.70);
+  border: 1px solid rgba(201,154,61,0.18);
+}
+
+.profil-section-title {
+  margin-bottom: 20px;
+  color: #0b3028;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,154,61,0.20);
+}
+
+.profil-section-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin-top: 10px;
+  background: linear-gradient(
+    90deg,
+    #c99a3d,
+    #197c78
+  );
+}
+
+
+/* GRID INFORMASI */
+
+.profil-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.profil-info {
+  padding: 18px;
+  border-radius: 13px;
+  background: #faf5ea;
+  border: 1px solid rgba(23,60,43,0.08);
+}
+
+.profil-info-label {
+  margin-bottom: 7px;
+  color: #758078;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profil-info-value {
+  color: #173c2b;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+
+/* DESKRIPSI */
+
+.profil-deskripsi {
+  color: #59655e;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+
+/* PERSONIL */
+
+.profil-personil {
+  padding: 18px;
+  border-radius: 13px;
+  background: #faf5ea;
+  color: #173c2b;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+
+/* FOOTER PROFIL */
+
+.profil-footer-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: #0b3028;
+  border: 1px solid rgba(201,154,61,0.35);
+}
+
+.profil-footer-label {
+  margin-bottom: 6px;
+  color: rgba(255,255,255,0.58);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.profil-footer-id {
+  color: #f7e6b0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.profil-footer-mark {
+  color: #f7e6b0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+  .profil-cover {
+    min-height: 270px;
+    border-radius: 17px;
+  }
+
+  .profil-cover-content {
+    min-height: 270px;
+    padding: 25px;
+  }
+
+  .profil-cover-title strong {
+    font-size: 31px;
+  }
+
+  .profil-cover-subtitle {
+    font-size: 9px;
+  }
+
+  .profil-identitas {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 20px;
+  }
+
+  .profil-status-box {
+    text-align: left;
+  }
+
+  .profil-nama-value {
+    font-size: 22px;
+  }
+
+  .profil-section {
+    padding: 20px;
+  }
+
+  .profil-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profil-footer-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
   </style>
 </head>
 
@@ -481,55 +884,188 @@ body {
 
       <div id="dataContainer" style="display:none;">
 
-        <div class="row">
-          <div class="label">Nama Individu atau Group</div>
-          <div class="value" id="nama"></div>
+  <div class="profil-cover">
+
+    <div class="profil-cover-pattern"></div>
+
+    <div class="profil-cover-content">
+
+      <div class="profil-badge" id="profilKategori">
+        PELAKU SENI & BUDAYA
+      </div>
+
+      <div class="profil-icon">
+        ✦
+      </div>
+
+      <div class="profil-cover-title">
+        <span>PROFIL</span>
+        <strong id="namaCover">-</strong>
+      </div>
+
+      <div class="profil-cover-subtitle">
+        DEWAN KESENIAN DAERAH KABUPATEN PENAJAM PASER UTARA
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="profil-identitas">
+
+    <div class="profil-nama">
+
+      <div class="profil-label">
+        NAMA INDIVIDU / GROUP
+      </div>
+
+      <div class="profil-nama-value" id="nama">
+        -
+      </div>
+
+    </div>
+
+
+    <div class="profil-status-box">
+
+      <div class="profil-label">
+        STATUS DATA
+      </div>
+
+      <span class="status">
+        DIPUBLIKASIKAN
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="profil-section">
+
+    <div class="profil-section-title">
+      INFORMASI PELAKU SENI DAN BUDAYA
+    </div>
+
+    <div class="profil-grid">
+
+      <div class="profil-info">
+
+        <div class="profil-info-label">
+          Kategori
         </div>
 
-        <div class="row">
-          <div class="label">Kategori</div>
-          <div class="value" id="kategori"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Jenis Pelaku</div>
-          <div class="value" id="jenis"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Bidang Seni</div>
-          <div class="value" id="bidang"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Kecamatan</div>
-          <div class="value" id="kecamatan"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Desa/Kelurahan</div>
-          <div class="value" id="desa"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Deskripsi</div>
-          <div class="value" id="deskripsi"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Nama Personil</div>
-          <div class="value" id="personil"></div>
-        </div>
-
-        <div class="row">
-          <div class="label">Status</div>
-          <div class="value">
-            <span class="status">DIPUBLIKASIKAN</span>
-          </div>
+        <div class="profil-info-value" id="kategori">
+          -
         </div>
 
       </div>
 
+
+      <div class="profil-info">
+
+        <div class="profil-info-label">
+          Jenis Pelaku
+        </div>
+
+        <div class="profil-info-value" id="jenis">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="profil-info">
+
+        <div class="profil-info-label">
+          Bidang Seni
+        </div>
+
+        <div class="profil-info-value" id="bidang">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="profil-info">
+
+        <div class="profil-info-label">
+          Kecamatan
+        </div>
+
+        <div class="profil-info-value" id="kecamatan">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="profil-info">
+
+        <div class="profil-info-label">
+          Desa / Kelurahan
+        </div>
+
+        <div class="profil-info-value" id="desa">
+          -
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="profil-section">
+
+    <div class="profil-section-title">
+      TENTANG PELAKU SENI
+    </div>
+
+    <div class="profil-deskripsi" id="deskripsi">
+      -
+    </div>
+
+  </div>
+
+
+  <div class="profil-section" id="personilSection">
+
+    <div class="profil-section-title">
+      NAMA PERSONIL
+    </div>
+
+    <div class="profil-personil" id="personil">
+      -
+    </div>
+
+  </div>
+
+
+  <div class="profil-footer-card">
+
+    <div>
+
+      <div class="profil-footer-label">
+        NOMOR PENDATAAN
+      </div>
+
+      <div class="profil-footer-id" id="nomorPendataan">
+        -
+      </div>
+
+    </div>
+
+    <div class="profil-footer-mark">
+      DKD PPU
+    </div>
+
+  </div>
+
+</div>
       <div id="errorContainer" style="display:none;"></div>
 
       <a href="/" class="back">← Kembali ke Website DKD PPU</a>
@@ -570,6 +1106,34 @@ body {
         }
 
         const data = result.data;
+
+/* =========================================================
+   PILIH TEMPLATE OTOMATIS
+   ========================================================= */
+
+const cover = document.querySelector(".profil-cover");
+
+const kategori = String(data.kategori || "")
+  .trim()
+  .toUpperCase();
+
+if (kategori === "TRADISIONAL") {
+  cover.classList.add("template-tradisional");
+} else {
+  cover.classList.add("template-modern");
+}
+
+/* ========================================================= */
+
+
+  document.getElementById("namaCover").textContent =
+  data.nama_individu_group || "-";
+
+document.getElementById("profilKategori").textContent =
+  data.kategori || "PELAKU SENI & BUDAYA";
+
+document.getElementById("nomorPendataan").textContent =
+  data.id_pendataan || "-";
 
         document.getElementById("nama").textContent =
           data.nama_individu_group || "-";
