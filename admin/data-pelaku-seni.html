@@ -939,7 +939,101 @@ async function hapusData(
 
 }
 
+/* =========================
+   KIRIM NOTIFIKASI WHATSAPP
+   ========================= */
 
+async function kirimWhatsApp(item) {
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/admin/whatsapp",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Accept": "application/json"
+          }
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.ok ||
+      !data.whatsapp_admin
+    ) {
+
+      throw new Error(
+        "Nomor WhatsApp Admin belum tersedia."
+      );
+
+    }
+
+
+    let nomor =
+      String(
+        data.whatsapp_admin
+      ).replace(/\D/g, "");
+
+
+    if (nomor.startsWith("0")) {
+      nomor = "62" + nomor.substring(1);
+    }
+
+
+    const pesan =
+`*Kami telah mengisi pendataan pelaku seni dan budaya baru.*
+
+*Nomor Pendataan:* ${item.id_pendataan || "-"}
+
+*Nama:* ${item.nama_individu_group || "-"}
+
+*Kategori:* ${item.kategori || "-"}
+
+*Jenis Pelaku:* ${item.jenis_pelaku || "-"}
+
+*Bidang Seni:* ${item.bidang_seni || "-"}
+
+*Terima kasih.*`;
+
+
+    const url =
+      "https://wa.me/" +
+      nomor +
+      "?text=" +
+      encodeURIComponent(
+        pesan
+      );
+
+
+    window.open(
+      url,
+      "_blank"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "WhatsApp:",
+      error
+    );
+
+    alert(
+      "Gagal membuka WhatsApp.\n\n" +
+      error.message
+    );
+
+  }
+
+}
 /* =========================
    TAMPILKAN DATA
    SESUAI KATEGORI AKTIF
@@ -1243,16 +1337,29 @@ function tampilkanData() {
         </td>
 
 
-                        <td>
+        <td>
 
-          <button
-            type="button"
-            class="btn-hapus"
-          >
-            Hapus
-          </button>
+  ${
+    status === "MENUNGGU VERIFIKASI"
+      ? `
+        <button
+          type="button"
+          class="btn-whatsapp"
+        >
+          Kirim WhatsApp
+        </button>
+      `
+      : ""
+  }
 
-        </td>
+  <button
+    type="button"
+    class="btn-hapus"
+  >
+    Hapus
+  </button>
+
+</td>
 
       `;
 
