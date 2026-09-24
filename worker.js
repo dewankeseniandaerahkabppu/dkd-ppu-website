@@ -1116,7 +1116,110 @@ Mohon dilakukan pemeriksaan dan verifikasi melalui Admin DKD PPU.`;
 
     }
 
+// ========================================================
+// HAPUS DATA PENDATAAN
+// ADMIN ONLY
+// ========================================================
 
+if (
+  url.pathname ===
+    "/api/pendataan/hapus" &&
+  request.method === "POST"
+) {
+
+  if (
+    !(await getAdmin(
+      request,
+      env
+    ))
+  ) {
+
+    return unauthorizedResponse();
+
+  }
+
+
+  try {
+
+    const data =
+      await request.json();
+
+
+    if (!data.id_pendataan) {
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Nomor pendataan wajib diisi."
+        },
+        {
+          status: 400
+        }
+      );
+
+    }
+
+
+    const result =
+      await env.DB
+        .prepare(`
+          DELETE FROM pendataan_pelaku_seni
+          WHERE id_pendataan = ?
+        `)
+        .bind(
+          data.id_pendataan
+        )
+        .run();
+
+
+    if (
+      result.meta.changes === 0
+    ) {
+
+      return Response.json(
+        {
+          ok: false,
+          error:
+            "Data pendataan tidak ditemukan."
+        },
+        {
+          status: 404
+        }
+      );
+
+    }
+
+
+    return Response.json({
+
+      ok: true,
+
+      message:
+        "Data pendataan berhasil dihapus.",
+
+      id_pendataan:
+        data.id_pendataan
+
+    });
+
+
+  } catch (error) {
+
+    return Response.json(
+      {
+        ok: false,
+        error:
+          error.message
+      },
+      {
+        status: 500
+      }
+    );
+
+  }
+
+}
     // ========================================================
     // AMBIL DATA PENDATAAN
     // ADMIN ONLY
