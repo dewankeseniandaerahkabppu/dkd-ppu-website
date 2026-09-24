@@ -161,23 +161,16 @@
 <main>
 
   <!-- LOGIN -->
-  <section id="loginBox" class="card">
-    <h2>Login Admin</h2>
+ <section id="loginBox" class="card">
+  <h2>Media & Video</h2>
 
-    <label>Password Admin</label>
-    <input
-      type="password"
-      id="password"
-      placeholder="Masukkan password admin"
-    >
-
-    <button class="btn-primary" onclick="login()">
-      Masuk
-    </button>
-
-    <div id="loginStatus" class="status"></div>
-  </section>
-
+  <p
+    class="muted"
+    id="loginStatus"
+  >
+    Memeriksa sesi Admin DKD PPU...
+  </p>
+</section>
 
   <!-- PANEL ADMIN -->
   <section id="adminPanel" class="hidden">
@@ -191,9 +184,12 @@
           </p>
         </div>
 
-        <button class="btn-secondary" onclick="logout()">
-          Keluar
-        </button>
+        <button
+  class="btn-secondary"
+  onclick="window.location.href='/admin/'"
+>
+  ← Kembali ke Dashboard
+</button>
       </div>
 
       <label>Judul Video</label>
@@ -294,75 +290,71 @@ function showStatus(id, message) {
    LOGIN
 ========================= */
 
+/* =========================
+   LOGIN ADMIN UTAMA / MEDIA SSO
+========================= */
+
 async function login() {
-
-  const password =
-    document.getElementById("password").value.trim();
-
-  if (!password) {
-    showStatus(
-      "loginStatus",
-      "Password wajib diisi."
-    );
-    return;
-  }
 
   showStatus(
     "loginStatus",
-    "Sedang login..."
+    "Memeriksa sesi Admin DKD PPU..."
   );
 
   try {
 
-    const response = await fetch(
-      API_BASE + "/api/login",
-      {
-        method: "POST",
+    const response =
+      await fetch(
+        "/api/media-auth",
+        {
+          method: "GET",
+          credentials: "include"
+        }
+      );
 
-        headers: {
-          "Content-Type": "application/json"
-        },
 
-        body: JSON.stringify({
-          password
-        })
-      }
-    );
+    const data =
+      await response.json();
 
-    const data = await response.json();
 
     if (!response.ok) {
+
       throw new Error(
-        data.error || "Login gagal"
+        data.error ||
+        "Sesi Admin tidak tersedia."
       );
+
     }
 
-    authToken = data.token;
 
-    localStorage.setItem(
-      "dkd_ppu_admin_token",
-      authToken
-    );
+    authToken =
+      data.token;
+
 
     document.getElementById(
       "loginBox"
     ).classList.add("hidden");
 
+
     document.getElementById(
       "adminPanel"
     ).classList.remove("hidden");
 
+
     loadVideos();
+
 
   } catch (error) {
 
     showStatus(
       "loginStatus",
-      "Login gagal: " + error.message
+      "Sesi Admin tidak tersedia. Silakan login melalui Admin DKD PPU."
     );
-  }
-}
 
+  }
+
+}
+  
 
 /* =========================
    LOGOUT
@@ -790,18 +782,11 @@ function escapeHtml(value) {
    CEK LOGIN SAAT DIBUKA
 ========================= */
 
-if (authToken) {
+/* =========================
+   CEK SESI ADMIN UTAMA
+========================= */
 
-  document.getElementById(
-    "loginBox"
-  ).classList.add("hidden");
-
-  document.getElementById(
-    "adminPanel"
-  ).classList.remove("hidden");
-
-  loadVideos();
-}
+login();
 
 </script>
 
