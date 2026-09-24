@@ -950,9 +950,9 @@ async function hapusData(
 function kirimWhatsApp(item) {
 
   let nomor =
-    String(
-      item.kontak || ""
-    ).replace(/\D/g, "");
+  String(
+    item.nomor_whatsapp || ""
+  ).replace(/\D/g, "");
 
   if (!nomor) {
 
