@@ -2539,6 +2539,7 @@ section::after {
 .btn-pendataan {
   position: relative;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 58px;
